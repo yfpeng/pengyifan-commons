@@ -3,6 +3,8 @@ Yet another Java tree structure
 
 There are a couple of tree data structures in Java, such as [`DefaultMutableTreeNode`](http://docs.oracle.com/javase/6/docs/api/javax/swing/tree/DefaultMutableTreeNode.html) in JDK Swing, [`Tree`](http://nlp.stanford.edu/nlp/javadoc/javanlp/edu/stanford/nlp/trees/Tree.html) in Stanford parser package, and other toy codes. But none of these are sufficient yet small enough for general purpose.
 
+### Contribution (:))
+
 This project attempts to provide another general-purpose tree data structure in Java. The difference between this and others are
 *  **Totally free**. You can use it anywhere (except in your homework :P)
 *  **Small but general enough**. I put everything of the data structure in one class file, so it would be easy to copy/paste.
