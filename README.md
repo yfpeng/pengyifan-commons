@@ -5,7 +5,7 @@ There are a couple of tree data structures in Java, such as [`DefaultMutableTree
 
 This project attempts to provide a general-purpose node in a tree data structure. 
 
-## TreeNode
+### TreeNode
 
 A `TreeNode` may have at most one parent and 0 or more children. It provides operations for examining and modifying a node's parent and children and also operations for examining the tree that the node is a part of. A node's tree is the set of all nodes that can be reached by starting at the node and following all the possible links to parents and children. A node with no parent is the root of its tree; a node with no children is a leaf. A tree may consist of many subtrees, each node acting as the root for its own subtree.
 
@@ -13,9 +13,9 @@ A `TreeNode` provides iterator for efficiently traversing a tree or subtree in v
 
 This is not a thread safe class.</b>If you intend to use a TreeNode (or a tree of TreeNodes) in more than one thread, you need to do your own synchronizing. A good convention to adopt is synchronizing on the root node of a tree. 
 
-Most source code is copied from <code>DefaultMutableTreeNode</code> by Rob Davis, and modified for general purpose. 
+Most source code is copied from <code>DefaultMutableTreeNode</code> by Rob Davis, and modified for general purposes. 
 
-## Print TreeNode
+### Print TreeNode
 
 This project provides two formats to print out a tree structure. One is a human readable format (`TreeString`), like
 
@@ -30,14 +30,14 @@ The other is Penn Treebank format (`PtbString`), like
 
     (a b (c (e f) d)
     
-The following code snippet shows how to print a `TreeNode`
+The following code snippet shows how to print a `TreeNode`.
 
 ```java
 System.out.println(PtbString.toString(treeNode));
 System.out.println(TreeString.toString(treeNode));
 ```
 
-## Other utils
+### Other utils
 
 comming soon...
 
