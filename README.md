@@ -1,9 +1,13 @@
 Yet another Java tree structure
 =========
 
-There are a couple of tree data structures in Java, such as [`DefaultMutableTreeNode`](http://docs.oracle.com/javase/6/docs/api/javax/swing/tree/DefaultMutableTreeNode.html) in JDK Swing, [`Tree`](http://nlp.stanford.edu/nlp/javadoc/javanlp/edu/stanford/nlp/trees/Tree.html) in Stanford parser package, and other toy codes. But none of these are sufficient enough for general purpose.
+There are a couple of tree data structures in Java, such as [`DefaultMutableTreeNode`](http://docs.oracle.com/javase/6/docs/api/javax/swing/tree/DefaultMutableTreeNode.html) in JDK Swing, [`Tree`](http://nlp.stanford.edu/nlp/javadoc/javanlp/edu/stanford/nlp/trees/Tree.html) in Stanford parser package, and other toy codes. But none of these are sufficient yet small enough for general purpose.
 
-This project attempts to provide a general-purpose node in a tree data structure. 
+This project attempts to provide another general-purpose tree data structure in Java. The difference between this and others are
+*  **Totally free**. You can use it anywhere (except in your homework :P)
+*  **Small but general enough**. I put everything of the data structure in one class file, so it would be easy to copy/paste.
+*  **Not just a toys**. I am aware of dozens of Java tree codes that can only handle binary trees or limited operations. This `TreeNode` is much more than that. It provides different ways of visiting nodes, such as preorder, postorder, breadthfirst, leaves, path to root, etc. Moreover, iterators are provided too for the sufficiency.
+*  **More utils will be added**. I am willing to add more operations to make this project comprehensive, escpecially if you send a request through [**github**](https://github.com/yfpeng/java-tree).
 
 ### TreeNode
 
