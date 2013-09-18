@@ -7,7 +7,7 @@ This project attempts to provide another general-purpose tree data structure in 
 *  **Totally free**. You can use it anywhere (except in your homework :P)
 *  **Small but general enough**. I put everything of the data structure in one class file, so it would be easy to copy/paste.
 *  **Not just a toys**. I am aware of dozens of Java tree codes that can only handle binary trees or limited operations. This `TreeNode` is much more than that. It provides different ways of visiting nodes, such as preorder, postorder, breadthfirst, leaves, path to root, etc. Moreover, iterators are provided too for the sufficiency.
-*  **More utils will be added**. I am willing to add more operations to make this project comprehensive, escpecially if you send a request through [**github**](https://github.com/yfpeng/java-tree).
+*  **More utils will be added**. I am willing to add more operations to make this project comprehensive, especially if you send a request through [**github**](https://github.com/yfpeng/java-tree).
 
 ### TreeNode
 
