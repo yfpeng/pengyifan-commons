@@ -9,6 +9,9 @@ import org.junit.Test;
 
 import pengyifan.tree.TreeNode;
 
+/**
+ * @author Yifan Peng
+ */
 public class TreeNodeTest {
 
   static TreeNode a = new TreeNode("A");
@@ -57,8 +60,8 @@ public class TreeNodeTest {
     TreeNode dst = a.deepCopy();
     assertEquals(
         "deep copy is incorrect",
-        toString(a.postorderIterator()),
-        toString(dst.postorderIterator()));
+          toString(a.postorderIterator()),
+          toString(dst.postorderIterator()));
   }
 
   @Test
