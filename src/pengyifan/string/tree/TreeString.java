@@ -1,8 +1,8 @@
-package pengyifan.tree.string;
+package pengyifan.string.tree;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 
+import pengyifan.string.StringUtils;
 import pengyifan.tree.TreeNode;
 
 /**
@@ -22,29 +22,6 @@ import pengyifan.tree.TreeNode;
  */
 public class TreeString {
 
-  // │
-  public static final String BAR    = bar(1);
-  // └
-  public static final String END    = bar(2);
-  // ├
-  public static final String MIDDLE = bar(3);
-
-  private static String bar(int i) {
-    try {
-      switch (i) {
-      case 1:
-        return new String(new byte[] { -30, -108, -126 }, "utf8");
-      case 2:
-        return new String(new byte[] { -30, -108, -108 }, "utf8");
-      case 3:
-        return new String(new byte[] { -30, -108, -100 }, "utf8");
-      }
-    } catch (UnsupportedEncodingException e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
-
   public static String toString(TreeNode tree) {
     StringBuffer sb = new StringBuffer();
 
@@ -58,16 +35,16 @@ public class TreeString {
         if (p == tn) {
           ;
         } else if (p.hasNextSiblingNode()) {
-          sb.append(BAR + " ");
+          sb.append(StringUtils.BAR + " ");
         } else {
           sb.append("  ");
         }
       }
       // if root has sibling node
       if (tn.hasNextSiblingNode()) {
-        sb.append(MIDDLE + " ");
+        sb.append(StringUtils.MIDDLE + " ");
       } else {
-        sb.append(END + " ");
+        sb.append(StringUtils.END + " ");
       }
       sb.append(tn.getObject() + "\n");
 

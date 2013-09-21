@@ -1,7 +1,7 @@
 package pengyifan.test;
 
+import pengyifan.string.tree.PtbString;
 import pengyifan.tree.TreeNode;
-import pengyifan.tree.string.PtbString;
 
 /**
  * @author Yifan Peng
