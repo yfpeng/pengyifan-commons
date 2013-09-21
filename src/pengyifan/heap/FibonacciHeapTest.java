@@ -1,5 +1,7 @@
 package pengyifan.heap;
 
+import pengyifan.string.heap.FibonacciHeapString;
+
 
 /**
  * This test should only be used in the package
@@ -61,11 +63,13 @@ public class FibonacciHeapTest {
     x46 = subx = new Node(46, 0);
     addsubNode(heap, x, subx);
 
-    System.out.println(heap);
+    System.out.println(FibonacciHeapString.toString(heap, new StringBuilder()));
+    System.out.println();
 
     // action of extract-min
     heap.extractMin();
-    System.out.println(heap);
+    System.out.println(FibonacciHeapString.toString(heap, new StringBuilder()));
+    System.out.println();
 
     x26.mark = true;
     x18.mark = true;
@@ -73,11 +77,13 @@ public class FibonacciHeapTest {
 
     // The node with key 46 has its key decreased to 15.
     heap.decreaseKey(x46, 15);
-    System.out.println(heap);
+    System.out.println(FibonacciHeapString.toString(heap, new StringBuilder()));
+    System.out.println();
 
     // The node with key 35 has its key decreased to 5.
     heap.decreaseKey(x35, 5);
-    System.out.println(heap);
+    System.out.println(FibonacciHeapString.toString(heap, new StringBuilder()));
+    System.out.println();
   }
 
   private static void addsubNode(FibonacciHeap heap, Node x, Node subx) {
