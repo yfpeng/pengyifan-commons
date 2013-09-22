@@ -1,8 +1,7 @@
-package pengyifan.string.tree;
+package pengyifan.string;
 
 import java.util.Iterator;
 
-import pengyifan.string.StringUtils;
 import pengyifan.tree.TreeNode;
 
 /**

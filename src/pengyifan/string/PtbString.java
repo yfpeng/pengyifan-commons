@@ -1,4 +1,4 @@
-package pengyifan.string.tree;
+package pengyifan.string;
 
 import pengyifan.tree.TreeNode;
 

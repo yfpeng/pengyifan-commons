@@ -1,6 +1,6 @@
 package pengyifan.test;
 
-import pengyifan.string.tree.PtbString;
+import pengyifan.string.PtbString;
 import pengyifan.tree.TreeNode;
 
 /**

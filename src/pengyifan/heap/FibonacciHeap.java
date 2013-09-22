@@ -1,5 +1,8 @@
 package pengyifan.heap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This class implements a Fibonacci heap. Much of the code in this class is
  * based on the algorithms in the "Introduction to Algorithms" by Cormen,
@@ -23,7 +26,7 @@ public class FibonacciHeap {
    * Points to the root of a tree containing a minimum key. If the heap is
    * empty, then min = NIL.
    */
-  private FibonacciHeapNode   min;
+  private Entry               min;
 
   /**
    * The number of nodes currently in the heap.
@@ -37,10 +40,6 @@ public class FibonacciHeap {
     min = null;
   }
 
-  public FibonacciHeapNode getMin() {
-    return min;
-  }
-
   /**
    * Assigns to node x within heap the new key value k, which is assumed to be
    * no greater than its current key value.
@@ -50,23 +49,22 @@ public class FibonacciHeap {
    * @param x node to decrease the key of
    * @param k new key value for node x
    * 
-   * @exception IllegalArgumentException Thrown if k is larger than x.key
-   *              value.
+   * @throws IllegalArgumentException if k is larger than x.key value.
    */
-  public void decreaseKey(FibonacciHeapNode x, int k) {
+  public void decreaseKey(Entry x, int key) {
 
     // Ensure that the new key is no greater than the current key of x and
     // then assign the new key to x
-    if (k > x.key) {
+    if (key > x.key) {
       throw new IllegalArgumentException(
-          "new key is greater than current key: " + k + ">" + x.key);
+          "new key is greater than current key: " + key + ">" + x.key);
     }
-    x.key = k;
+    x.key = key;
 
     // Tests if x is a root or if key[x]<=key[y], where y is x's parent. If
     // so, no structural changes need occur, since min-heap order has not
     // been violated.
-    FibonacciHeapNode y = x.parent;
+    Entry y = x.parent;
     if ((y != null) && (x.key < y.key)) {
       // Cuts the link between x and its parent y, making x a root.
       cut(x, y);
@@ -86,7 +84,7 @@ public class FibonacciHeap {
    * @param x child of y to be removed from y's child list
    * @param y parent of x about to lose a child
    */
-  protected void cut(FibonacciHeapNode x, FibonacciHeapNode y) {
+  protected void cut(Entry x, Entry y) {
     // Remove x from child list of y, decrementing degree[y].
     y.child = removeNode(y.child, x);
     y.degree--;
@@ -107,8 +105,8 @@ public class FibonacciHeap {
    * 
    * @param y node to perform cascading cut on
    */
-  private void cascadingCut(FibonacciHeapNode y) {
-    FibonacciHeapNode z = y.parent;
+  private void cascadingCut(Entry y) {
+    Entry z = y.parent;
     if (z != null) {
       // If y is unmarked, mark it, since its first child has just been
       // cut.
@@ -130,7 +128,7 @@ public class FibonacciHeap {
    * 
    * @param x node to remove from heap
    */
-  public void delete(FibonacciHeapNode x) {
+  public void delete(Entry x) {
     decreaseKey(x, Integer.MIN_VALUE);
     extractMin();
   }
@@ -144,7 +142,7 @@ public class FibonacciHeap {
    * 
    * @param x new node to insert into heap
    */
-  protected void insert(FibonacciHeapNode x) {
+  public void insert(Entry x) {
 
     // Initialize the structural fields of node x, making it its own
     // circular, double linked list.
@@ -167,8 +165,7 @@ public class FibonacciHeap {
     n++;
   }
 
-  private FibonacciHeapNode concatenateNode(FibonacciHeapNode list,
-      FibonacciHeapNode node) {
+  private Entry concatenateNode(Entry list, Entry node) {
     if (list == null) {
       node.left = node;
       node.right = node;
@@ -191,7 +188,7 @@ public class FibonacciHeap {
    * 
    * @return a pointer to the node in heap whose key is minimum
    */
-  public FibonacciHeapNode minimum() {
+  public Entry minimum() {
     return min;
   }
 
@@ -203,15 +200,15 @@ public class FibonacciHeap {
    * 
    * @return a pointer to the node in heap whose key is minimum
    */
-  public FibonacciHeapNode extractMin() {
+  public Entry extractMin() {
 
     // Save a porinter z to the minimum node.
-    FibonacciHeapNode z = min;
+    Entry z = min;
 
     if (z != null) {
       if (z.child != null) {
         // Make all of z's children roots of the heap.
-        for (FibonacciHeapNode x : z.child.nodelist()) {
+        for (Entry x : z.child.nodelist()) {
           min = concatenateNode(min, x);
           x.parent = null;
         }
@@ -247,22 +244,22 @@ public class FibonacciHeap {
 
     // Initialize array by making each entry NIL.
     int arraySize = ((int) Math.floor(Math.log(n) * oneOverLogPhi)) + 1;
-    FibonacciHeapNode array[] = new FibonacciHeapNode[arraySize];
+    Entry array[] = new Entry[arraySize];
 
     if (min != null) {
-      for (FibonacciHeapNode w : min.nodelist()) {
+      for (Entry w : min.nodelist()) {
 
         // Find two roots x and y in the root list with the same degree,
         // where key[x]<=key[y].
-        FibonacciHeapNode x = w;
+        Entry x = w;
         int d = w.degree;
         while (array[d] != null) {
-          FibonacciHeapNode y = array[d];
+          Entry y = array[d];
 
           // Whichever of x and y has he smaller key becomes the parent of
           // the other.
           if (x.key > y.key) {
-            FibonacciHeapNode tmp = x;
+            Entry tmp = x;
             x = y;
             y = tmp;
           }
@@ -302,7 +299,7 @@ public class FibonacciHeap {
    * @param y node to become child
    * @param x node to become parent
    */
-  protected void link(FibonacciHeapNode y, FibonacciHeapNode x) {
+  protected void link(Entry y, Entry x) {
 
     // Remove y from root list of heap.
     min = removeNode(min, y);
@@ -329,8 +326,7 @@ public class FibonacciHeap {
    * 
    * @return if the list is empty, return null
    */
-  private FibonacciHeapNode removeNode(FibonacciHeapNode list,
-      FibonacciHeapNode node) {
+  private Entry removeNode(Entry list, Entry node) {
     if (node.left == node) {
       return null;
     }
@@ -360,8 +356,7 @@ public class FibonacciHeap {
     n += h.n;
   }
 
-  private FibonacciHeapNode concatenateList(FibonacciHeapNode list1,
-      FibonacciHeapNode list2) {
+  private Entry concatenateList(Entry list1, Entry list2) {
     if (list1 != null && list2 != null) {
       list1.right.left = list2.left;
       list2.left.right = list1.right;
@@ -375,4 +370,105 @@ public class FibonacciHeap {
     }
   }
 
+  /**
+   * Implements a node of the Fibonacci heap. It holds the information
+   * necessary for maintaining the structure of the heap. It also holds the
+   * reference to the key value (which is used to determine the heap
+   * structure).
+   * 
+   * @author Yifan Peng
+   * @version 09/06/2011
+   */
+  public static class Entry {
+
+    /**
+     * Any one of its children
+     */
+    Entry   child;
+
+    /**
+     * Left sibling
+     */
+    Entry   left;
+
+    /**
+     * Its parent
+     */
+    Entry   parent;
+
+    /**
+     * Right sibling
+     */
+    Entry   right;
+
+    /**
+     * Whether this node has lost a child since the last time this node was
+     * made the child of another node.
+     */
+    boolean mark;
+
+    /**
+     * Key for this node
+     */
+    int     key;
+
+    /**
+     * Value for this node
+     */
+    Object  obj;
+
+    /**
+     * The number of children in the child list
+     */
+    int     degree;
+
+    /**
+     * Returns the key corresponding to this entry.
+     * 
+     * @return the key corresponding to this entry
+     */
+    public final int getKey() {
+      return key;
+    }
+
+    /**
+     * Returns the value corresponding to this entry.
+     * 
+     * @return the value corresponding to this entry
+     */
+    public final Object getObject() {
+      return obj;
+    }
+
+    public Entry(int key, Object obj) {
+      this.key = key;
+      this.obj = obj;
+    }
+
+    /**
+     * 
+     * @param node
+     * 
+     * @return node list of the same level
+     */
+    public List<Entry> nodelist() {
+      List<Entry> list = new ArrayList<Entry>();
+      list.add(this);
+      Entry next = right;
+      while (next != this) {
+        list.add(next);
+        next = next.right;
+      }
+      return list;
+    }
+
+    @Override
+    public String toString() {
+      return String.format(
+          "[key=%d, value=%s, mark=%b]",
+          key,
+          obj,
+          mark);
+    }
+  }
 }
