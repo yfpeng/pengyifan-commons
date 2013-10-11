@@ -1,5 +1,6 @@
 package pengyifan.tree;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -207,11 +208,8 @@ public class TreeNode implements Iterable<TreeNode> {
    * An iterator that is always empty. This is used when an iterator of a leaf
    * node's children is requested.
    */
-  static private final Iterator<TreeNode> EMPTY_ITERATOR = Collections
-                                                             .<TreeNode> emptyList()
-                                                             .iterator();
-  static private final List<TreeNode>     EMPTY_LIST     = Collections
-                                                             .emptyList();
+  static private final Iterator<TreeNode> EMPTY_ITERATOR = Collections.<TreeNode> emptyList().iterator();
+  static private final List<TreeNode>     EMPTY_LIST     = Collections.emptyList();
 
   /**
    * Creates a tree node that has no parent and no children, but which allows
@@ -558,11 +556,33 @@ public class TreeNode implements Iterable<TreeNode> {
     return node;
   }
 
+  /**
+   * returns the leaves in a Tree in the order by the natural left to right.
+   * 
+   * @return the leaves in a Tree in the order by the natural left to right.
+   */
   public List<TreeNode> getLeaves() {
     List<TreeNode> list = new LinkedList<TreeNode>();
     Iterator<TreeNode> leavesItr = leavesIterator();
     while (leavesItr.hasNext()) {
       list.add(leavesItr.next());
+    }
+    return list;
+  }
+
+  /**
+   * Gets a List of the data in the tree's leaves. The Object of all leaf nodes
+   * is returned as a list ordered by the natural left to right order of the
+   * leaves. Null values, if any, are inserted into the list like any other
+   * value.
+   * 
+   * @return a List of the data in the tree's leaves.
+   */
+  public List<Object> getLeafObjects() {
+    List<Object> list = new LinkedList<Object>();
+    Iterator<TreeNode> leavesItr = leavesIterator();
+    while (leavesItr.hasNext()) {
+      list.add(leavesItr.next().getObject());
     }
     return list;
   }
@@ -575,10 +595,9 @@ public class TreeNode implements Iterable<TreeNode> {
    * @return the number of levels above this node
    */
   public int getLevel() {
-    TreeNode ancestor;
+    TreeNode ancestor = this;
     int levels = 0;
 
-    ancestor = this;
     while ((ancestor = ancestor.getParent()) != null) {
       levels++;
     }
@@ -604,8 +623,7 @@ public class TreeNode implements Iterable<TreeNode> {
     if (myParent == null) {
       retval = null;
     } else {
-      retval = myParent.getChildAfter(this); // linear
-                                             // search
+      retval = myParent.getChildAfter(this); // linear search
     }
 
     if (retval != null && !isNodeSibling(retval)) {
@@ -920,6 +938,50 @@ public class TreeNode implements Iterable<TreeNode> {
    */
   public void setParent(TreeNode newParent) {
     parent = newParent;
+  }
+
+  /**
+   * Returns true if <code>anotherNode</code> is dominated by this node. Object
+   * equality (==) rather than .equals() is used to determine domination.
+   * t.dominates(t) returns false.
+   */
+  public boolean dominates(TreeNode anotherNode) {
+    return !(getDominationPath(anotherNode).isEmpty());
+  }
+
+  /**
+   * Returns the path of nodes leading down to a dominated node, including
+   * <code>this</code> and the dominated node itself. Returns null if t is not
+   * dominated by <code>this</code>. Object equality (==) is the relevant
+   * criterion. t.dominationPath(t) returns emptyList.
+   */
+  public List<TreeNode> getDominationPath(TreeNode t) {
+    TreeNode[] result = getDominationPath(t, 0);
+    if (result == null) {
+      return Collections.emptyList();
+    }
+    return Arrays.asList(result);
+  }
+
+  private TreeNode[] getDominationPath(TreeNode t, int depth) {
+    if (this == t) {
+      TreeNode[] result = new TreeNode[depth + 1];
+      result[depth] = this;
+      return result;
+    }
+    List<TreeNode> kids = children();
+    for (int i = kids.size() - 1; i >= 0; i--) {
+      TreeNode t1 = kids.get(i);
+      if (t1 == null) {
+        return null;
+      }
+      TreeNode[] result;
+      if ((result = t1.getDominationPath(t, depth + 1)) != null) {
+        result[depth] = this;
+        return result;
+      }
+    }
+    return null;
   }
 
   /**
