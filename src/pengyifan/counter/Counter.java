@@ -134,7 +134,7 @@ public class Counter<K> {
 
   /**
    * Finds and returns the key in this Counter with the smallest count. If
-   * there are several max counts, random value is returned. Returns null if
+   * there are several min counts, random value is returned. Returns null if
    * this Counter is empty.
    * 
    * @return the key in this Counter with the smallest count
