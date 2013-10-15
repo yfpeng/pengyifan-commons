@@ -22,9 +22,7 @@ import java.util.Set;
  * It works like a Map, but with different methods for easily
  * getting/setting/incrementing counts for objects and computing various
  * functions with the counts. The Counter constructor and addAll method can be
- * used to copy another Counter's contents over. This class also provides
- * access to Comparators that can be used to sort the keys or entries of this
- * Counter by the counts, in either ascending or descending order.
+ * used to copy another Counter's contents over.
  * 
  * Modified according edu.stanford.nlp.stats.IntCounter and
  * org.apache.commons.collections4.bag.AbstractMapBag
