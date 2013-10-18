@@ -3,7 +3,6 @@ package pengyifan.counter;
 import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -34,9 +33,9 @@ import java.util.Set;
  * @version 10/12/2013
  * 
  */
-public class Counter<K> {
+public abstract class Counter<K> {
 
-  private static class MutableInteger {
+  protected static class MutableInteger {
 
     private int val;
 
@@ -53,26 +52,8 @@ public class Counter<K> {
     }
   }
 
-  private final Map<K, MutableInteger> map;
-  private int                          totalCount;
-
-  /**
-   * Constructs a new (empty) Counter.
-   */
-  public Counter() {
-    map = new HashMap<K, MutableInteger>();
-    totalCount = 0;
-  }
-
-  /**
-   * Constructs a new Counter with the contents of the given Counter.
-   * 
-   * @param counter
-   */
-  public Counter(Counter<K> counter) {
-    this();
-    addAll(counter);
-  }
+  protected Map<K, MutableInteger> map;
+  protected int                    totalCount;
 
   /**
    * Adds the counts in the given Counter to the counts in this Counter. To
@@ -192,11 +173,6 @@ public class Counter<K> {
   public void clear() {
     map.clear();
     totalCount = 0;
-  }
-
-  @Override
-  public Object clone() {
-    return new Counter<K>(this);
   }
 
   public boolean containsKey(K key) {
