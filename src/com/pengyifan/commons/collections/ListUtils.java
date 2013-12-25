@@ -1,4 +1,4 @@
-package pengyifan.collection;
+package com.pengyifan.commons.collections;
 
 import java.util.Comparator;
 import java.util.LinkedList;

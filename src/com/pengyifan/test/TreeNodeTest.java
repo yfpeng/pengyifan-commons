@@ -1,4 +1,4 @@
-package pengyifan.test;
+package com.pengyifan.test;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 
 import org.junit.Test;
 
-import pengyifan.tree.TreeNode;
+import com.pengyifan.commons.collections.tree.TreeNode;
 
 /**
  * @author Yifan Peng

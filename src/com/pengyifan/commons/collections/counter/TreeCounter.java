@@ -1,4 +1,4 @@
-package pengyifan.counter;
+package com.pengyifan.commons.collections.counter;
 
 import java.util.Comparator;
 import java.util.TreeMap;

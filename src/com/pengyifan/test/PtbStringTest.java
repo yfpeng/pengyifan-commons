@@ -1,12 +1,13 @@
-package pengyifan.test;
+package com.pengyifan.test;
 
-import pengyifan.string.TreeString;
-import pengyifan.tree.TreeNode;
+import com.pengyifan.commons.collections.tree.TreeNode;
+import com.pengyifan.commons.lang.string.PtbString;
 
 /**
  * @author Yifan Peng
+ * @version 09/18/2013
  */
-public class TreeStringTest {
+public class PtbStringTest {
 
   public static void main(String args[]) {
     TreeNode a = new TreeNode("a");
@@ -18,6 +19,6 @@ public class TreeStringTest {
     c.add(new TreeNode("e"));
     c.add(new TreeNode("f"));
 
-    System.out.println(TreeString.toString(a));
+    System.out.println(PtbString.toString(a));
   }
 }

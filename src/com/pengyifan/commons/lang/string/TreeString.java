@@ -1,8 +1,8 @@
-package pengyifan.string;
+package com.pengyifan.commons.lang.string;
 
 import java.util.Iterator;
 
-import pengyifan.tree.TreeNode;
+import com.pengyifan.commons.collections.tree.TreeNode;
 
 /**
  * Given a <code>TreeNode</code> structure, <code>TreeString</code> will print

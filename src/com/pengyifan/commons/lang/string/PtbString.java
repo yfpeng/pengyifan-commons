@@ -1,6 +1,6 @@
-package pengyifan.string;
+package com.pengyifan.commons.lang.string;
 
-import pengyifan.tree.TreeNode;
+import com.pengyifan.commons.collections.tree.TreeNode;
 
 /**
  * Given a <code>TreeNode</code> structure as

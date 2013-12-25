@@ -1,6 +1,6 @@
-package pengyifan.heap;
+package com.pengyifan.commons.collections.heap;
 
-import pengyifan.string.StringUtils;
+import com.pengyifan.commons.lang.string.StringUtils;
 
 public class FibonacciHeapString {
 

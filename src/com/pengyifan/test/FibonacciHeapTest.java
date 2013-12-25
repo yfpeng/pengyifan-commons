@@ -1,8 +1,8 @@
-package pengyifan.test;
+package com.pengyifan.test;
 
-import pengyifan.heap.FibonacciHeap;
-import pengyifan.heap.FibonacciHeap.Entry;
-import pengyifan.heap.FibonacciHeapString;
+import com.pengyifan.commons.collections.heap.FibonacciHeap;
+import com.pengyifan.commons.collections.heap.FibonacciHeapString;
+import com.pengyifan.commons.collections.heap.FibonacciHeap.Entry;
 
 /**
  * This test should only be used in the package
