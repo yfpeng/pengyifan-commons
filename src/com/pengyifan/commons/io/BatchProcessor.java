@@ -32,6 +32,14 @@ public abstract class BatchProcessor {
     this(path, TEXT_FILTER);
   }
 
+  public BatchProcessor(File path) {
+    this(path.toString());
+  }
+
+  public BatchProcessor(File path, FileFilter filter) {
+    this(path.toString(), filter);
+  }
+
   public BatchProcessor(String path, FileFilter filter) {
     this.path = path;
     debug = false;
