@@ -5,7 +5,7 @@ public class AnnWriter {
   public static String writeEntity(Entity entity) {
     StringBuilder sb = new StringBuilder();
     sb.append(entity.id).append('\t').append(entity.type).append(' ');
-    for (int i = 0; i < entity.spans.size(); i++) {
+    for (int i = 0; i < entity.numberOfSpans(); i++) {
       if (i != 0) {
         sb.append(';');
       }
