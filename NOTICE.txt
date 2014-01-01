@@ -1,0 +1,10 @@
+pengyifan-commons
+Copyright 2013-2014 Yifan Peng
+
+This product includes third-party license information for certain third-party
+products.
+
+Apache License Version 2.0
+GNU General Public License (v2 or later)
+United States Government Work
+
