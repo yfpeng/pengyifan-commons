@@ -167,7 +167,7 @@ public class BratUtils {
     StringBuilder sb = new StringBuilder();
     sb.append(event.getId()).append('\t').append(event.getType())
         .append(':').append(event.getTriggerId());
-    for (int i = 0; i < event.arguments.size(); i++) {
+    for (int i = 0; i < event.numberOfArguments(); i++) {
       sb.append(' ').append(event.getArgRole(i)).append(':')
           .append(event.getArgId(i));
     }
@@ -177,7 +177,7 @@ public class BratUtils {
   public static String write(BratRelation relation) {
     StringBuilder sb = new StringBuilder();
     sb.append(relation.getId()).append('\t').append(relation.getType());
-    for (int i = 0; i < relation.arguments.size(); i++) {
+    for (int i = 0; i < relation.numberOfArguments(); i++) {
       sb.append(' ').append(relation.getArgRole(i)).append(':')
           .append(relation.getArgId(i));
     }

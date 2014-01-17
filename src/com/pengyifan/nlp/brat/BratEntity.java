@@ -18,7 +18,7 @@ public class BratEntity extends BratAnn implements HasOffset {
   /**
    * 
    */
-  private static final long serialVersionUID = -7731569470434643148L;
+  private static final long    serialVersionUID = -7731569470434643148L;
   /**
    * discontinuous spans: start-offset, end-offset
    */
@@ -37,6 +37,10 @@ public class BratEntity extends BratAnn implements HasOffset {
 
   public void setText(String text) {
     set(CoreAnnotations.TextAnnotation.class, text);
+  }
+
+  public void addSpan(Range<Integer> span) {
+    addSpan(span.getMinimum(), span.getMaximum());
   }
 
   public void addSpan(int start, int end) {

@@ -10,11 +10,11 @@ public class BratRelation extends BratAnn {
   /**
    * 
    */
-  private static final long          serialVersionUID = 6844925115644892961L;
+  private static final long           serialVersionUID = 6844925115644892961L;
   /**
    * ROLE:ID
    */
-  public List<Pair<String, BratAnn>> arguments;
+  private List<Pair<String, BratAnn>> arguments;
 
   public BratRelation() {
     arguments = new ArrayList<Pair<String, BratAnn>>();
@@ -25,7 +25,7 @@ public class BratRelation extends BratAnn {
     arg.setId(id);
     addArgument(role, arg);
   }
-  
+
   public void addArgument(String role, BratAnn ann) {
     arguments.add(Pair.of(role, ann));
   }
@@ -37,8 +37,20 @@ public class BratRelation extends BratAnn {
   public String getArgId(int i) {
     return getArg(i).getId();
   }
-  
+
   public BratAnn getArg(int i) {
     return arguments.get(i).getRight();
+  }
+  
+  public Pair<String, BratAnn> getArgPair(int i) {
+    return arguments.get(i);
+  }
+
+  public List<Pair<String, BratAnn>> getArguments() {
+    return arguments;
+  }
+
+  public int numberOfArguments() {
+    return arguments.size();
   }
 }

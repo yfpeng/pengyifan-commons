@@ -3,10 +3,13 @@ package com.pengyifan.nlp.bioc;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import bioc.BioCAnnotation;
 import bioc.BioCLocation;
 import bioc.BioCRelation;
 
+import com.pengyifan.nlp.brat.BratAnn;
 import com.pengyifan.nlp.brat.BratEntity;
 import com.pengyifan.nlp.brat.BratEvent;
 import com.pengyifan.nlp.brat.BratRelation;
@@ -20,8 +23,8 @@ public class BioCBratFactory {
     infons.put("type", bratRel.getType());
     biocRel.setInfons(infons);
     // arg
-    for (int i = 0; i < bratRel.arguments.size(); i++) {
-      biocRel.addNode(bratRel.getArgId(i), bratRel.getArgRole(i));
+    for (Pair<String, BratAnn> pair : bratRel.getArguments()) {
+      biocRel.addNode(pair.getValue().getId(), pair.getKey());
     }
     return biocRel;
   }
@@ -35,8 +38,8 @@ public class BioCBratFactory {
     // trigger
     biocRel.addNode(event.getTriggerId(), event.getType());
     // arg
-    for (int i = 0; i < event.arguments.size(); i++) {
-      biocRel.addNode(event.getArgId(i), event.getArgRole(i));
+    for (Pair<String, BratAnn> pair : event.getArguments()) {
+      biocRel.addNode(pair.getValue().getId(), pair.getKey());
     }
     return biocRel;
   }
