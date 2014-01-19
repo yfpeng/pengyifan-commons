@@ -44,6 +44,12 @@ public class StringUtils {
         hangIndent >= 0,
         "hangIndent should not be negative: %d",
         hangIndent);
+    Validate.isTrue(width >= 0, "text width should not be negative: %d", width);
+    Validate.isTrue(
+        hangIndent < width,
+        "hangIndent should not be less than width: hangIndent=%d, width=%d",
+        hangIndent,
+        width);
 
     StringBuilder sb = new StringBuilder(text.substring(0, hangIndent));
     // Needed to handle last line correctly.
@@ -75,9 +81,15 @@ public class StringUtils {
   public static String indent(String text, int indent, int width,
       boolean considerSpace) {
     Validate.isTrue(indent >= 0, "indent should not be negative: %d", indent);
+    Validate.isTrue(width >= 0, "text width should not be negative: %d", width);
+    Validate.isTrue(
+        indent < width,
+        "indent should not be less than width: indent=%d, width=%d",
+        indent,
+        width);
 
     String spaces = org.apache.commons.lang3.StringUtils.repeat(' ', indent);
-    
+
     // Needed to handle last line correctly.
     // Will be trimmed at last
     text = spaces + text + "\n";
