@@ -5,61 +5,46 @@ import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-public class BratRelation extends BratAnn {
+public class BratRelation extends BratAnnotation {
 
   /**
    * 
    */
-  private static final long           serialVersionUID = 6844925115644892961L;
+  private static final long          serialVersionUID = 6844925115644892961L;
   /**
    * ROLE:ID
    */
-  private List<Pair<String, BratAnn>> arguments;
+  private List<Pair<String, String>> argumentIds;
 
   public BratRelation() {
-    arguments = new ArrayList<Pair<String, BratAnn>>();
+    argumentIds = new ArrayList<Pair<String, String>>();
   }
 
-  public void addArgument(String role, String id) {
-    BratAnn arg = new BratAnn();
-    arg.setId(id);
-    addArgument(role, arg);
-  }
-
-  public void addArgument(String role, BratAnn ann) {
-    arguments.add(Pair.of(role, ann));
+  public void addArgId(String role, String id) {
+    getArguments().add(Pair.of(role, id));
   }
 
   public void setArgId(int i, String id) {
-    BratAnn arg = getArg(i);
-    arg.setId(id);
-  }
-
-  public void setArgId(int i, BratAnn ann) {
-    arguments.set(i, Pair.of(arguments.get(i).getKey(), ann));
+    argumentIds.set(i, Pair.of(getArgRole(i), id));
   }
 
   public String getArgRole(int i) {
-    return arguments.get(i).getLeft();
+    return getArgPair(i).getKey();
   }
 
   public String getArgId(int i) {
-    return getArg(i).getId();
+    return getArgPair(i).getValue();
   }
 
-  public BratAnn getArg(int i) {
-    return arguments.get(i).getRight();
+  public Pair<String, String> getArgPair(int i) {
+    return getArguments().get(i);
   }
 
-  public Pair<String, BratAnn> getArgPair(int i) {
-    return arguments.get(i);
-  }
-
-  public List<Pair<String, BratAnn>> getArguments() {
-    return arguments;
+  public List<Pair<String, String>> getArguments() {
+    return argumentIds;
   }
 
   public int numberOfArguments() {
-    return arguments.size();
+    return getArguments().size();
   }
 }

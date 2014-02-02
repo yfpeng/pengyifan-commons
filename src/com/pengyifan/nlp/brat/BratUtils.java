@@ -12,26 +12,18 @@ import java.util.Map;
 import org.apache.commons.collections4.Equator;
 import org.apache.commons.io.FileUtils;
 
-import com.pengyifan.nlp.brat.BratAnnotations.BratEntitiesAnnotation;
-import com.pengyifan.nlp.brat.BratAnnotations.BratEventsAnnotation;
-import com.pengyifan.nlp.brat.BratAnnotations.BratRelationsAnnotation;
 import com.pengyifan.nlp.brat.comp.BratEntityEquator;
 
-import edu.stanford.nlp.ling.CoreAnnotations;
-import edu.stanford.nlp.util.ArrayCoreMap;
-import edu.stanford.nlp.util.CoreMap;
 
 public class BratUtils {
 
-  public static void removeSameEntity(CoreMap map) {
-    removeSameEntity(map, new BratEntityEquator());
+  public static void removeSameEntity(BratDocument doc) {
+    removeSameEntity(doc, new BratEntityEquator());
   }
 
-  public static void removeSameEntity(CoreMap map, Equator<BratEntity> equator) {
-    List<BratEvent> events = map.get(BratEventsAnnotation.class);
-    List<BratEntity> entities = map.get(BratEntitiesAnnotation.class);
-    List<BratRelation> relations = map.get(BratRelationsAnnotation.class);
-
+  public static void removeSameEntity(BratDocument doc, Equator<BratEntity> equator) {
+    
+    List<BratEntity> entities = doc.getEntities();
     Map<String, String> ids = new HashMap<String, String>();
     for (int i = 0; i < entities.size(); i++) {
       BratEntity e1 = entities.get(i);
@@ -46,7 +38,7 @@ public class BratUtils {
       }
     }
 
-    for (BratRelation r : relations) {
+    for (BratRelation r : doc.getRelations()) {
       // arg
       for (int i = 0; i < r.numberOfArguments(); i++) {
         String id = r.getArgId(i);
@@ -55,7 +47,7 @@ public class BratUtils {
         }
       }
     }
-    for (BratEvent e : events) {
+    for (BratEvent e : doc.getEvents()) {
       // trigger
       if (ids.containsKey(e.getTriggerId())) {
         e.setTriggerId(ids.get(e.getTriggerId()));
@@ -70,27 +62,22 @@ public class BratUtils {
     }
   }
 
-  public static void write(File file, CoreMap map)
+  public static void write(File file, BratDocument doc)
       throws IOException {
-
-    List<BratEvent> events = map.get(BratEventsAnnotation.class);
-    List<BratEntity> entities = map.get(BratEntitiesAnnotation.class);
-    List<BratRelation> relations = map.get(BratRelationsAnnotation.class);
-
     StringBuilder sb = new StringBuilder();
-    for (BratEntity entity : entities) {
+    for (BratEntity entity : doc.getEntities()) {
       sb.append(write(entity)).append('\n');
     }
-    for (BratRelation relation : relations) {
+    for (BratRelation relation : doc.getRelations()) {
       sb.append(write(relation)).append('\n');
     }
-    for (BratEvent event : events) {
+    for (BratEvent event : doc.getEvents()) {
       sb.append(write(event)).append('\n');
     }
     FileUtils.write(file, sb);
   }
 
-  public static CoreMap readToMap(File file)
+  public static BratDocument read(File file)
       throws IOException {
     List<BratEvent> events = new ArrayList<BratEvent>();
     List<BratRelation> relations = new ArrayList<BratRelation>();
@@ -117,12 +104,19 @@ public class BratUtils {
     }
     reader.close();
 
-    CoreMap map = new ArrayCoreMap();
-    map.set(CoreAnnotations.DocIDAnnotation.class, file.getName());
-    map.set(BratEntitiesAnnotation.class, entities);
-    map.set(BratRelationsAnnotation.class, relations);
-    map.set(BratEventsAnnotation.class, events);
-    return map;
+    BratDocument doc = new BratDocument();
+    doc.setDocId(file.getName());
+
+    for (BratEntity entity : entities) {
+      doc.addAnnotation(entity);
+    }
+    for (BratRelation relation : relations) {
+      doc.addAnnotation(relation);
+    }
+    for (BratEvent event : events) {
+      doc.addAnnotation(event);
+    }
+    return doc;
   }
 
   public static BratEvent parseEvent(String line) {
@@ -138,9 +132,7 @@ public class BratUtils {
 
     for (int i = 1; i < toks.length; i++) {
       index = toks[i].indexOf(':');
-      event.addArgument(
-          toks[i].substring(0, index),
-          toks[i].substring(index + 1));
+      event.addArgId(toks[i].substring(0, index), toks[i].substring(index + 1));
     }
 
     return event;
@@ -157,7 +149,7 @@ public class BratUtils {
 
     for (int i = 1; i < toks.length; i++) {
       int index = toks[i].indexOf(':');
-      relation.addArgument(
+      relation.addArgId(
           toks[i].substring(0, index),
           toks[i].substring(index + 1));
     }
@@ -188,7 +180,7 @@ public class BratUtils {
     int space = tabs[1].indexOf(' ');
     relation.setType(tabs[1].substring(0, space));
     for (String e : tabs[1].substring(space + 1).split(" ")) {
-      relation.addArgument("entity", e);
+      relation.addArgId("entity", e);
     }
     return relation;
   }

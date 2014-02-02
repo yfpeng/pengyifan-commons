@@ -6,7 +6,7 @@ import com.pengyifan.nlp.ling.HasType;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.util.ArrayCoreMap;
 
-public class BratAnn extends ArrayCoreMap implements HasId, HasType {
+public class BratAnnotation extends ArrayCoreMap implements HasId, HasType {
 
   /**
    * 

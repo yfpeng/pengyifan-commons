@@ -9,7 +9,6 @@ import bioc.BioCAnnotation;
 import bioc.BioCLocation;
 import bioc.BioCRelation;
 
-import com.pengyifan.nlp.brat.BratAnn;
 import com.pengyifan.nlp.brat.BratEntity;
 import com.pengyifan.nlp.brat.BratEvent;
 import com.pengyifan.nlp.brat.BratRelation;
@@ -23,8 +22,8 @@ public class BioCBratFactory {
     infons.put("type", bratRel.getType());
     biocRel.setInfons(infons);
     // arg
-    for (Pair<String, BratAnn> pair : bratRel.getArguments()) {
-      biocRel.addNode(pair.getValue().getId(), pair.getKey());
+    for (Pair<String, String> pair : bratRel.getArguments()) {
+      biocRel.addNode(pair.getValue(), pair.getKey());
     }
     return biocRel;
   }
@@ -38,8 +37,8 @@ public class BioCBratFactory {
     // trigger
     biocRel.addNode(event.getTriggerId(), event.getType());
     // arg
-    for (Pair<String, BratAnn> pair : event.getArguments()) {
-      biocRel.addNode(pair.getValue().getId(), pair.getKey());
+    for (Pair<String, String> pair : event.getArguments()) {
+      biocRel.addNode(pair.getValue(), pair.getKey());
     }
     return biocRel;
   }

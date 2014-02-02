@@ -25,6 +25,6 @@ public class BratEntityEquator implements Equator<BratEntity> {
   @Override
   public int hash(BratEntity arg0) {
     // TODO Auto-generated method stub
-    return 0;
+    return arg0.hashCode();
   }
 }

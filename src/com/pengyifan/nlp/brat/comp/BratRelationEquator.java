@@ -5,16 +5,23 @@ import java.util.Arrays;
 import org.apache.commons.collections4.Equator;
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.pengyifan.nlp.brat.BratAnn;
+import com.pengyifan.nlp.brat.BratDocument;
 import com.pengyifan.nlp.brat.BratEntity;
 import com.pengyifan.nlp.brat.BratRelation;
 
 public class BratRelationEquator implements Equator<BratRelation> {
 
   Equator<BratEntity> entityEquator;
+  BratDocument        doc1;
+  BratDocument        doc2;
 
-  public BratRelationEquator(Equator<BratEntity> entityEquator) {
+  public BratRelationEquator(
+      Equator<BratEntity> entityEquator,
+      BratDocument doc1,
+      BratDocument doc2) {
     this.entityEquator = entityEquator;
+    this.doc1 = doc1;
+    this.doc2 = doc2;
   }
 
   @Override
@@ -28,28 +35,28 @@ public class BratRelationEquator implements Equator<BratRelation> {
     Arrays.fill(founds, false);
 
     for (int i = 0; i < r1.numberOfArguments(); i++) {
-      Pair<String, BratAnn> p1 = r1.getArgPair(i);
+      Pair<String, String> p1 = r1.getArgPair(i);
 
       boolean foundP1 = false;
       for (int j = 0; j < r2.numberOfArguments(); j++) {
-        Pair<String, BratAnn> p2 = r2.getArgPair(j);
+        Pair<String, String> p2 = r2.getArgPair(j);
 
         if (p1.getKey().equals(p2.getKey())
             && entityEquator.equate(
-                (BratEntity) p1.getValue(),
-                (BratEntity) p2.getValue())) {
+                (BratEntity) doc1.getAnnotation(p1.getValue()),
+                (BratEntity) doc2.getAnnotation(p2.getValue()))) {
           founds[j] = true;
           foundP1 = true;
         }
       }
-      
+
       if (!foundP1) {
         return false;
       }
     }
 
     for (int i = 0; i < founds.length; i++) {
-      if(!founds[i]) {
+      if (!founds[i]) {
         return false;
       }
     }

@@ -13,7 +13,7 @@ import edu.stanford.nlp.ling.HasOffset;
  * CoreAnnotations.EntityTypeAnnotation: type <br />
  * 
  */
-public class BratEntity extends BratAnn implements HasOffset {
+public class BratEntity extends BratAnnotation implements HasOffset {
 
   /**
    * 

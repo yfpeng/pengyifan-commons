@@ -9,29 +9,17 @@ public class BratEvent extends BratRelation {
   /**
    * ID
    */
-  public BratAnn            trigger;
+  public String             triggerId;
 
   public BratEvent() {
     super();
   }
 
   public void setTriggerId(String id) {
-    if (trigger == null) {
-      trigger = new BratAnn();
-    }
-    trigger.setId(id);
-    setTrigger(trigger);
-  }
-
-  public void setTrigger(BratAnn trigger) {
-    this.trigger = trigger;
+    this.triggerId = id;
   }
 
   public String getTriggerId() {
-    return getTrigger().getId();
-  }
-
-  public BratAnn getTrigger() {
-    return trigger;
+    return triggerId;
   }
 }
