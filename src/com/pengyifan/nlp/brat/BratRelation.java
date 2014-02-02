@@ -30,6 +30,15 @@ public class BratRelation extends BratAnn {
     arguments.add(Pair.of(role, ann));
   }
 
+  public void setArgId(int i, String id) {
+    BratAnn arg = getArg(i);
+    arg.setId(id);
+  }
+
+  public void setArgId(int i, BratAnn ann) {
+    arguments.set(i, Pair.of(arguments.get(i).getKey(), ann));
+  }
+
   public String getArgRole(int i) {
     return arguments.get(i).getLeft();
   }
@@ -41,7 +50,7 @@ public class BratRelation extends BratAnn {
   public BratAnn getArg(int i) {
     return arguments.get(i).getRight();
   }
-  
+
   public Pair<String, BratAnn> getArgPair(int i) {
     return arguments.get(i);
   }

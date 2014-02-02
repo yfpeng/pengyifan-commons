@@ -31,6 +31,16 @@ public class BratEntity extends BratAnn implements HasOffset {
     spans = new ArrayList<Range<Integer>>();
   }
 
+  public BratEntity(BratEntity ent) {
+    this();
+    setId(ent.getId());
+    setType(ent.getType());
+    setText(ent.getText());
+    for (int i = 0; i < ent.numberOfSpans(); i++) {
+      addSpan(ent.span(i));
+    }
+  }
+
   public String getText() {
     return get(CoreAnnotations.TextAnnotation.class);
   }
