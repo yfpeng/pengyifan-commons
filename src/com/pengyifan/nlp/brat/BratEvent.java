@@ -9,7 +9,7 @@ public class BratEvent extends BratRelation {
   /**
    * ID
    */
-  public String             triggerId;
+  private String            triggerId;
 
   public BratEvent() {
     super();
@@ -19,6 +19,11 @@ public class BratEvent extends BratRelation {
     this.triggerId = id;
   }
 
+  /**
+   * 
+   * @return The event triggers, annotations marking the word or words stating
+   *         each event
+   */
   public String getTriggerId() {
     return triggerId;
   }

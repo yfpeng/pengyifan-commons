@@ -1,7 +1,5 @@
 package com.pengyifan.test;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 import com.pengyifan.commons.lang.StringUtils;
@@ -40,7 +38,7 @@ public class StringUtilsTest {
     } catch (IllegalArgumentException e) {
       e.printStackTrace();
     }
-    
+
     System.out.println(StringUtils.indent(paragraph, 3, 80, true));
     System.out.println(StringUtils.indent(paragraph, 3, 80, false));
   }

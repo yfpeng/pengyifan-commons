@@ -24,9 +24,6 @@ public class BratEntity extends BratAnnotation implements HasOffset {
    */
   private List<Range<Integer>> spans;
 
-  // private int start;
-  // private int end;
-
   public BratEntity() {
     spans = new ArrayList<Range<Integer>>();
   }
@@ -41,6 +38,10 @@ public class BratEntity extends BratAnnotation implements HasOffset {
     }
   }
 
+  /**
+   * 
+   * @return the text spanned by the annotation
+   */
   public String getText() {
     return get(CoreAnnotations.TextAnnotation.class);
   }
@@ -49,10 +50,20 @@ public class BratEntity extends BratAnnotation implements HasOffset {
     set(CoreAnnotations.TextAnnotation.class, text);
   }
 
+  /**
+   * 
+   * @param span start-offset, end-offset
+   */
   public void addSpan(Range<Integer> span) {
     addSpan(span.getMinimum(), span.getMaximum());
   }
 
+  /**
+   * 
+   * @param start the index of the first character of the annotated span in the
+   *          text
+   * @param end the index of the first character after the annotated span
+   */
   public void addSpan(int start, int end) {
     spans.add(Range.between(start, end));
     if (!has(CoreAnnotations.CharacterOffsetBeginAnnotation.class)) {

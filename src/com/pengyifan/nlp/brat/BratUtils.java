@@ -14,15 +14,15 @@ import org.apache.commons.io.FileUtils;
 
 import com.pengyifan.nlp.brat.comp.BratEntityEquator;
 
-
 public class BratUtils {
 
   public static void removeSameEntity(BratDocument doc) {
     removeSameEntity(doc, new BratEntityEquator());
   }
 
-  public static void removeSameEntity(BratDocument doc, Equator<BratEntity> equator) {
-    
+  public static void removeSameEntity(BratDocument doc,
+      Equator<BratEntity> equator) {
+
     List<BratEntity> entities = doc.getEntities();
     Map<String, String> ids = new HashMap<String, String>();
     for (int i = 0; i < entities.size(); i++) {
@@ -74,6 +74,15 @@ public class BratUtils {
     for (BratEvent event : doc.getEvents()) {
       sb.append(write(event)).append('\n');
     }
+    for (BratAttribute att : doc.getAttributes()) {
+      sb.append(write(att)).append('\n');
+    }
+    for (BratEquivRelation equivRel : doc.getEquivRelations()) {
+      sb.append(write(equivRel)).append('\n');
+    }
+    for (BratNote note : doc.getNotes()) {
+      sb.append(write(note)).append('\n');
+    }
     FileUtils.write(file, sb);
   }
 
@@ -81,7 +90,10 @@ public class BratUtils {
       throws IOException {
     List<BratEvent> events = new ArrayList<BratEvent>();
     List<BratRelation> relations = new ArrayList<BratRelation>();
+    List<BratEquivRelation> euqivRelations = new ArrayList<BratEquivRelation>();
     List<BratEntity> entities = new ArrayList<BratEntity>();
+    List<BratAttribute> attributes = new ArrayList<BratAttribute>();
+    List<BratNote> notes = new ArrayList<BratNote>();
 
     String line;
     LineNumberReader reader = new LineNumberReader(new FileReader(file));
@@ -96,7 +108,15 @@ public class BratUtils {
       } else if (line.startsWith("R")) {
         relations.add(parseRelation(line));
       } else if (line.startsWith("#")) {
+        notes.add(parseNote(line));
+      } else if (line.startsWith("A")) {
+        attributes.add(parseAttribute(line));
+      } else if (line.startsWith("M")) {
+        attributes.add(parseAttribute(line));
+      } else if (line.startsWith("N")) {
         ;
+      } else if (line.startsWith("*")) {
+        euqivRelations.add(parseEquivRelation(line));
       } else {
         reader.close();
         throw new IOException("cannot parse line: " + line);
@@ -117,6 +137,20 @@ public class BratUtils {
       doc.addAnnotation(event);
     }
     return doc;
+  }
+
+  public static BratNote parseNote(String line) {
+    BratNote note = new BratNote();
+
+    String toks[] = line.split("\\t+");
+    note.setId(toks[0]);
+    note.setText(toks[2]);
+
+    int index = toks[1].indexOf(' ');
+    note.setType(toks[1].substring(0, index));
+    note.setRefId(toks[1].substring(index + 1));
+
+    return note;
   }
 
   public static BratEvent parseEvent(String line) {
@@ -173,26 +207,30 @@ public class BratUtils {
     return entity;
   }
 
-  public static BratRelation parseEquivalence(String line) {
-    BratRelation relation = new BratRelation();
+  public static BratEquivRelation parseEquivRelation(String line) {
+    BratEquivRelation relation = new BratEquivRelation();
     String tabs[] = line.split("\t");
     relation.setId(tabs[0]);
     int space = tabs[1].indexOf(' ');
     relation.setType(tabs[1].substring(0, space));
     for (String e : tabs[1].substring(space + 1).split(" ")) {
-      relation.addArgId("entity", e);
+      relation.addArgId("Arg", e);
     }
     return relation;
   }
 
-  public static BratEvent parseEventModification(String line) {
-    BratEvent event = new BratEvent();
+  public static BratAttribute parseAttribute(String line) {
+    BratAttribute att = new BratAttribute();
     String tabs[] = line.split("\t");
-    event.setId(tabs[0]);
-    int space = tabs[1].indexOf(' ');
-    event.setType(tabs[1].substring(0, space));
-    event.setTriggerId(tabs[1].substring(space + 1));
-    return event;
+    att.setId(tabs[0]);
+
+    String[] toks = tabs[1].split(" ");
+    att.setType(toks[0]);
+    att.setRefId(toks[1]);
+    for (int i = 2; i < toks.length; i++) {
+      att.addAttribute(toks[i]);
+    }
+    return att;
   }
 
   public static String write(BratEntity entity) {
@@ -226,6 +264,32 @@ public class BratUtils {
       sb.append(' ').append(relation.getArgRole(i)).append(':')
           .append(relation.getArgId(i));
     }
+    return sb.toString();
+  }
+
+  public static String write(BratEquivRelation relation) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(relation.getId()).append('\t').append(relation.getType());
+    for (int i = 0; i < relation.numberOfArguments(); i++) {
+      sb.append(' ').append(relation.getArgId(i));
+    }
+    return sb.toString();
+  }
+
+  public static String write(BratAttribute attribute) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(attribute.getId()).append('\t').append(attribute.getType())
+        .append(' ').append(attribute.getRefId());
+    for (int i = 0; i < attribute.numberOfAttributes(); i++) {
+      sb.append(' ').append(attribute.getAttribute(i));
+    }
+    return sb.toString();
+  }
+
+  public static String write(BratNote note) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(note.getId()).append('\t').append(note.getType()).append(' ')
+        .append(note.getRefId()).append('\t').append(note.getText());
     return sb.toString();
   }
 }

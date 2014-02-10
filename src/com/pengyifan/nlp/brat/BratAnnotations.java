@@ -27,11 +27,44 @@ public class BratAnnotations {
 
   }
 
-  public static class BratEventsAnnotation implements CoreAnnotation<List<BratEvent>> {
+  public static class BratEquivRelationsAnnotation implements
+      CoreAnnotation<List<BratEquivRelation>> {
+
+    @Override
+    public Class<List<BratEquivRelation>> getType() {
+      return ErasureUtils
+          .<Class<List<BratEquivRelation>>> uncheckedCast(List.class);
+    }
+
+  }
+
+  public static class BratEventsAnnotation implements
+      CoreAnnotation<List<BratEvent>> {
 
     @Override
     public Class<List<BratEvent>> getType() {
       return ErasureUtils.<Class<List<BratEvent>>> uncheckedCast(List.class);
+    }
+
+  }
+
+  public static class BratAttributesAnnotation implements
+      CoreAnnotation<List<BratAttribute>> {
+
+    @Override
+    public Class<List<BratAttribute>> getType() {
+      return ErasureUtils
+          .<Class<List<BratAttribute>>> uncheckedCast(List.class);
+    }
+
+  }
+
+  public static class BratNotesAnnotation implements
+      CoreAnnotation<List<BratNote>> {
+
+    @Override
+    public Class<List<BratNote>> getType() {
+      return ErasureUtils.<Class<List<BratNote>>> uncheckedCast(List.class);
     }
 
   }

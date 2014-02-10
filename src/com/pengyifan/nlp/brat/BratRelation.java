@@ -20,18 +20,28 @@ public class BratRelation extends BratAnnotation {
     argumentIds = new ArrayList<Pair<String, String>>();
   }
 
+  /**
+   * 
+   * @param role task-specific argument role
+   * @param id the entity or event filling that role
+   */
   public void addArgId(String role, String id) {
     getArguments().add(Pair.of(role, id));
   }
 
   public void setArgId(int i, String id) {
-    argumentIds.set(i, Pair.of(getArgRole(i), id));
+    getArguments().set(i, Pair.of(getArgRole(i), id));
   }
 
   public String getArgRole(int i) {
     return getArgPair(i).getKey();
   }
 
+  /**
+   * 
+   * @param i
+   * @return task-specific argument role
+   */
   public String getArgId(int i) {
     return getArgPair(i).getValue();
   }
