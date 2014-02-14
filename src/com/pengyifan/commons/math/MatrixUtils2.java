@@ -14,6 +14,41 @@ import Jama.Matrix;
 
 public class MatrixUtils2 {
 
+  public static String printInOneline(String[][] matrix) {
+    StringBuilder sb = new StringBuilder();
+    sb.append('[');
+    for (int i = 0; i < matrix.length; i++) {
+      sb.append('[');
+      for (int j = 0; j < matrix[i].length; j++) {
+        sb.append(matrix[i][j]);
+        if (j < matrix[i].length - 1) {
+          sb.append(", ");
+        }
+      }
+      if (i < matrix.length - 1) {
+        sb.append("], ");
+      }
+    }
+    sb.append(']');
+    return sb.toString();
+  }
+
+  public static String printSparseInOneline(RealMatrix matrix) {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < matrix.getRowDimension(); i++) {
+      for (int j = 0; j < matrix.getColumnDimension(); j++) {
+        if (matrix.getEntry(i, j) != 0.0) {
+          sb.append(String.format(
+              "(%d, %d, %.2f) ",
+              i,
+              j,
+              matrix.getEntry(i, j)));
+        }
+      }
+    }
+    return sb.toString();
+  }
+
   public static String print(Matrix m) {
     return print(m, 4, 2);
   }
