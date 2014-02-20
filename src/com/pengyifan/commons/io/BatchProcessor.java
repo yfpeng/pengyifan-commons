@@ -2,6 +2,7 @@ package com.pengyifan.commons.io;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -67,7 +68,8 @@ public abstract class BatchProcessor {
     }
   }
 
-  public final void process() {
+  public final void process()
+      throws IOException {
     preprocess();
     for (String basename : basenames) {
       readResource(basename);
@@ -83,14 +85,18 @@ public abstract class BatchProcessor {
   /**
    * Pre-process and initiates the given directory.
    */
-  protected abstract void preprocess();
+  protected abstract void preprocess()
+      throws IOException;
 
   /**
    * Post-processes and completes the given directory.
    */
-  protected abstract void postprocess();
+  protected abstract void postprocess()
+      throws IOException;
 
-  protected abstract void processFile(String basename);
+  protected abstract void processFile(String basename)
+      throws IOException;
 
-  protected abstract void readResource(String basename);
+  protected abstract void readResource(String basename)
+      throws IOException;
 }
