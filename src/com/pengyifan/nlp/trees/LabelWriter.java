@@ -36,9 +36,9 @@ class CoreLabelWriter extends LabelWriter {
       sb.append(label.word()).append('_').append(label.beginPosition())
           .append('_').append(label.endPosition());
     } else if (t.isPreTerminal()) {
-      sb.append(label.tag());
+      sb.append(label.value());
     } else {
-      sb.append(label.category());
+      sb.append(label.value());
     }
     return sb.toString();
   }
