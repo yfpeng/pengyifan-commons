@@ -12,13 +12,11 @@ import java.util.Map;
 import org.apache.commons.collections4.Equator;
 import org.apache.commons.io.FileUtils;
 
-import com.pengyifan.nlp.brat.comp.BratEntityEquator;
-
 public class BratUtils {
 
-  public static void removeSameEntity(BratDocument doc) {
-    removeSameEntity(doc, new BratEntityEquator());
-  }
+  // public static void removeSameEntity(BratDocument doc) {
+  // removeSameEntity(doc, new BratEntityEquator());
+  // }
 
   public static void removeSameEntity(BratDocument doc,
       Equator<BratEntity> equator) {
