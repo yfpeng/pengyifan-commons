@@ -67,15 +67,15 @@ public class BratEntity extends BratAnnotation implements HasOffset {
   public void addSpan(int start, int end) {
     spans.add(Range.between(start, end));
     if (!has(CoreAnnotations.CharacterOffsetBeginAnnotation.class)) {
-      setBeginPosition(start);
-      setEndPosition(end);
+      set(CoreAnnotations.CharacterOffsetBeginAnnotation.class, start);
+      set(CoreAnnotations.CharacterOffsetEndAnnotation.class, end);
     } else {
       // update start and end
       if (beginPosition() > start) {
-        setBeginPosition(start);
+        set(CoreAnnotations.CharacterOffsetBeginAnnotation.class, start);
       }
       if (endPosition() < end) {
-        setEndPosition(end);
+        set(CoreAnnotations.CharacterOffsetEndAnnotation.class, end);
       }
     }
   }
@@ -112,11 +112,15 @@ public class BratEntity extends BratAnnotation implements HasOffset {
 
   @Override
   public void setBeginPosition(int start) {
-    set(CoreAnnotations.CharacterOffsetBeginAnnotation.class, start);
+    // set(CoreAnnotations.CharacterOffsetBeginAnnotation.class, start);
+    throw new UnsupportedOperationException(
+        "setBeginPosition is not supported. Please use addSpan()");
   }
 
   @Override
   public void setEndPosition(int end) {
-    set(CoreAnnotations.CharacterOffsetEndAnnotation.class, end);
+    // set(CoreAnnotations.CharacterOffsetEndAnnotation.class, end);
+    throw new UnsupportedOperationException(
+        "setEndPosition is not supported. Please use addSpan()");
   }
 }

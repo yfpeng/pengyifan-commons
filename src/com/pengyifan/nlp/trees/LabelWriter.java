@@ -26,9 +26,9 @@ class CoreLabelWriter extends LabelWriter {
 
     Validate.isInstanceOf(
         CoreLabel.class,
-        t.label(),
-        "Wrong class, object is of class %s",
-        t.label().getClass().getName());
+          t.label(),
+          "Wrong class, object is of class %s",
+          t.label().getClass().getName());
     CoreLabel label = (CoreLabel) t.label();
 
     StringBuilder sb = new StringBuilder();
@@ -36,9 +36,9 @@ class CoreLabelWriter extends LabelWriter {
       sb.append(label.word()).append('_').append(label.beginPosition())
           .append('_').append(label.endPosition());
     } else if (t.isPreTerminal()) {
-      sb.append(label.value());
+      sb.append(label.tag());
     } else {
-      sb.append(label.value());
+      sb.append(label.category());
     }
     return sb.toString();
   }

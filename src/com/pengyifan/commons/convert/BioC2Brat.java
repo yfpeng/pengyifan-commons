@@ -1,4 +1,4 @@
-package com.pengyifan.nlp.bioc;
+package com.pengyifan.commons.convert;
 
 import java.io.File;
 import java.io.FileReader;
