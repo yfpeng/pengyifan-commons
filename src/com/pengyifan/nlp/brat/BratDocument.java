@@ -101,6 +101,16 @@ public class BratDocument {
     return map.get(BratNotesAnnotation.class);
   }
 
+  public List<BratNote> getNotes(String refId) {
+    List<BratNote> notes = new ArrayList<BratNote>();
+    for (BratNote note : getNotes()) {
+      if (note.getRefId().equals(refId)) {
+        notes.add(note);
+      }
+    }
+    return notes;
+  }
+
   public void setDocId(String id) {
     map.set(CoreAnnotations.DocIDAnnotation.class, id);
   }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -84,7 +85,7 @@ public class BratUtils {
     FileUtils.write(file, sb);
   }
 
-  public static BratDocument read(File file)
+  public static BratDocument read(Reader reader, String docId)
       throws IOException {
     List<BratEvent> events = new ArrayList<BratEvent>();
     List<BratRelation> relations = new ArrayList<BratRelation>();
@@ -94,8 +95,8 @@ public class BratUtils {
     List<BratNote> notes = new ArrayList<BratNote>();
 
     String line;
-    LineNumberReader reader = new LineNumberReader(new FileReader(file));
-    while ((line = reader.readLine()) != null) {
+    LineNumberReader lnreader = new LineNumberReader(reader);
+    while ((line = lnreader.readLine()) != null) {
       if (line.isEmpty()) {
         continue;
       }
@@ -123,7 +124,7 @@ public class BratUtils {
     reader.close();
 
     BratDocument doc = new BratDocument();
-    doc.setDocId(file.getName());
+    doc.setDocId(docId);
 
     for (BratEntity entity : entities) {
       doc.addAnnotation(entity);
@@ -134,7 +135,15 @@ public class BratUtils {
     for (BratEvent event : events) {
       doc.addAnnotation(event);
     }
+    for (BratNote note : notes) {
+      doc.addAnnotation(note);
+    }
     return doc;
+  }
+
+  public static BratDocument read(File file)
+      throws IOException {
+    return read(new FileReader(file), file.getName());
   }
 
   public static BratNote parseNote(String line) {
