@@ -73,7 +73,9 @@ public abstract class BatchProcessor {
     preprocess();
     for (String basename : basenames) {
       readResource(basename);
+      preprocessFile(basename);
       processFile(basename);
+      postprocessFile(basename);
     }
     postprocess();
   }
@@ -85,18 +87,44 @@ public abstract class BatchProcessor {
   /**
    * Pre-process and initiates the given directory.
    */
-  protected abstract void preprocess()
-      throws IOException;
+  protected void preprocess()
+      throws IOException {
+
+  }
 
   /**
    * Post-processes and completes the given directory.
    */
-  protected abstract void postprocess()
-      throws IOException;
+  protected void postprocess()
+      throws IOException {
 
-  protected abstract void processFile(String basename)
-      throws IOException;
+  }
 
-  protected abstract void readResource(String basename)
-      throws IOException;
+  protected void processFile(String basename)
+      throws IOException {
+
+  }
+
+  /**
+   * read resources according to the basename
+   * 
+   * @deprecated replaced by {@link #preprocessFile(String)}.
+   * @param basename
+   * @throws IOException
+   */
+  @Deprecated
+  protected void readResource(String basename)
+      throws IOException {
+    //
+  }
+
+  protected void preprocessFile(String basename)
+      throws IOException {
+
+  }
+
+  protected void postprocessFile(String basename)
+      throws IOException {
+
+  }
 }
