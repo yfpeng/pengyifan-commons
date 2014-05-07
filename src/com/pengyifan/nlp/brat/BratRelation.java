@@ -33,6 +33,10 @@ public class BratRelation extends BratAnnotation {
     getArguments().set(i, Pair.of(getArgRole(i), id));
   }
 
+  public void setArgRole(int i, String role) {
+    getArguments().set(i, Pair.of(role, getArgId(i)));
+  }
+
   public String getArgRole(int i) {
     return getArgPair(i).getKey();
   }
