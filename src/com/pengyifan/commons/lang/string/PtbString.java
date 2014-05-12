@@ -1,6 +1,7 @@
 package com.pengyifan.commons.lang.string;
 
 import com.pengyifan.commons.collections.tree.TreeNode;
+import com.pengyifan.nlp.trees.PtbWriter;
 
 /**
  * Given a <code>TreeNode</code> structure as
@@ -23,6 +24,11 @@ import com.pengyifan.commons.collections.tree.TreeNode;
  * @author Yifan Peng
  * @version 09/18/2013
  */
+/**
+ * 
+ * @deprecated replaced by {@link PtbWriter}.
+ */
+@Deprecated
 public class PtbString {
 
   public static String toString(TreeNode tree) {
