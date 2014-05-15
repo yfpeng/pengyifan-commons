@@ -50,6 +50,24 @@ public class BratDocument {
     return annotationMap.get(id);
   }
 
+  public BratEntity getEntity(String id) {
+    BratAnnotation ann = getAnnotation(id);
+    Validate.isInstanceOf(BratEntity.class, ann);
+    return (BratEntity) ann;
+  }
+
+  public BratRelation getRelation(String id) {
+    BratAnnotation ann = getAnnotation(id);
+    Validate.isInstanceOf(BratRelation.class, ann);
+    return (BratRelation) ann;
+  }
+
+  public BratEvent getEvent(String id) {
+    BratAnnotation ann = getAnnotation(id);
+    Validate.isInstanceOf(BratEvent.class, ann);
+    return (BratEvent) ann;
+  }
+
   public void addAnnotation(BratAnnotation ann) {
     if (ann instanceof BratEntity) {
       getEntities().add((BratEntity) ann);
@@ -101,6 +119,11 @@ public class BratDocument {
     return map.get(BratNotesAnnotation.class);
   }
 
+  /**
+   * 
+   * @param refId refereed id
+   * @return
+   */
   public List<BratNote> getNotes(String refId) {
     List<BratNote> notes = new ArrayList<BratNote>();
     for (BratNote note : getNotes()) {
