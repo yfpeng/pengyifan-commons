@@ -1,10 +1,14 @@
 package tests.com.pengyifan.commons.collections.tree;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.pengyifan.commons.collections.tree.TreeNode;
@@ -14,14 +18,15 @@ import com.pengyifan.commons.collections.tree.TreeNode;
  */
 public class TreeNodeTest {
 
-  static TreeNode a = new TreeNode("A");
-  static TreeNode b = new TreeNode("B");
-  static TreeNode c = new TreeNode("C");
-  static TreeNode d = new TreeNode("D");
-  static TreeNode e = new TreeNode("E");
-  static TreeNode f = new TreeNode("F");
+  private final TreeNode a = new TreeNode("A");
+  private final TreeNode b = new TreeNode("B");
+  private final TreeNode c = new TreeNode("C");
+  private final TreeNode d = new TreeNode("D");
+  private final TreeNode e = new TreeNode("E");
+  private final TreeNode f = new TreeNode("F");
 
-  static {
+  @Before
+  public void setUp() {
     // A (B (C F) D E)
     a.add(b);
     a.add(d);
@@ -72,13 +77,13 @@ public class TreeNodeTest {
   @Test
   public void testGetChildAfter() {
     assertEquals(f, b.getChildAfter(c));
-    assertEquals(null, b.getChildAfter(f));
+    assertNull(b.getChildAfter(f));
   }
 
   @Test
   public void testGetChildBefore() {
     assertEquals(c, b.getChildBefore(f));
-    assertEquals(null, b.getChildBefore(c));
+    assertNull(b.getChildBefore(c));
   }
 
   @Test
@@ -122,7 +127,7 @@ public class TreeNodeTest {
   @Test
   public void testGetNextSibling() {
     assertEquals(f, c.getNextSibling());
-    assertEquals(null, f.getNextSibling());
+    assertNull(f.getNextSibling());
   }
 
   @Test
@@ -133,23 +138,23 @@ public class TreeNodeTest {
   @Test
   public void testGetParent() {
     assertEquals(a, b.getParent());
-    assertEquals(null, a.getParent());
+    assertNull(a.getParent());
   }
 
   @Test
   public void testGetPathFromRoot() {
-    assertEquals("FBA", toString(f.getPathFromRoot().iterator()));
+    assertEquals("ABF", toString(f.getPathFromRoot().iterator()));
   }
 
   @Test
   public void testGetPathToRoot() {
-    assertEquals("ABF", toString(f.getPathToRoot().iterator()));
+    assertEquals("FBA", toString(f.getPathToRoot().iterator()));
   }
 
   @Test
   public void testHasNextSiblingNode() {
-    assertEquals(true, c.hasNextSiblingNode());
-    assertEquals(false, f.hasNextSiblingNode());
+    assertTrue(c.hasNextSiblingNode());
+    assertFalse(f.hasNextSiblingNode());
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -161,32 +166,32 @@ public class TreeNodeTest {
 
   @Test
   public void testIsLeaf() {
-    assertEquals(true, c.isLeaf());
-    assertEquals(false, a.isLeaf());
+    assertTrue(c.isLeaf());
+    assertFalse(a.isLeaf());
   }
 
   @Test
   public void testIsNodeAncestor() {
-    assertEquals(false, b.isNodeAncestor(c));
-    assertEquals(true, c.isNodeAncestor(a));
+    assertFalse(b.isNodeAncestor(c));
+    assertTrue(c.isNodeAncestor(a));
   }
 
   @Test
   public void testIsNodeChild() {
-    assertEquals(true, b.isNodeChild(c));
-    assertEquals(false, c.isNodeChild(a));
+    assertTrue(b.isNodeChild(c));
+    assertFalse(c.isNodeChild(a));
   }
 
   @Test
   public void testIsNodeSibling() {
-    assertEquals(false, c.isNodeSibling(e));
-    assertEquals(true, b.isNodeSibling(e));
+    assertFalse(c.isNodeSibling(e));
+    assertTrue( b.isNodeSibling(e));
   }
 
   @Test
   public void testIsRoot() {
     assertEquals(true, a.isRoot());
-    assertEquals(false, c.isRoot());
+    assertFalse( c.isRoot());
   }
 
   @Test
