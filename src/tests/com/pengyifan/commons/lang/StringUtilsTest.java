@@ -1,4 +1,4 @@
-package com.pengyifan.test;
+package tests.com.pengyifan.commons.lang;
 
 import org.junit.Test;
 

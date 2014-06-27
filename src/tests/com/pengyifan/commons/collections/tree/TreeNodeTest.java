@@ -1,4 +1,4 @@
-package com.pengyifan.test;
+package tests.com.pengyifan.commons.collections.tree;
 
 import static org.junit.Assert.assertEquals;
 

@@ -1,4 +1,4 @@
-package com.pengyifan.test;
+package tests.com.pengyifan.commons.collections;
 
 import java.util.ArrayList;
 import java.util.List;
