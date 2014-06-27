@@ -1,5 +1,7 @@
 package com.pengyifan.commons.collections;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,8 +17,7 @@ public class ListUtils {
    * @param list
    * @return
    */
-  public static <E extends Comparable<E>> List<E> longestIncreasingSubsequence(
-      List<E> list) {
+  public static <E extends Comparable<E>> List<E> longestIncreasingSubsequence(List<E> list) {
     return longestIncreasingSubsequence(list, new Comparator<E>() {
 
       @Override
@@ -38,6 +39,13 @@ public class ListUtils {
    */
   public static <E> List<E> longestIncreasingSubsequence(List<E> list,
       Comparator<E> comp) {
+
+    if (list == null) {
+      return null;
+    } else if (list.isEmpty()) {
+      return Collections.emptyList();
+    }
+
     /**
      * length of longest increasing subsequence in s1,...,sn that ends in si
      */

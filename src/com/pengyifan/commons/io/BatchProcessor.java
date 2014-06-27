@@ -8,13 +8,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.lang3.Validate;
 
 /**
  * 
- * If path is a filtered file, then process the file. If path is a directory,
- * then process all filtered files. Otherwise throw Exception
+ * If the path is a filtered file, then process the file. If the path is a
+ * directory, then process all filtered files. Otherwise throw Exception
  * 
  * @author Yifan Peng
  * 
@@ -25,17 +27,6 @@ public abstract class BatchProcessor {
   protected File                 dir;
   protected List<String>         basenames;
   protected boolean              debug;
-
-  public final static FileFilter TEXT_FILTER = FileFilterUtils
-                                                 .suffixFileFilter(".txt");
-
-  public BatchProcessor(String path) {
-    this(path, TEXT_FILTER);
-  }
-
-  public BatchProcessor(File path) {
-    this(path.toString());
-  }
 
   public BatchProcessor(File path, FileFilter filter) {
     this(path.toString(), filter);
@@ -49,16 +40,13 @@ public abstract class BatchProcessor {
     if (!dir.exists()) {
       throw new IllegalArgumentException("Cannot find file/dir: " + dir);
     } else if (dir.isFile()) {
-      // check if it is a [.txt] file
-      if (filter.accept(dir)) {
-        String basename = FilenameUtils.getBaseName(dir.getAbsolutePath());
-        basenames = Collections.singletonList(basename);
-        dir = new File(FilenameUtils.getFullPath(dir.getAbsolutePath()));
-      } else {
-        throw new IllegalArgumentException("Not a " + filter + " file: " + dir);
-      }
+      // check if it is a filtered file
+      Validate.isTrue(filter.accept(dir), "Not a %s file: %s", filter, dir);
+      String basename = FilenameUtils.getBaseName(dir.getAbsolutePath());
+      basenames = Collections.singletonList(basename);
+      dir = new File(FilenameUtils.getFullPath(dir.getAbsolutePath()));
     } else {
-      // filter [.txt]
+      // filter
       File[] files = dir.listFiles(filter);
       Arrays.sort(files);
       basenames = new ArrayList<String>();
