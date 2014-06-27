@@ -122,7 +122,7 @@ public class BratDocument {
   /**
    * 
    * @param refId refereed id
-   * @return
+   * @return list of BratNote
    */
   public List<BratNote> getNotes(String refId) {
     List<BratNote> notes = new ArrayList<BratNote>();
@@ -151,7 +151,7 @@ public class BratDocument {
   /**
    * document name
    * 
-   * @return
+   * @return document id
    */
   public String getDocId() {
     return map.get(CoreAnnotations.DocIDAnnotation.class);

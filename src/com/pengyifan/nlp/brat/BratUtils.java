@@ -2,63 +2,17 @@ package com.pengyifan.nlp.brat;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-
 public class BratUtils {
-
-  // public static void removeSameEntity(BratDocument doc) {
-  // removeSameEntity(doc, new BratEntityEquator());
-  // }
-
-  // public static void removeSameEntity(BratDocument doc,
-  // Equator<BratEntity> equator) {
-  //
-  // List<BratEntity> entities = doc.getEntities();
-  // Map<String, String> ids = new HashMap<String, String>();
-  // for (int i = 0; i < entities.size(); i++) {
-  // BratEntity e1 = entities.get(i);
-  // for (int j = i + 1; j < entities.size(); j++) {
-  // BratEntity e2 = entities.get(j);
-  // // equal position
-  // if (equator.equate(e1, e2)) {
-  // ids.put(e2.getId(), e1.getId());
-  // entities.remove(j);
-  // j--;
-  // }
-  // }
-  // }
-  //
-  // for (BratRelation r : doc.getRelations()) {
-  // // arg
-  // for (int i = 0; i < r.numberOfArguments(); i++) {
-  // String id = r.getArgId(i);
-  // if (ids.containsKey(id)) {
-  // r.setArgId(i, ids.get(id));
-  // }
-  // }
-  // }
-  // for (BratEvent e : doc.getEvents()) {
-  // // trigger
-  // if (ids.containsKey(e.getTriggerId())) {
-  // e.setTriggerId(ids.get(e.getTriggerId()));
-  // }
-  // // arg
-  // for (int i = 0; i < e.numberOfArguments(); i++) {
-  // String id = e.getArgId(i);
-  // if (ids.containsKey(id)) {
-  // e.setArgId(i, ids.get(id));
-  // }
-  // }
-  // }
-  // }
-
-  public static void write(File file, BratDocument doc)
+  
+  public static void write(Writer writer, BratDocument doc)
       throws IOException {
     StringBuilder sb = new StringBuilder();
     for (BratEntity entity : doc.getEntities()) {
@@ -79,7 +33,15 @@ public class BratUtils {
     for (BratNote note : doc.getNotes()) {
       sb.append(write(note)).append('\n');
     }
-    FileUtils.write(file, sb);
+    writer.write(sb.toString());
+    writer.close();
+  }
+
+  public static void write(File file, BratDocument doc)
+      throws IOException {
+    FileWriter writer = new FileWriter(file);
+    write(writer, doc);
+    writer.close();
   }
 
   public static BratDocument read(Reader reader, String docId)
