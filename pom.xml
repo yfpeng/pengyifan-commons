@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>pengyifan-commons</groupId>
+  <groupId>com.pengyifan.commons</groupId>
   <artifactId>pengyifan-commons</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <build>
@@ -60,5 +60,10 @@
     <scope>system</scope>
     <systemPath>${project.basedir}/lib/bioc.jar</systemPath>
 </dependency>
+  	<dependency>
+  		<groupId>com.google.guava</groupId>
+  		<artifactId>guava</artifactId>
+  		<version>17.0</version>
+  	</dependency>
   </dependencies>
 </project>
