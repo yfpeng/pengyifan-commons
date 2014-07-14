@@ -66,18 +66,23 @@
 	<artifactId>jama</artifactId>
 	<version>1.0.3</version>
 </dependency>
-
+<!--  
 <dependency>
     <groupId>org.bioc</groupId>
     <artifactId>bioc</artifactId>
     <version>1.0</version>
     <scope>system</scope>
     <systemPath>${project.basedir}/lib/bioc.jar</systemPath>
-</dependency>
+</dependency>-->
   	<dependency>
   		<groupId>com.google.guava</groupId>
   		<artifactId>guava</artifactId>
   		<version>17.0</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.google.inject</groupId>
+  		<artifactId>guice</artifactId>
+  		<version>3.0</version>
   	</dependency>
   </dependencies>
 </project>
