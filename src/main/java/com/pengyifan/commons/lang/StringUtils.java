@@ -2,8 +2,6 @@ package com.pengyifan.commons.lang;
 
 import java.io.UnsupportedEncodingException;
 
-import org.apache.commons.lang3.Validate;
-
 public class StringUtils {
 
   // │
@@ -29,79 +27,4 @@ public class StringUtils {
     return null;
   }
 
-  /**
-   * Format a paragraph to that has all lines but the first indented.
-   * 
-   * @param text text to be formatted
-   * @param hangIndent hanging indentation. hangIndent >= 0
-   * @param width the width of formatted paragraph
-   * @param considerSpace true if only split at white spaces.
-   * @return
-   */
-  public static String hangIndent(String text, int hangIndent, int width,
-      boolean considerSpace) {
-    Validate.isTrue(
-        hangIndent >= 0,
-        "hangIndent should not be negative: %d",
-        hangIndent);
-    Validate.isTrue(width >= 0, "text width should not be negative: %d", width);
-    Validate.isTrue(
-        hangIndent < width,
-        "hangIndent should not be less than width: hangIndent=%d, width=%d",
-        hangIndent,
-        width);
-
-    StringBuilder sb = new StringBuilder(text.substring(0, hangIndent));
-    // Needed to handle last line correctly.
-    // Will be trimmed at last
-    text = text.substring(hangIndent) + "\n";
-    // hang indent
-    String spaces = org.apache.commons.lang3.StringUtils
-        .repeat(' ', hangIndent);
-    String replacement = spaces + "$1\n";
-    String regex = "(.{1," + (width - hangIndent) + "})";
-    if (considerSpace) {
-      regex += "\\s+";
-    }
-    text = text.replaceAll(regex, replacement);
-    // remove first spaces and last "\n"
-    text = text.substring(hangIndent, text.length() - 1);
-    return sb.append(text).toString();
-  }
-
-  /**
-   * Format a paragraph to that has the first indented.
-   * 
-   * @param text text to be formatted
-   * @param indent indentation. indent >= 0
-   * @param width the width of formatted paragraph
-   * @param considerSpace true if only split at white spaces.
-   * @return
-   */
-  public static String indent(String text, int indent, int width,
-      boolean considerSpace) {
-    Validate.isTrue(indent >= 0, "indent should not be negative: %d", indent);
-    Validate.isTrue(width >= 0, "text width should not be negative: %d", width);
-    Validate.isTrue(
-        indent < width,
-        "indent should not be less than width: indent=%d, width=%d",
-        indent,
-        width);
-
-    String spaces = org.apache.commons.lang3.StringUtils.repeat(' ', indent);
-
-    // Needed to handle last line correctly.
-    // Will be trimmed at last
-    text = spaces + text + "\n";
-    // split
-    String replacement = "$1\n";
-    String regex = "(.{1," + width + "})";
-    if (considerSpace) {
-      regex += "\\s+";
-    }
-    text = text.replaceAll(regex, replacement);
-    // remove first spaces and last "\n"
-    text = text.substring(0, text.length() - 1);
-    return text;
-  }
 }
