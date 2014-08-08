@@ -43,7 +43,7 @@ public class OffsetTreeTransformerTest {
     Tree tree = Tree
         .valueOf(TREE_STR)
         .transform(TRANSFORMER);
-    System.out.println(PtbWriter.print(tree));
+//    System.out.println(PtbWriter.print(tree));
     // assert
     List<Tree> leaves = tree.getLeaves();
     assertEquals(leaves.size(), 46);
