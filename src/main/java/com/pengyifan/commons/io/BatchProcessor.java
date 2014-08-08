@@ -55,7 +55,7 @@ public abstract class BatchProcessor {
   }
 
   public final void process()
-      throws IOException {
+      throws Exception {
     preprocess();
     for (String basename : basenames) {
       readResource(basename);
@@ -74,7 +74,7 @@ public abstract class BatchProcessor {
    * Pre-process and initiates the given directory.
    */
   protected void preprocess()
-      throws IOException {
+      throws Exception {
 
   }
 
@@ -82,12 +82,12 @@ public abstract class BatchProcessor {
    * Post-processes and completes the given directory.
    */
   protected void postprocess()
-      throws IOException {
+      throws Exception {
 
   }
 
   protected void processFile(String basename)
-      throws IOException {
+      throws Exception {
 
   }
 
@@ -105,12 +105,12 @@ public abstract class BatchProcessor {
   }
 
   protected void preprocessFile(String basename)
-      throws IOException {
+      throws Exception {
 
   }
 
   protected void postprocessFile(String basename)
-      throws IOException {
+      throws Exception {
 
   }
 }
