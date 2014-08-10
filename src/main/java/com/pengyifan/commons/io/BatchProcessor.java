@@ -3,10 +3,7 @@ package com.pengyifan.commons.io;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.Validate;
@@ -21,9 +18,9 @@ import org.apache.commons.lang3.Validate;
  */
 public abstract class BatchProcessor {
 
-  protected String path;
-  protected final FileFilter filter;
-  protected boolean debug;
+  private final String path;
+  private final FileFilter filter;
+  private boolean debug;
 
   public BatchProcessor(File path, FileFilter filter) {
     this(path.toString(), filter);
@@ -31,66 +28,66 @@ public abstract class BatchProcessor {
 
   public BatchProcessor(String path, FileFilter filter) {
     this.path = path;
-    debug = false;
     this.filter = filter;
+    debug = false;
   }
 
   public final void process()
       throws Exception {
-
-    File dir = new File(path);
-    List<String> basenames = null;
-    if (!dir.exists()) {
-      throw new IOException("Cannot find file/dir: " + dir);
-    } else if (dir.isFile()) {
+    File pathFile = new File(path);
+    if (!pathFile.exists()) {
+      throw new IOException("Cannot find file/dir: " + pathFile);
+    } else if (pathFile.isFile()) {
       // check if it is a filtered file
-      Validate.isTrue(filter.accept(dir), "Not a %s file: %s", filter, dir);
-      String basename = FilenameUtils.getBaseName(dir.getAbsolutePath());
-      basenames = Collections.singletonList(basename);
-      path = FilenameUtils.getFullPath(dir.getAbsolutePath());
+      Validate.isTrue(filter.accept(pathFile),
+          "Not a %s file: %s", filter, pathFile);
+      String basename = FilenameUtils.getBaseName(pathFile.getAbsolutePath());
+      String dir = FilenameUtils.getFullPath(pathFile.getAbsolutePath());
+      preprocess(dir);
+      preprocessFile(dir, basename);
+      processFile(dir, basename);
+      postprocessFile(dir, basename);
+      postprocess(dir);
     } else {
-      // filter
-      File[] files = dir.listFiles(filter);
+      File[] files = pathFile.listFiles(filter);
       Arrays.sort(files);
-      basenames = new ArrayList<String>();
-      for (File f : files) {
-        basenames.add(FilenameUtils.getBaseName(f.getAbsolutePath()));
+      String dir = FilenameUtils.getFullPath(pathFile.getAbsolutePath());
+      preprocess(dir);
+      for (File file : files) {
+        String basename = FilenameUtils.getBaseName(file.getAbsolutePath());
+        readResource(basename);
+        preprocessFile(dir, basename);
+        processFile(dir, basename);
+        postprocessFile(dir, basename);
       }
+      postprocess(dir);
     }
-    
-    preprocess();
-    for (String basename : basenames) {
-      readResource(basename);
-      preprocessFile(basename);
-      processFile(basename);
-      postprocessFile(basename);
-    }
-    postprocess();
   }
 
-  public void setDebug(boolean debug) {
+  public void setDebugMode(boolean debug) {
     this.debug = debug;
+  }
+  
+  public boolean isInDebugMode() {
+    return debug;
   }
 
   /**
    * Pre-process and initiates the given directory.
    */
-  protected void preprocess()
+  protected void preprocess(String dir)
       throws Exception {
-
   }
 
   /**
    * Post-processes and completes the given directory.
    */
-  protected void postprocess()
+  protected void postprocess(String dir)
       throws Exception {
-
   }
 
-  protected void processFile(String basename)
+  protected void processFile(String dir, String basename)
       throws Exception {
-
   }
 
   /**
@@ -103,16 +100,13 @@ public abstract class BatchProcessor {
   @Deprecated
   protected void readResource(String basename)
       throws IOException {
-    //
   }
 
-  protected void preprocessFile(String basename)
+  protected void preprocessFile(String dir, String basename)
       throws Exception {
-
   }
 
-  protected void postprocessFile(String basename)
+  protected void postprocessFile(String dir, String basename)
       throws Exception {
-
   }
 }
