@@ -64,7 +64,7 @@ public class MatrixUtils2 {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
     m.print(pw, w, d);
-    return StringUtils.strip(sw.toString(), "\n");
+    return StringUtils.strip(sw.toString(), System.lineSeparator());
   }
 
   public static String print(RealMatrix m) {
