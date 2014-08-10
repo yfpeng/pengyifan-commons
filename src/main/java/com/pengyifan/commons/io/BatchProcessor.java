@@ -21,7 +21,7 @@ import org.apache.commons.lang3.Validate;
  */
 public abstract class BatchProcessor {
 
-  protected final String path;
+  protected String path;
   protected final FileFilter filter;
   protected boolean debug;
 
@@ -38,18 +38,16 @@ public abstract class BatchProcessor {
   public final void process()
       throws Exception {
 
-    preprocess();
-
     File dir = new File(path);
     List<String> basenames = null;
     if (!dir.exists()) {
-      throw new IllegalArgumentException("Cannot find file/dir: " + dir);
+      throw new IOException("Cannot find file/dir: " + dir);
     } else if (dir.isFile()) {
       // check if it is a filtered file
       Validate.isTrue(filter.accept(dir), "Not a %s file: %s", filter, dir);
       String basename = FilenameUtils.getBaseName(dir.getAbsolutePath());
       basenames = Collections.singletonList(basename);
-      dir = new File(FilenameUtils.getFullPath(dir.getAbsolutePath()));
+      path = FilenameUtils.getFullPath(dir.getAbsolutePath());
     } else {
       // filter
       File[] files = dir.listFiles(filter);
@@ -59,6 +57,8 @@ public abstract class BatchProcessor {
         basenames.add(FilenameUtils.getBaseName(f.getAbsolutePath()));
       }
     }
+    
+    preprocess();
     for (String basename : basenames) {
       readResource(basename);
       preprocessFile(basename);
