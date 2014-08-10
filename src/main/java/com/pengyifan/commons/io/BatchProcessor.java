@@ -18,15 +18,11 @@ import org.apache.commons.lang3.Validate;
  */
 public abstract class BatchProcessor {
 
-  private final String path;
+  private final File path;
   private final FileFilter filter;
   private boolean debug;
 
   public BatchProcessor(File path, FileFilter filter) {
-    this(path.toString(), filter);
-  }
-
-  public BatchProcessor(String path, FileFilter filter) {
     this.path = path;
     this.filter = filter;
     debug = false;
@@ -34,33 +30,32 @@ public abstract class BatchProcessor {
 
   public final void process()
       throws Exception {
-    File pathFile = new File(path);
-    if (!pathFile.exists()) {
-      throw new IOException("Cannot find file/dir: " + pathFile);
-    } else if (pathFile.isFile()) {
+    if (!path.exists()) {
+      throw new IOException("Cannot find file/dir: " + path);
+    } else if (path.isFile()) {
       // check if it is a filtered file
-      Validate.isTrue(filter.accept(pathFile),
-          "Not a %s file: %s", filter, pathFile);
-      String basename = FilenameUtils.getBaseName(pathFile.getAbsolutePath());
-      String dir = FilenameUtils.getFullPath(pathFile.getAbsolutePath());
+      Validate.isTrue(filter.accept(path),
+          "Not a %s file: %s", filter, path);
+      String basename = FilenameUtils.getBaseName(path.getAbsolutePath());
+      File dir = new File(FilenameUtils.getFullPath(path.getAbsolutePath()));
+      Validate.isTrue(dir.isDirectory());
       preprocess(dir);
       preprocessFile(dir, basename);
       processFile(dir, basename);
       postprocessFile(dir, basename);
       postprocess(dir);
     } else {
-      File[] files = pathFile.listFiles(filter);
+      File[] files = path.listFiles(filter);
       Arrays.sort(files);
-      String dir = FilenameUtils.getFullPath(pathFile.getAbsolutePath());
-      preprocess(dir);
+      preprocess(path);
       for (File file : files) {
         String basename = FilenameUtils.getBaseName(file.getAbsolutePath());
         readResource(basename);
-        preprocessFile(dir, basename);
-        processFile(dir, basename);
-        postprocessFile(dir, basename);
+        preprocessFile(path, basename);
+        processFile(path, basename);
+        postprocessFile(path, basename);
       }
-      postprocess(dir);
+      postprocess(path);
     }
   }
 
@@ -75,18 +70,18 @@ public abstract class BatchProcessor {
   /**
    * Pre-process and initiates the given directory.
    */
-  protected void preprocess(String dir)
+  protected void preprocess(File dir)
       throws Exception {
   }
 
   /**
    * Post-processes and completes the given directory.
    */
-  protected void postprocess(String dir)
+  protected void postprocess(File dir)
       throws Exception {
   }
 
-  protected void processFile(String dir, String basename)
+  protected void processFile(File dir, String basename)
       throws Exception {
   }
 
@@ -102,11 +97,11 @@ public abstract class BatchProcessor {
       throws IOException {
   }
 
-  protected void preprocessFile(String dir, String basename)
+  protected void preprocessFile(File dir, String basename)
       throws Exception {
   }
 
-  protected void postprocessFile(String dir, String basename)
+  protected void postprocessFile(File dir, String basename)
       throws Exception {
   }
 }

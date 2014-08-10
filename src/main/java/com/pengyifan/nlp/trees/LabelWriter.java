@@ -38,10 +38,14 @@ class WordLabelWriter extends LabelWriter {
     StringBuilder sb = new StringBuilder();
     if (t.isLeaf()) {
       sb.append(label.word());
-    } else if (t.isPreTerminal()) {
+    } else if (t.isPreTerminal() && label.tag() != null) {
       sb.append(label.tag());
-    } else {
+    } else if (t.isPhrasal() && label.category() != null) {
       sb.append(label.category());
+    } else if (label.value() != null) {
+      sb.append(label.value());
+    } else {
+      throw new IllegalArgumentException("Cannot find the label to print: " + t);
     }
     return sb.toString();
   }
@@ -63,10 +67,14 @@ class CoreLabelWriter extends LabelWriter {
     if (t.isLeaf()) {
       sb.append(label.word()).append('_').append(label.beginPosition())
           .append('_').append(label.endPosition());
-    } else if (t.isPreTerminal()) {
+    } else if (t.isPreTerminal() && label.tag() != null) {
       sb.append(label.tag());
-    } else {
+    } else if (t.isPhrasal() && label.category() != null) {
       sb.append(label.category());
+    } else if (label.value() != null) {
+      sb.append(label.value());
+    } else {
+      throw new IllegalArgumentException("Cannot find the label to print: " + t);
     }
     return sb.toString();
   }

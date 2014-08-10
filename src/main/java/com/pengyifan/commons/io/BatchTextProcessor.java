@@ -10,12 +10,8 @@ public class BatchTextProcessor extends BatchProcessor {
   public final static FileFilter TEXT_FILTER = FileFilterUtils
                                                  .suffixFileFilter(".txt");
 
-  public BatchTextProcessor(String path) {
-    super(path, TEXT_FILTER);
-  }
-
   public BatchTextProcessor(File path) {
-    this(path.toString());
+    super(path, TEXT_FILTER);
   }
 
 }
