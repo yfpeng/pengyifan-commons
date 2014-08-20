@@ -23,7 +23,7 @@ public class GrammaticalStructureBuilderTest {
     GrammaticalStructureBuilder gsBuilder = injector
         .getInstance(GrammaticalStructureBuilder.class);
 
-    GrammaticalStructure gs = gsBuilder.setTree(TREE2).build();
+    GrammaticalStructure gs = gsBuilder.build(TREE2);
     
 //    System.out.println(gs);
     

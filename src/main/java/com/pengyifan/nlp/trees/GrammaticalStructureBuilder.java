@@ -10,8 +10,7 @@ import edu.stanford.nlp.trees.Tree;
 
 public class GrammaticalStructureBuilder {
 
-  private GrammaticalStructureFactory grammaticalStructureFactory;
-  private Tree tree;
+  private final GrammaticalStructureFactory grammaticalStructureFactory;
   
   @Inject
   public GrammaticalStructureBuilder(
@@ -19,19 +18,10 @@ public class GrammaticalStructureBuilder {
     this.grammaticalStructureFactory = grammaticalStructureFactory;
   }
   
-  public GrammaticalStructureBuilder setTree(Tree tree) {
-    Validate.notNull(tree);
-    this.tree = tree;
-    return this;
-  }
-
-  public GrammaticalStructure build() {
-    checkArguments();
+  public GrammaticalStructure build(Tree tree) {
+    Validate.notNull(tree, "Tree is null");
     return grammaticalStructureFactory
         .newGrammaticalStructure(tree);
   }
 
-  private void checkArguments() {
-    Validate.notNull(tree);
-  }
 }

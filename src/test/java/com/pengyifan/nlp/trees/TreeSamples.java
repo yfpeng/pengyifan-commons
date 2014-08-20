@@ -49,7 +49,7 @@ public class TreeSamples {
   }
 
   public static GrammaticalStructure getGrammaticalStructure(Tree tree) {
-    return gsBuilder.setTree(tree).build();
+    return gsBuilder.build(tree);
   }
 
   public static GrammaticalStructure getGrammaticalStructure(String treeStr) {
