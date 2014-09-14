@@ -15,8 +15,6 @@ public class TreeUtils {
    * 
    * @param t1
    * @param t2
-   * @param root
-   * @return
    */
   public static TreeNode getLowestCommonAncestor(TreeNode t1, TreeNode t2) {
     List<TreeNode> t1Path = t1.getPathFromRoot();

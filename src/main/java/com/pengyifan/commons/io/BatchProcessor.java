@@ -62,7 +62,7 @@ public abstract class BatchProcessor {
   public void setDebugMode(boolean debug) {
     this.debug = debug;
   }
-  
+
   public boolean isInDebugMode() {
     return debug;
   }
@@ -88,7 +88,7 @@ public abstract class BatchProcessor {
   /**
    * read resources according to the basename
    * 
-   * @deprecated replaced by {@link #preprocessFile(String)}.
+   * @deprecated replaced by {@link #preprocessFile(File,String)}.
    * @param basename
    * @throws IOException
    */
