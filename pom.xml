@@ -7,6 +7,13 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+  <repositories>
+    <repository>
+      <id>bitbucket.repo</id>
+      <name>BioC</name>
+      <url>https://bitbucket.org/yfpeng/bioc/raw/master</url>
+    </repository>
+  </repositories>
   <build>
     <plugins>
       <plugin>
@@ -95,11 +102,9 @@
       <version>1.0.3</version>
     </dependency>
     <dependency>
-      <groupId>bioc</groupId>
+      <groupId>org.biocreative.bioc</groupId>
       <artifactId>bioc</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/lib/bioc.jar</systemPath>
+      <version>2.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
