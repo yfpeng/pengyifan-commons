@@ -10,13 +10,13 @@ public class ListUtils {
   /**
    * Given a sequence of s1,...,sn, find the first subsequence si1 < si2 < ...<
    * sik with i1 < ... < ik so that k is as large as possible.
-   * 
+   * <p>
    * O(n^2)
    * 
    * @param list
-   * @return
    */
-  public static <E extends Comparable<E>> List<E> longestIncreasingSubsequence(List<E> list) {
+  public static <E extends Comparable<E>> List<E> longestIncreasingSubsequence(
+      List<E> list) {
     return longestIncreasingSubsequence(list, new Comparator<E>() {
 
       @Override
@@ -29,12 +29,11 @@ public class ListUtils {
   /**
    * Given a sequence of s1,...,sn, find the first subsequence si1 < si2 < ...<
    * sik with i1 < ... < ik so that k is as large as possible.
-   * 
+   * <p>
    * O(n^2)
    * 
    * @param list
    * @param comp
-   * @return
    */
   public static <E> List<E> longestIncreasingSubsequence(List<E> list,
       Comparator<E> comp) {

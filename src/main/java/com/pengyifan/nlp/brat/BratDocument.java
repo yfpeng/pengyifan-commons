@@ -52,19 +52,20 @@ public class BratDocument {
 
   public BratEntity getEntity(String id) {
     BratAnnotation ann = getAnnotation(id);
-    Validate.isInstanceOf(BratEntity.class, ann);
+    Validate.isInstanceOf(BratEntity.class, ann, "%s is not BratEntity", id);
     return (BratEntity) ann;
   }
 
   public BratRelation getRelation(String id) {
     BratAnnotation ann = getAnnotation(id);
-    Validate.isInstanceOf(BratRelation.class, ann);
+    Validate
+        .isInstanceOf(BratRelation.class, ann, "%s is not BratRelation", id);
     return (BratRelation) ann;
   }
 
   public BratEvent getEvent(String id) {
     BratAnnotation ann = getAnnotation(id);
-    Validate.isInstanceOf(BratEvent.class, ann);
+    Validate.isInstanceOf(BratEvent.class, ann, "%s is not BratEvent", id);
     return (BratEvent) ann;
   }
 

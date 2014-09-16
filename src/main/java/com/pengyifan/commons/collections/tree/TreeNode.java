@@ -86,7 +86,7 @@ public class TreeNode implements Iterable<TreeNode> {
   final class LeavesIterator implements Iterator<TreeNode> {
 
     Iterator<TreeNode> depthFirstItr;
-    TreeNode           nextLeaf;
+    TreeNode nextLeaf;
 
     LeavesIterator(TreeNode rootNode) {
       depthFirstItr = rootNode.depthFirstIterator();
@@ -118,7 +118,7 @@ public class TreeNode implements Iterable<TreeNode> {
 
   final class PostorderIterator implements Iterator<TreeNode> {
 
-    protected TreeNode           root;
+    protected TreeNode root;
     protected Iterator<TreeNode> children;
     protected Iterator<TreeNode> subtree;
 
@@ -196,20 +196,21 @@ public class TreeNode implements Iterable<TreeNode> {
 
   }
 
-  private Object                          obj;
+  private Object obj;
 
-  private TreeNode                        parent;
+  private TreeNode parent;
 
-  private List<TreeNode>                  children;
+  private List<TreeNode> children;
 
-  private final boolean                   allowsChildren;
+  private final boolean allowsChildren;
 
   /**
    * An iterator that is always empty. This is used when an iterator of a leaf
    * node's children is requested.
    */
-  static private final Iterator<TreeNode> EMPTY_ITERATOR = Collections.<TreeNode> emptyList().iterator();
-  static private final List<TreeNode>     EMPTY_LIST     = Collections.emptyList();
+  static private final Iterator<TreeNode> EMPTY_ITERATOR = Collections
+      .<TreeNode> emptyList().iterator();
+  static private final List<TreeNode> EMPTY_LIST = Collections.emptyList();
 
   /**
    * Creates a tree node that has no parent and no children, but which allows
@@ -246,7 +247,6 @@ public class TreeNode implements Iterable<TreeNode> {
    * @exception IllegalArgumentException if <code>newChild</code> is null or is
    *              an ancestor of this node
    * @exception IllegalStateException if this node does not allow children
-   * @see #isNodeDescendant
    */
   public void add(int childIndex, TreeNode newChild) {
     if (!allowsChildren) {
@@ -273,7 +273,6 @@ public class TreeNode implements Iterable<TreeNode> {
    * Removes <code>newChild</code> from its parent and makes it a child of this
    * node by adding it to the end of this node's child array.
    * 
-   * @see #insert
    * @param newChild node to add as a child of this node
    * @exception IllegalArgumentException if <code>newChild</code> is null
    * @exception IllegalStateException if this node does not allow children
@@ -510,7 +509,6 @@ public class TreeNode implements Iterable<TreeNode> {
    * is a leaf.
    * 
    * @see #isLeaf
-   * @see #isNodeDescendant
    * @return the first leaf in the subtree rooted at this node
    */
   public TreeNode getFirstLeaf() {
@@ -543,7 +541,6 @@ public class TreeNode implements Iterable<TreeNode> {
    * a leaf.
    * 
    * @see #isLeaf
-   * @see #isNodeDescendant
    * @return the last leaf in the subtree rooted at this node
    */
   public TreeNode getLastLeaf() {
@@ -714,7 +711,6 @@ public class TreeNode implements Iterable<TreeNode> {
    * distinguish files from empty directories), use this method in conjunction
    * with <code>getAllowsChildren</code>
    * 
-   * @see #getAllowsChildren
    * @return true if this node has no children
    */
   public boolean isLeaf() {
@@ -729,8 +725,6 @@ public class TreeNode implements Iterable<TreeNode> {
    * operation is at worst O(h) where h is the distance from the root to this
    * node.
    * 
-   * @see #isNodeDescendant
-   * @see #getSharedAncestor
    * @param anotherNode node to test as an ancestor of this node
    * @return true if this node is a descendant of <code>anotherNode</code>
    */

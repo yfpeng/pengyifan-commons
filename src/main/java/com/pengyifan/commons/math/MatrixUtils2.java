@@ -58,7 +58,6 @@ public class MatrixUtils2 {
    * @param m Matrix
    * @param w Column width.
    * @param d Number of digits after the decimal.
-   * @return
    */
   public static String print(Matrix m, int w, int d) {
     StringWriter sw = new StringWriter();
@@ -76,7 +75,6 @@ public class MatrixUtils2 {
    * @param m Matrix
    * @param w Column width.
    * @param d Number of digits after the decimal.
-   * @return
    */
   public static String print(RealMatrix m, int w, int d) {
     DecimalFormat format = new DecimalFormat();

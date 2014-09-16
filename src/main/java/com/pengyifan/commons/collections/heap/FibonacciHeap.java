@@ -18,20 +18,19 @@ import java.util.List;
  */
 public class FibonacciHeap {
 
-  private static final double oneOverLogPhi = //
-                                            1.0 / Math.log((1.0 + Math
-                                                .sqrt(5.0)) / 2.0);
+  private static final double oneOverLogPhi = 1.0 / Math.log((1.0 + Math
+      .sqrt(5.0)) / 2.0);
 
   /**
    * Points to the root of a tree containing a minimum key. If the heap is
    * empty, then min = NIL.
    */
-  private Entry               min;
+  private Entry min;
 
   /**
    * The number of nodes currently in the heap.
    */
-  private int                 n;
+  private int n;
 
   /**
    * Creates and returns a new heap containing no elements.
@@ -43,11 +42,11 @@ public class FibonacciHeap {
   /**
    * Assigns to node x within heap the new key value k, which is assumed to be
    * no greater than its current key value.
-   * 
+   * <p>
    * Amortized cost: O(1)
    * 
    * @param x node to decrease the key of
-   * @param k new key value for node x
+   * @param key new key value for node x
    * 
    * @throws IllegalArgumentException if k is larger than x.key value.
    */
@@ -384,22 +383,22 @@ public class FibonacciHeap {
     /**
      * Any one of its children
      */
-    Entry   child;
+    Entry child;
 
     /**
      * Left sibling
      */
-    Entry   left;
+    Entry left;
 
     /**
      * Its parent
      */
-    Entry   parent;
+    Entry parent;
 
     /**
      * Right sibling
      */
-    Entry   right;
+    Entry right;
 
     /**
      * Whether this node has lost a child since the last time this node was
@@ -410,17 +409,17 @@ public class FibonacciHeap {
     /**
      * Key for this node
      */
-    int     key;
+    int key;
 
     /**
      * Value for this node
      */
-    Object  obj;
+    Object obj;
 
     /**
      * The number of children in the child list
      */
-    int     degree;
+    int degree;
 
     /**
      * Returns the key corresponding to this entry.
@@ -446,9 +445,6 @@ public class FibonacciHeap {
     }
 
     /**
-     * 
-     * @param node
-     * 
      * @return node list of the same level
      */
     public List<Entry> nodelist() {

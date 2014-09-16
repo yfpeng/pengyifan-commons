@@ -11,7 +11,7 @@
     <repository>
       <id>bitbucket.repo</id>
       <name>BioC</name>
-      <url>https://bitbucket.org/yfpeng/bioc/raw/master</url>
+      <url>https://bitbucket.org/yfpeng/bioc/raw/releases</url>
     </repository>
   </repositories>
   <build>
@@ -20,8 +20,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.1</version>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <source>1.7</source>
+          <target>1.7</target>
         </configuration>
       </plugin>
       <plugin>
@@ -34,7 +34,7 @@
       <plugin>
         <groupId>com.github.github</groupId>
         <artifactId>site-maven-plugin</artifactId>
-        <version>0.9</version>
+        <version>0.10-SNAPSHOT</version>
         <configuration>
           <message>Maven artifacts for ${project.version}</message>
           <!-- git commit message -->
@@ -60,6 +60,32 @@
               <goal>site</goal>
             </goals>
             <phase>deploy</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.3</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.9.1</version>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>

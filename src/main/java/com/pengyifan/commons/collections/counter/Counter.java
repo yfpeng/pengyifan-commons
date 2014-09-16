@@ -53,7 +53,7 @@ public abstract class Counter<K> {
   }
 
   protected Map<K, MutableInteger> map;
-  protected int                    totalCount;
+  protected int totalCount;
 
   /**
    * Adds the counts in the given Counter to the counts in this Counter. To
@@ -160,8 +160,6 @@ public abstract class Counter<K> {
 
   /**
    * Returns the mean of all the counts (totalCount/size).
-   * 
-   * @return
    */
   public double averageCount() {
     return ((double) totalCount()) / map.size();
@@ -212,8 +210,6 @@ public abstract class Counter<K> {
 
   /**
    * Returns a view of the doubles in this map. Can be safely modified.
-   * 
-   * @return
    */
   public Set<Map.Entry<K, Integer>> entrySet() {
     return new AbstractSet<Map.Entry<K, Integer>>() {
@@ -223,7 +219,7 @@ public abstract class Counter<K> {
         return new Iterator<Entry<K, Integer>>() {
 
           final Iterator<Entry<K, MutableInteger>> inner = map.entrySet()
-                                                             .iterator();
+              .iterator();
 
           @Override
           public boolean hasNext() {
@@ -275,7 +271,7 @@ public abstract class Counter<K> {
    * seen before. This is a convenient version of <code>get</code> that casts
    * and extracts the primitive value.
    * 
-   * @param the object to search for
+   * @param key the object to search for
    * @return the number of occurrences of the object, zero if not found
    */
   public int getCount(K key) {
@@ -298,7 +294,6 @@ public abstract class Counter<K> {
    * {@link #setCount(Object,int)}.
    * 
    * @param key the object to search for
-   * @return
    */
   public int incrementCount(K key) {
     return incrementCount(key, 1);
@@ -318,7 +313,6 @@ public abstract class Counter<K> {
    * 
    * @param key the object to search for
    * @param count the number of copies to add
-   * @return
    */
   public int incrementCount(K key, int count) {
     MutableInteger tmpCount = new MutableInteger(0);
@@ -425,8 +419,6 @@ public abstract class Counter<K> {
   /**
    * Removes the given key from this Counter. Its count will now be 0 and it
    * will no longer be considered previously seen.
-   * 
-   * @return
    */
   public int remove(K key) {
     // subtract removed count from total (may be 0)
@@ -511,8 +503,6 @@ public abstract class Counter<K> {
   /**
    * Returns the current total count for all objects in this Counter. All
    * counts are summed each time, so cache it if you need it repeatedly.
-   * 
-   * @return
    */
   public int totalCount() {
     return totalCount;
@@ -547,7 +537,7 @@ public abstract class Counter<K> {
    * counter, and contains the same number of occurrences of all the same
    * elements.
    * 
-   * @param the object to test for equality
+   * @param obj the object to test for equality
    * @return true if that object equals this counter
    */
   @Override

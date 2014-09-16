@@ -9,11 +9,18 @@ import com.pengyifan.nlp.brat.BratDocument;
 import com.pengyifan.nlp.brat.BratEntity;
 import com.pengyifan.nlp.brat.BratEvent;
 
+/**
+ * Two events e1 and e2 are equal iff e1.trigger == e2.trigger and e1.args ==
+ * e2.args
+ * 
+ * @deprecated
+ */
+@Deprecated
 public class BratEventEquator implements Equator<BratEvent> {
 
-  Equator<BratEntity> entityEquator;
-  BratDocument        doc1;
-  BratDocument        doc2;
+  private final Equator<BratEntity> entityEquator;
+  private final BratDocument        doc1;
+  private final BratDocument        doc2;
 
   public BratEventEquator(
       Equator<BratEntity> entityEquator,
@@ -32,8 +39,8 @@ public class BratEventEquator implements Equator<BratEvent> {
     }
     // trigger
     if (!entityEquator.equate(
-        (BratEntity) doc1.getAnnotation(e1.getTriggerId()),
-        (BratEntity) doc2.getAnnotation(e2.getTriggerId()))) {
+        doc1.getEntity(e1.getTriggerId()),
+        doc2.getEntity(e2.getTriggerId()))) {
       return false;
     }
 
@@ -50,8 +57,8 @@ public class BratEventEquator implements Equator<BratEvent> {
 
         if (p1.getKey().equals(p2.getKey())
             && entityEquator.equate(
-                (BratEntity) doc1.getAnnotation(p1.getValue()),
-                (BratEntity) doc2.getAnnotation(p2.getValue()))) {
+                doc1.getEntity(p1.getValue()),
+                doc2.getEntity(p2.getValue()))) {
           founds[j] = true;
           foundP1 = true;
         }
@@ -72,8 +79,7 @@ public class BratEventEquator implements Equator<BratEvent> {
 
   @Override
   public int hash(BratEvent arg0) {
-    // TODO Auto-generated method stub
-    return 0;
+    throw new UnsupportedOperationException("hash() is not supported yet.");
   }
 
 }
