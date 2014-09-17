@@ -5,7 +5,7 @@ import java.util.List;
 import edu.stanford.nlp.ling.CoreAnnotation;
 import edu.stanford.nlp.util.ErasureUtils;
 
-public class BratAnnotations {
+class BratAnnotations {
 
   public static class BratEntitiesAnnotation implements
       CoreAnnotation<List<BratEntity>> {

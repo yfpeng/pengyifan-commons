@@ -54,7 +54,7 @@ public class Ptb2Brat {
         Tree[] children = t.children();
         for (int i = 0; i < children.length; i++) {
           BratAnnotation ann = map.get(System.identityHashCode(children[i]));
-          rel.addArgId("C" + i, ann.getId());
+          rel.addArgument("C" + i, ann.getId());
         }
 
         bratDoc.addAnnotation(rel);

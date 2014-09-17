@@ -132,7 +132,7 @@ public class BratUtils {
 
     for (int i = 1; i < toks.length; i++) {
       index = toks[i].indexOf(':');
-      event.addArgId(toks[i].substring(0, index), toks[i].substring(index + 1));
+      event.addArgument(toks[i].substring(0, index), toks[i].substring(index + 1));
     }
 
     return event;
@@ -149,7 +149,7 @@ public class BratUtils {
 
     for (int i = 1; i < toks.length; i++) {
       int index = toks[i].indexOf(':');
-      relation.addArgId(
+      relation.addArgument(
           toks[i].substring(0, index),
           toks[i].substring(index + 1));
     }
@@ -180,7 +180,7 @@ public class BratUtils {
     int space = tabs[1].indexOf(' ');
     relation.setType(tabs[1].substring(0, space));
     for (String e : tabs[1].substring(space + 1).split(" ")) {
-      relation.addArgId("Arg", e);
+      relation.addArgument("Arg", e);
     }
     return relation;
   }

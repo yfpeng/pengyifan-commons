@@ -54,11 +54,11 @@ public class BioC2Brat {
         entity.setId(ann.getID());
         Validate.isTrue(
             ann.getText().isPresent(),
-              "BioC annotation has no text");
+            "BioC annotation has no text");
         entity.setText(ann.getText().get());
         Validate.isTrue(
             ann.getInfon("type").isPresent(),
-              "BioC annotation has no type information");
+            "BioC annotation has no type information");
         entity.setType(ann.getInfon("type").get());
         for (BioCLocation loc : ann.getLocations()) {
           entity.addSpan(loc.getOffset(), loc.getOffset() + loc.getLength());
@@ -69,9 +69,9 @@ public class BioC2Brat {
       for (BioCRelation rel : pass.getRelations()) {
         BratRelation relation = new BratRelation();
         relation.setId(rel.getID());
-        relation.setType(rel.getInfon("relation type"));
+        relation.setType(rel.getInfon("relation type").get());
         for (BioCNode node : rel.getNodes()) {
-          relation.addArgId(node.getRole(), node.getRefid());
+          relation.addArgument(node.getRole(), node.getRefid());
         }
         bratdoc.addAnnotation(relation);
       }

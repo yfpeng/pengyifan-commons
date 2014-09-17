@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import com.pengyifan.nlp.brat.BratAnnotations.BratAttributesAnnotation;
 import com.pengyifan.nlp.brat.BratAnnotations.BratEntitiesAnnotation;
@@ -21,7 +25,7 @@ import edu.stanford.nlp.util.CoreMap;
 
 public class BratDocument {
 
-  CoreMap                             map;
+  CoreMap map;
   private Map<String, BratAnnotation> annotationMap;
 
   public BratDocument() {
@@ -35,6 +39,15 @@ public class BratDocument {
     map.set(BratAttributesAnnotation.class, new ArrayList<BratAttribute>());
     map.set(BratNotesAnnotation.class, new ArrayList<BratNote>());
     annotationMap = new HashMap<String, BratAnnotation>();
+  }
+
+  public BratDocument(BratDocument doc) {
+    this();
+    setText(doc.getText());
+    setDocId(doc.getDocId());
+    for (BratAnnotation ann : doc.getAnnotations()) {
+      addAnnotation(ann);
+    }
   }
 
   public void setText(String text) {
@@ -150,11 +163,43 @@ public class BratDocument {
   }
 
   /**
-   * document name
-   * 
-   * @return document id
+   * Returns document id. Usually document name
    */
   public String getDocId() {
     return map.get(CoreAnnotations.DocIDAnnotation.class);
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder()
+        .append(getDocId())
+        .append(getText())
+        .append(getAnnotations())
+        .toHashCode();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == this) {
+      return true;
+    }
+    if (obj == null || obj.getClass() != getClass()) {
+      return false;
+    }
+    BratDocument rhs = (BratDocument) obj;
+    return new EqualsBuilder()
+        .append(getDocId(), rhs.getDocId())
+        .append(getText(), rhs.getText())
+        // .append(getAnnotations(), rhs.getAnnotations())
+        .isEquals();
+  }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+        .append("id", getDocId())
+        .append("text", getText())
+        .append("annotations", getAnnotations())
+        .toString();
   }
 }
