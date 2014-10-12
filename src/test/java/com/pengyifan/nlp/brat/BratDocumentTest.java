@@ -29,7 +29,7 @@ public class BratDocumentTest {
   @Before
   public void setUp()
       throws IOException {
-    base = BratUtils.read(new StringReader(ANNOTATION), ID);
+    base = BratIOUtils.read(new StringReader(ANNOTATION), ID);
     base.setText(TEXT);
   }
 

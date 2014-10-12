@@ -22,7 +22,7 @@ import org.biocreative.bioc.io.standard.JdkStrategy;
 import com.pengyifan.nlp.brat.BratDocument;
 import com.pengyifan.nlp.brat.BratEntity;
 import com.pengyifan.nlp.brat.BratRelation;
-import com.pengyifan.nlp.brat.BratUtils;
+import com.pengyifan.nlp.brat.BratIOUtils;
 
 public class BioC2Brat {
 
@@ -79,7 +79,7 @@ public class BioC2Brat {
       FileUtils.write(
           new File(bratDir + "/" + bratdoc.getDocId() + ".txt"),
           bratdoc.getText());
-      BratUtils.write(
+      BratIOUtils.write(
           new File(bratDir + "/" + bratdoc.getDocId() + ".ann"),
           bratdoc);
     }
