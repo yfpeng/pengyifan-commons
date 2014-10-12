@@ -50,6 +50,6 @@ public final class BratUtils {
   }
 
   public static Range<Integer> getRange(BratEntity entity) {
-    return Range.closed(entity.beginPosition(), entity.endPosition());
+    return Range.closedOpen(entity.beginPosition(), entity.endPosition());
   }
 }
