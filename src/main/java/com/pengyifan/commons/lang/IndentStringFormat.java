@@ -1,19 +1,24 @@
 package com.pengyifan.commons.lang;
 
-import org.apache.commons.lang3.Validate;
+import static com.google.common.base.Preconditions.checkArgument;
 
-public class IndentStringBuilder {
+public class IndentStringFormat {
 
   private int indent;
   private int width;
   private boolean splitAtWhiteSpaces;
   private boolean isHangIndent;
 
-  public static IndentStringBuilder newBuilder() {
-    return new IndentStringBuilder();
+  /**
+   * Returns a new format.
+   * <p>
+   * Indent is 2, width is 80, splitWithSpaces is true, hang indent is false
+   */
+  public static IndentStringFormat newFormat() {
+    return new IndentStringFormat();
   }
 
-  private IndentStringBuilder() {
+  private IndentStringFormat() {
     indent = 2;
     width = 80;
     splitAtWhiteSpaces = true;
@@ -21,41 +26,47 @@ public class IndentStringBuilder {
   }
 
   /**
-   * indent indentation. indent >= 0
+   * Indent indentation. indent >= 0
    */
-  public IndentStringBuilder setIndent(int indent) {
+  public IndentStringFormat withIndent(int indent) {
+    checkArgument(indent >= 0, "Indent should not be negative: %d", indent);
     this.indent = indent;
     return this;
   }
 
   /**
-   * the width of formatted paragraph
+   * The width of formatted paragraph
    */
-  public IndentStringBuilder setWidth(int width) {
+  public IndentStringFormat withWidth(int width) {
+    checkArgument(
+        width > 0,
+        "text width should not be negative or zero: %d",
+        width);
     this.width = width;
     return this;
   }
 
   /**
-   * true if only split at white spaces.
+   * Set true if only split at white spaces.
    */
-  public IndentStringBuilder setSplitAtWhiteSpaces(boolean splitAtWhiteSpaces) {
+  public IndentStringFormat withSplitAtWhiteSpaces(boolean splitAtWhiteSpaces) {
     this.splitAtWhiteSpaces = splitAtWhiteSpaces;
     return this;
   }
 
   /**
    * If true, format a paragraph to that has all lines but the first indented.
-   * 
-   * If false, format a paragraph to that has the first indented.
+   * Otherwise, format a paragraph to that has the first indented.
    */
-  public IndentStringBuilder setHangIndent(boolean isHangIndent) {
+  public IndentStringFormat withHangIndent(boolean isHangIndent) {
     this.isHangIndent = isHangIndent;
     return this;
   }
 
-  public String build(String text) {
-    checkArguments();
+  public String format(String text) {
+    checkArgument(indent < width,
+        "indent should not be less than width: indent=%d, width=%d",
+        indent, width);
     if (isHangIndent) {
       return hangIndent(text);
     } else {
@@ -104,16 +115,6 @@ public class IndentStringBuilder {
       text = text.substring(0, text.length() - 1);
     }
     return text;
-  }
-
-  private void checkArguments() {
-    Validate.isTrue(indent >= 0, "indent should not be negative: %d", indent);
-    Validate.isTrue(width > 0, "text width should not be negative or zero: %d", width);
-    Validate.isTrue(
-        indent < width,
-        "indent should not be less than width: indent=%d, width=%d",
-        indent,
-        width);
   }
 
 }

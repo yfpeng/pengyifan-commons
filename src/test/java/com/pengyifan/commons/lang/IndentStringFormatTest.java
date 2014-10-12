@@ -7,7 +7,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-public class IndentStringBuilderTest {
+public class IndentStringFormatTest {
 
   @Rule
   public ExpectedException exception = ExpectedException.none();
@@ -41,37 +41,37 @@ public class IndentStringBuilderTest {
           + "   12345 7\n"
           + "  89123";
 
-  private IndentStringBuilder baseBuilder;
+  private IndentStringFormat baseBuilder;
 
   @Before
   public void setUp() {
-    baseBuilder = IndentStringBuilder.newBuilder()
-        .setWidth(WIDTH)
-        .setIndent(INDENT);
+    baseBuilder = IndentStringFormat.newFormat()
+        .withWidth(WIDTH)
+        .withIndent(INDENT);
   }
 
   @Test
   public void test_hangIndentConsiderSpace() {
     String actual = baseBuilder
-        .setHangIndent(true)
-        .build(PARAGRAPH);
+        .withHangIndent(true)
+        .format(PARAGRAPH);
     assertEquals(EXPECTED_HANGINDENT_SPACE, actual);
   }
 
   @Test
   public void test_hangIndentNotConsiderSpace() {
     String actual = baseBuilder
-        .setHangIndent(true)
-        .setSplitAtWhiteSpaces(false)
-        .build(PARAGRAPH);
+        .withHangIndent(true)
+        .withSplitAtWhiteSpaces(false)
+        .format(PARAGRAPH);
     assertEquals(EXPECTED_HANGINDENT_NOSPACE, actual);
   }
 
   @Test
   public void test_noHangIndent() {
     String actual = baseBuilder
-        .setIndent(0)
-        .build(PARAGRAPH);
+        .withIndent(0)
+        .format(PARAGRAPH);
     assertEquals(EXPECTED_NOINDENT_SPACE, actual);
   }
 
@@ -79,39 +79,39 @@ public class IndentStringBuilderTest {
   public void test_negativeIndent() {
     exception.expect(IllegalArgumentException.class);
     baseBuilder
-        .setIndent(-1)
-        .build(PARAGRAPH);
+        .withIndent(-1)
+        .format(PARAGRAPH);
   }
   
   @Test
   public void test_negativeWidth() {
     exception.expect(IllegalArgumentException.class);
     baseBuilder
-        .setWidth(-1)
-        .build(PARAGRAPH);
+        .withWidth(-1)
+        .format(PARAGRAPH);
   }
   
   @Test
   public void test_widthSmallerThanIndent() {
     exception.expect(IllegalArgumentException.class);
     baseBuilder
-        .setIndent(12)
-        .build(PARAGRAPH);
+        .withIndent(12)
+        .format(PARAGRAPH);
   }
 
   @Test
   public void test_indentConsiderSpace() {
     String actual = baseBuilder
-        .setSplitAtWhiteSpaces(true)
-        .build(PARAGRAPH);
+        .withSplitAtWhiteSpaces(true)
+        .format(PARAGRAPH);
     assertEquals(EXPECTED_INDENT_SPACE, actual);
   }
 
   @Test
   public void test_indentNotConsiderSpace() {
     String actual = baseBuilder
-        .setSplitAtWhiteSpaces(false)
-        .build(PARAGRAPH);
+        .withSplitAtWhiteSpaces(false)
+        .format(PARAGRAPH);
     assertEquals(EXPECTED_INDENT_NOSPACE, actual);
   }
 
