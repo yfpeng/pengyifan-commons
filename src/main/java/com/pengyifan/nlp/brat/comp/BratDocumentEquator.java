@@ -11,6 +11,7 @@ import com.pengyifan.nlp.brat.BratEntity;
 import com.pengyifan.nlp.brat.BratEvent;
 import com.pengyifan.nlp.brat.BratRelation;
 
+@Deprecated
 public class BratDocumentEquator implements Equator<BratDocument> {
 
   Equator<BratEntity>   entityEquator;

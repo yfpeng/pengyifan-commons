@@ -11,6 +11,7 @@ import com.pengyifan.nlp.brat.BratEntity;
 /**
  * Can only handle Entity's Attribute
  */
+@Deprecated
 public class BratAttributeEquator implements Equator<BratAttribute> {
 
   Equator<BratEntity> entityEquator;

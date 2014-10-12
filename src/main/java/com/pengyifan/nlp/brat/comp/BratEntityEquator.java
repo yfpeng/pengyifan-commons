@@ -4,6 +4,7 @@ import org.apache.commons.collections4.Equator;
 
 import com.pengyifan.nlp.brat.BratEntity;
 
+@Deprecated
 public abstract class BratEntityEquator implements Equator<BratEntity> {
 
   public static final int StrictMatching     = 1;

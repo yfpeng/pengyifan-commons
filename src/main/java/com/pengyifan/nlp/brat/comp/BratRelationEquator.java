@@ -9,6 +9,7 @@ import com.pengyifan.nlp.brat.BratDocument;
 import com.pengyifan.nlp.brat.BratEntity;
 import com.pengyifan.nlp.brat.BratRelation;
 
+@Deprecated
 public class BratRelationEquator implements Equator<BratRelation> {
 
   Equator<BratEntity> entityEquator;
