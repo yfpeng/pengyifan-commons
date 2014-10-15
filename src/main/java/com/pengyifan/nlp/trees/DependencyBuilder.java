@@ -1,67 +1,40 @@
 package com.pengyifan.nlp.trees;
 
-import java.util.Collection;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import org.apache.commons.lang3.Validate;
+import java.util.Collection;
 
 import edu.stanford.nlp.trees.GrammaticalStructure;
 import edu.stanford.nlp.trees.TypedDependency;
 
 public class DependencyBuilder {
 
-  private GrammaticalStructure gs;
-  private DependencyType       type;
+  private final GrammaticalStructure grammaticalStructure;
+  private final DependencyType dependencyType;
 
-  private DependencyBuilder() {
-
-  }
-
-  public static DependencyBuilder newBuilder() {
-    return new DependencyBuilder();
-  }
-
-  public DependencyBuilder setGrammaticalStructure(GrammaticalStructure gs) {
-    this.gs = gs;
-    return this;
-  }
-
-  public DependencyBuilder setDependencyType(DependencyType type) {
-    this.type = type;
-    return this;
-  }
-
-  public GrammaticalStructure getGrammaticalStructure() {
-    return gs;
-  }
-
-  public DependencyType getDependencyType() {
-    return type;
+  public DependencyBuilder(
+      final GrammaticalStructure grammaticalStructure,
+      final DependencyType dependencyType) {
+    checkNotNull(grammaticalStructure, "Must set the grammatical structure");
+    checkNotNull(dependencyType, "Must set typed dependencies");
+    this.grammaticalStructure = grammaticalStructure;
+    this.dependencyType = dependencyType;
   }
 
   public Collection<TypedDependency> build() {
-
-    Validate.notNull(gs, "Must set the grammatical structure");
-    Validate.notNull(type, "Must set typed dependencies");
-
-    Collection<TypedDependency> dependencies = null;
-    switch (type) {
+    switch (dependencyType) {
     case Basic:
-      dependencies = gs.typedDependencies();
-      break;
+      return grammaticalStructure.typedDependencies();
     case Collapsed:
-      dependencies = gs.typedDependenciesCollapsed();
-      break;
+      return grammaticalStructure.typedDependenciesCollapsed();
     case CCprocessed:
-      dependencies = gs.typedDependenciesCCprocessed();
-      break;
+      return grammaticalStructure.typedDependenciesCCprocessed();
     case CollapsedTree:
-      dependencies = gs.typedDependenciesCollapsedTree();
-      break;
+      return grammaticalStructure.typedDependenciesCollapsedTree();
     case All:
-      dependencies = gs.allTypedDependencies();
-      break;
+      return grammaticalStructure.allTypedDependencies();
     default:
+      throw new IllegalArgumentException("Unknown type: " + dependencyType);
     }
-    return dependencies;
   }
 }

@@ -66,7 +66,7 @@ public class FileUtils2 {
     return new BufferedOutputStream(new FileOutputStream(destination, true));
   }
 
-  public static void appendFile(OutputStream output, File source)
+  private static void appendFile(OutputStream output, File source)
       throws IOException {
     InputStream input = null;
     try {
