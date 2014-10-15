@@ -45,7 +45,7 @@ public class TreeSamples {
   }
 
   public static Tree getTree(String treeStr) {
-    return treeBuilder.setTreeString(treeStr).build();
+    return treeBuilder.build(treeStr);
   }
 
   public static GrammaticalStructure getGrammaticalStructure(Tree tree) {

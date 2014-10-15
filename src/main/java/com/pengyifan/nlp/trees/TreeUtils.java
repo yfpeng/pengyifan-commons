@@ -1,5 +1,7 @@
 package com.pengyifan.nlp.trees;
 
+import java.util.List;
+
 import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.trees.Trees;
 import edu.stanford.nlp.trees.tregex.TregexMatcher;
@@ -47,10 +49,12 @@ public final class TreeUtils {
   }
 
   public static Tree rightMostLeaf(Tree t) {
-    return Trees.getLeaf(t, Trees.leaves(t).size() - 1);
+    List<Tree> leaves = Trees.leaves(t);
+    return leaves.get(leaves.size() - 1);
   }
 
   public static Tree leftMostLeaf(Tree t) {
-    return Trees.getLeaf(t, 0);
+    List<Tree> leaves = Trees.leaves(t);
+    return leaves.get(0);
   }
 }

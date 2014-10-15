@@ -21,7 +21,7 @@ public class TreeBuilderTest {
     Injector injector = Guice.createInjector(new TreeTestModule());
     TreeBuilder builder = injector.getInstance(TreeBuilder.class);
     
-    Tree tree = builder.setTreeString(TreeSamples.TREE_STR2).build();
+    Tree tree = builder.build(TreeSamples.TREE_STR2);
     
 //    tree.pennPrint();
 

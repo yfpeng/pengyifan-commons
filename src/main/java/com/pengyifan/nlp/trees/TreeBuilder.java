@@ -10,27 +10,17 @@ import edu.stanford.nlp.trees.TreeTransformer;
 public class TreeBuilder {
 
   private final TreeTransformer treeFransformer;
-  private String treeStr;
 
   @Inject
   public TreeBuilder(TreeTransformer treeFransformer) {
     this.treeFransformer = treeFransformer;
   }
   
-  public TreeBuilder setTreeString(String treeStr) {
-    Validate.isTrue(treeStr != null && !treeStr.isEmpty());
-    this.treeStr = treeStr;
-    return this;
-  }
-
-  public Tree build() {
-    checkArguments();
+  public Tree build(String treeString) {
+    Validate.isTrue(treeString != null && !treeString.isEmpty());
     return Tree
-        .valueOf(treeStr)
+        .valueOf(treeString)
         .transform(treeFransformer);
   }
 
-  private void checkArguments() {
-    Validate.isTrue(treeStr != null && !treeStr.isEmpty());
-  }
 }
