@@ -29,7 +29,7 @@ public class IndentStringFormat {
    * Indent indentation. indent >= 0
    */
   public IndentStringFormat withIndent(int indent) {
-    checkArgument(indent >= 0, "Indent should not be negative: %d", indent);
+    checkArgument(indent >= 0, "Indent should not be negative: %s", indent);
     this.indent = indent;
     return this;
   }
@@ -40,7 +40,7 @@ public class IndentStringFormat {
   public IndentStringFormat withWidth(int width) {
     checkArgument(
         width > 0,
-        "text width should not be negative or zero: %d",
+        "text width should not be negative or zero: %s",
         width);
     this.width = width;
     return this;
@@ -65,7 +65,7 @@ public class IndentStringFormat {
 
   public String format(String text) {
     checkArgument(indent < width,
-        "indent should not be less than width: indent=%d, width=%d",
+        "indent should not be less than width: indent=%s, width=%s",
         indent, width);
     if (isHangIndent) {
       return hangIndent(text);
