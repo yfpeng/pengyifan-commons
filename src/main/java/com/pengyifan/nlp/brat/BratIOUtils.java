@@ -40,6 +40,7 @@ public class BratIOUtils {
     writer.close();
   }
 
+  @Deprecated
   public static void write(File file, BratDocument doc)
       throws IOException {
     FileWriter writer = new FileWriter(file);
@@ -103,6 +104,7 @@ public class BratIOUtils {
     return doc;
   }
 
+  @Deprecated
   public static BratDocument read(File file)
       throws IOException {
     return read(new FileReader(file), file.getName());

@@ -3,6 +3,7 @@ package com.pengyifan.commons.convert;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -19,6 +20,7 @@ import org.biocreative.bioc.io.BioCCollectionReader;
 import org.biocreative.bioc.io.BioCFactory;
 import org.biocreative.bioc.io.standard.JdkStrategy;
 
+import com.google.common.io.Files;
 import com.pengyifan.nlp.brat.BratDocument;
 import com.pengyifan.nlp.brat.BratEntity;
 import com.pengyifan.nlp.brat.BratRelation;
@@ -80,7 +82,9 @@ public class BioC2Brat {
           new File(bratDir + "/" + bratdoc.getDocId() + ".txt"),
           bratdoc.getText());
       BratIOUtils.write(
-          new File(bratDir + "/" + bratdoc.getDocId() + ".ann"),
+          Files.newWriter(
+              new File(bratDir + "/" + bratdoc.getDocId() + ".ann"),
+              StandardCharsets.UTF_8),
           bratdoc);
     }
   }

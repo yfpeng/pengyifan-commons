@@ -37,7 +37,7 @@ public class BratEntity extends BratAnnotation implements HasOffset {
     setId(ent.getId());
     setType(ent.getType());
     setText(ent.getText());
-    for (Range<Integer> span : getSpans()) {
+    for (Range<Integer> span : ent.getSpans()) {
       addSpan(span);
     }
   }

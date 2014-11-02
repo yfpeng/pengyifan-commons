@@ -2,11 +2,9 @@ package com.pengyifan.nlp.brat;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;
 
 public final class BratUtils {
@@ -14,28 +12,18 @@ public final class BratUtils {
   private BratUtils() {
   }
 
-  public static ImmutableList<BratEntity> filtEntities(
+  public static List<BratEntity> filtEntities(
       List<BratEntity> entities,
       final String type) {
-    return FluentIterable.from(entities).filter(new Predicate<BratEntity>() {
-
-      @Override
-      public boolean apply(BratEntity input) {
-        return input.getType().equals(type);
-      }
-    }).toList();
+    return entities.stream().filter(entity -> entity.getType().equals(type))
+        .collect(Collectors.toList());
   }
 
-  public static ImmutableList<BratRelation> remove(
+  public static List<BratRelation> remove(
       List<BratRelation> relations, final Collection<String> types) {
-    return FluentIterable.from(relations)
-        .filter(new Predicate<BratRelation>() {
-
-          @Override
-          public boolean apply(BratRelation input) {
-            return types.contains(input.getType());
-          }
-        }).toList();
+    return relations.stream()
+        .filter(relation -> types.contains(relation.getType()))
+        .collect(Collectors.toList());
   }
 
   public static Optional<BratEntity> getEnity(List<BratEntity> entities,
@@ -46,7 +34,7 @@ public final class BratUtils {
         return Optional.of(entity);
       }
     }
-    return Optional.absent();
+    return Optional.empty();
   }
 
   public static Range<Integer> getRange(BratEntity entity) {
