@@ -45,7 +45,7 @@ public class LibSVMPrintStream implements Closeable {
    * @param label the target value which can be any real number
    * @param row Number starts at 1
    */
-  public void printRow(int label, double row[]) {
+  public void printRow(int label, double[] row) {
     StringBuilder sb = new StringBuilder()
         .append(label);// label
     // kernel

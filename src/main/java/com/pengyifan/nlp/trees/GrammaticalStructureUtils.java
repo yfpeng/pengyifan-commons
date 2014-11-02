@@ -12,6 +12,8 @@ public class GrammaticalStructureUtils {
 
   /**
    * only leaves with arc
+   * @param grammaticalStructure
+   * @return list of leaves in the dependency graph
    */
   public static List<TreeGraphNode> getLeafNodes(
       GrammaticalStructure grammaticalStructure) {

@@ -1,8 +1,6 @@
 package com.pengyifan.nlp.trees;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-
+import edu.stanford.nlp.trees.EnglishGrammaticalStructureFactory;
 import edu.stanford.nlp.trees.GrammaticalStructure;
 import edu.stanford.nlp.trees.Tree;
 
@@ -34,15 +32,10 @@ public class TreeSamples {
   public static final String TREE_STR2 =
       "(S (NP (NN He_0_2)) (VP (VBZ eats_3_7) (NP (NN fiber_8_13))))";
 
-  private static TreeBuilder treeBuilder;
-  private static GrammaticalStructureBuilder gsBuilder;
-
-  static {
-    Injector injector = Guice.createInjector(new TreeTestModule());
-    gsBuilder = injector
-        .getInstance(GrammaticalStructureBuilder.class);
-    treeBuilder = injector.getInstance(TreeBuilder.class);
-  }
+  public final static TreeBuilder treeBuilder = new TreeBuilder(
+      OffsetTreeTransformer.treeTransformer());
+  public final static GrammaticalStructureBuilder gsBuilder = new GrammaticalStructureBuilder(
+      new EnglishGrammaticalStructureFactory());
 
   public static Tree getTree(String treeStr) {
     return treeBuilder.build(treeStr);
