@@ -15,6 +15,7 @@ import libsvm.svm_node;
 import libsvm.svm_parameter;
 import libsvm.svm_problem;
 
+@Deprecated
 public class LibSVMTrainer {
 
   private static Logger logger = Logger.getAnonymousLogger();

@@ -15,6 +15,7 @@ The Common includes but not limited to the following components
    1. [Indent/Hanging indent a paragraph](http://blog.pengyifan.com/using-regex-to-hanging-indent-a-paragraph-in-java/)
 1. Ling: functionality for natural language processing 
 1. [Brat standoff format](http://brat.nlplab.org/standoff.html)  
-    Brat format is widely used in the BioNLP Shared Task 2009, 2011, and 2013. One of its advantages is that annotations are stored separately from the annotated document text. Common includes fully supports of the Brat format, including reading/writing/searching text and annotation files (entity, relation, event, modification, normalization, and note). For more details about the Brat format, please visit the [link](http://brat.nlplab.org/standoff.html) 
+    Brat format is widely used in the BioNLP Shared Task 2009, 2011, and 2013. One of its advantages is that annotations are stored separately from the annotated document text. Common includes fully supports of the Brat format, including reading/writing/searching text and annotation files (entity, relation, event, modification, normalization, and note). For more details about the Brat format, please visit the [link](http://brat.nlplab.org/standoff.html)
+1. Math: Common classes used throughout the math library.
 
 Copyright (c) 2014 by Yifan Peng. All Rights Reserved. 

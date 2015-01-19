@@ -16,6 +16,7 @@ import libsvm.svm_parameter;
 
 import org.apache.commons.lang3.Validate;
 
+@Deprecated
 public class LibSVMPredict {
 
   private static final Logger LOGGER = Logger.getAnonymousLogger();

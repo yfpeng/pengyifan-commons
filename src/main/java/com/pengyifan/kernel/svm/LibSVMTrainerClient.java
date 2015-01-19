@@ -7,6 +7,7 @@ import libsvm.svm;
 import libsvm.svm_parameter;
 import libsvm.svm_print_interface;
 
+@Deprecated
 public class LibSVMTrainerClient {
 
   private svm_parameter param;

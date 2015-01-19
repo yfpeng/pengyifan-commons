@@ -14,7 +14,7 @@ import org.apache.commons.lang3.Validate;
  * directory, then process all filtered files. Otherwise throw Exception
  * 
  * @author Yifan Peng
- * 
+ * @deprecated Use {@code AbstractBatchProcessor} instead
  */
 public abstract class BatchProcessor {
 
