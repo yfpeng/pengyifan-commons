@@ -202,8 +202,6 @@ public class TreeNode implements Iterable<TreeNode> {
 
   private List<TreeNode> children;
 
-  private final boolean allowsChildren;
-
   /**
    * An iterator that is always empty. This is used when an iterator of a leaf
    * node's children is requested.
@@ -229,7 +227,6 @@ public class TreeNode implements Iterable<TreeNode> {
   public TreeNode(Object obj) {
     this.obj = obj;
     parent = null;
-    allowsChildren = true;
   }
 
   /**
@@ -249,9 +246,7 @@ public class TreeNode implements Iterable<TreeNode> {
    * @exception IllegalStateException if this node does not allow children
    */
   public void add(int childIndex, TreeNode newChild) {
-    if (!allowsChildren) {
-      throw new IllegalStateException("node does not allow children");
-    } else if (newChild == null) {
+    if (newChild == null) {
       throw new IllegalArgumentException("new child is null");
     } else if (isNodeAncestor(newChild)) {
       throw new IllegalArgumentException("new child is an ancestor");
