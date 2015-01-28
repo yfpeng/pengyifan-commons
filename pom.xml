@@ -9,9 +9,11 @@
   </properties>
   <repositories>
     <repository>
-      <id>bitbucket.repo</id>
-      <name>BioC</name>
-      <url>https://bitbucket.org/yfpeng/bioc/raw/releases</url>
+      <id>bioc-core</id>
+      <url>https://raw.github.com/yfpeng/bioc-core/mvn-repo/</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
     </repository>
   </repositories>
   <build>
@@ -97,67 +99,69 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>RELEASE</version>
     </dependency>
     <dependency>
       <groupId>edu.stanford.nlp</groupId>
       <artifactId>stanford-corenlp</artifactId>
-      <version>3.3.1</version>
+      <version>RELEASE</version>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.4</version>
+      <version>RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-collections4</artifactId>
-      <version>4.0</version>
+      <version>RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.3.1</version>
+      <version>RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-math3</artifactId>
-      <version>3.3</version>
+      <version>RELEASE</version>
     </dependency>
     <dependency>
       <groupId>gov.nist.math</groupId>
       <artifactId>jama</artifactId>
-      <version>1.0.3</version>
+      <version>RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.biocreative.bioc</groupId>
-      <artifactId>bioc</artifactId>
-      <version>2.0-SNAPSHOT</version>
+      <artifactId>bioc-core</artifactId>
+      <version>1.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>18.0</version>
+      <version>RELEASE</version>
     </dependency>
+    <!-- 
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
-      <version>3.0</version>
+      <version>RELEASE</version>
     </dependency>
+    -->
     <dependency>
     	<groupId>org.mockito</groupId>
     	<artifactId>mockito-all</artifactId>
-    	<version>1.9.5</version>
+    	<version>RELEASE</version>
     </dependency>
     <dependency>
     	<groupId>com.google.code.findbugs</groupId>
     	<artifactId>jsr305</artifactId>
-    	<version>2.0.3</version>
+    	<version>RELEASE</version>
     </dependency>
     <dependency>
     	<groupId>tw.edu.ntu.csie</groupId>
     	<artifactId>libsvm</artifactId>
-    	<version>3.17</version>
+    	<version>RELEASE</version>
     </dependency>
   </dependencies>
   <distributionManagement>

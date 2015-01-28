@@ -34,15 +34,7 @@ class BratEntityVeryStrictEquator extends BratEntityEquator {
     if (!e1.getType().equals(e2.getType())) {
       return false;
     }
-    if (e1.numberOfSpans() != e2.numberOfSpans()) {
-      return false;
-    }
-    for (int i = 0; i < e1.numberOfSpans(); i++) {
-      if (!e1.span(i).equals(e2.span(i))) {
-        return false;
-      }
-    }
-    return true;
+    return e1.getSpans().equals(e2.getSpans());
   }
 
   @Override
@@ -82,7 +74,7 @@ class BratEntityApproximateEquator extends BratEntityEquator {
     if (!e1.getType().equals(e2.getType())) {
       return false;
     }
-    return e1.totalSpan().containsRange(e2.totalSpan());
+    return e1.totalSpan().encloses(e2.totalSpan());
   }
 
   @Override

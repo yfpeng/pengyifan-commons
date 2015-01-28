@@ -1,4 +1,4 @@
-package com.pengyifan.nlp.brat.operation;
+package com.pengyifan.nlp.brat.util;
 
 import java.util.Arrays;
 import java.util.HashMap;

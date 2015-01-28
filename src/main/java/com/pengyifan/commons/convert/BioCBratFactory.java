@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.tuple.Pair;
-
 import org.biocreative.bioc.BioCAnnotation;
 import org.biocreative.bioc.BioCLocation;
 import org.biocreative.bioc.BioCRelation;
 
+import com.google.common.collect.Range;
 import com.pengyifan.nlp.brat.BratEntity;
 import com.pengyifan.nlp.brat.BratEvent;
 import com.pengyifan.nlp.brat.BratRelation;
@@ -47,10 +47,10 @@ public class BioCBratFactory {
     BioCAnnotation.Builder annBuilder = BioCAnnotation.newBuilder();
     annBuilder.setID(entity.getId());
     annBuilder.setText(entity.getText());
-    for (int i = 0; i < entity.numberOfSpans(); i++) {
+    for(Range<Integer> range: entity.getSpans().asRanges()) {
       annBuilder.addLocation(BioCLocation.newBuilder()
-          .setOffset(entity.start(i))
-          .setLength(entity.end(i) - entity.start(i))
+          .setOffset(range.lowerEndpoint())
+          .setLength(range.upperEndpoint() - range.lowerEndpoint())
           .build());
     }
     Map<String, String> infons = new HashMap<String, String>();

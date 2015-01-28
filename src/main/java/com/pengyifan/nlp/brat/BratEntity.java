@@ -1,14 +1,18 @@
 package com.pengyifan.nlp.brat;
 
-import java.util.ArrayList;
+import static com.google.common.base.Preconditions.checkArgument;
+
 import java.util.List;
 
-import org.apache.commons.collections4.list.UnmodifiableList;
-import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import com.google.common.collect.BoundType;
+import com.google.common.collect.Range;
+import com.google.common.collect.RangeSet;
+import com.google.common.collect.TreeRangeSet;
 
 import edu.stanford.nlp.ling.CoreAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations;
@@ -29,7 +33,7 @@ public class BratEntity extends BratAnnotation implements HasOffset {
 
   public BratEntity() {
     super();
-    set(BratEntitySpansAnnotation.class, new ArrayList<Range<Integer>>());
+    set(BratEntitySpansAnnotation.class, TreeRangeSet.create());
   }
 
   public BratEntity(BratEntity ent) {
@@ -37,9 +41,7 @@ public class BratEntity extends BratAnnotation implements HasOffset {
     setId(ent.getId());
     setType(ent.getType());
     setText(ent.getText());
-    for (Range<Integer> span : ent.getSpans()) {
-      addSpan(span);
-    }
+    getSpans().addAll(ent.getSpans());
   }
 
   /**
@@ -55,16 +57,20 @@ public class BratEntity extends BratAnnotation implements HasOffset {
   }
 
   /**
-   * 
-   * @param span start-offset, end-offset
+   * [start-offset, end-offset]
    */
   public void addSpan(Range<Integer> span) {
-    addSpan(span.getMinimum(), span.getMaximum());
+    checkArgument(
+        span.lowerBoundType() == BoundType.CLOSED,
+        "start-offset has to be closed");
+    checkArgument(
+        span.upperBoundType() == BoundType.CLOSED,
+        "end-offset has to be closed");
+    addSpan(span.lowerEndpoint(), span.upperEndpoint());
   }
 
-  public List<Range<Integer>> getSpans() {
-    return UnmodifiableList
-        .unmodifiableList(get(BratEntitySpansAnnotation.class));
+  public RangeSet<Integer> getSpans() {
+    return get(BratEntitySpansAnnotation.class);
   }
 
   /**
@@ -74,39 +80,18 @@ public class BratEntity extends BratAnnotation implements HasOffset {
    * @param end the index of the first character after the annotated span
    */
   public void addSpan(int start, int end) {
-    get(BratEntitySpansAnnotation.class).add(Range.between(start, end));
-    if (!has(CoreAnnotations.CharacterOffsetBeginAnnotation.class)) {
-      set(CoreAnnotations.CharacterOffsetBeginAnnotation.class, start);
-      set(CoreAnnotations.CharacterOffsetEndAnnotation.class, end);
-    } else {
-      // update start and end
-      if (beginPosition() > start) {
-        set(CoreAnnotations.CharacterOffsetBeginAnnotation.class, start);
-      }
-      if (endPosition() < end) {
-        set(CoreAnnotations.CharacterOffsetEndAnnotation.class, end);
-      }
-    }
-  }
-
-  public int start(int i) {
-    return span(i).getMinimum();
-  }
-
-  public int end(int i) {
-    return span(i).getMaximum();
-  }
-
-  public Range<Integer> span(int i) {
-    return getSpans().get(i);
-  }
-
-  public int numberOfSpans() {
-    return getSpans().size();
+    get(BratEntitySpansAnnotation.class).add(Range.closed(start, end));
+    Range<Integer> span = getSpans().span();
+    set(
+        CoreAnnotations.CharacterOffsetBeginAnnotation.class,
+        span.lowerEndpoint());
+    set(
+        CoreAnnotations.CharacterOffsetEndAnnotation.class,
+        span.upperEndpoint());
   }
 
   public Range<Integer> totalSpan() {
-    return Range.between(beginPosition(), endPosition());
+    return getSpans().span();
   }
 
   @Override
@@ -170,12 +155,12 @@ public class BratEntity extends BratAnnotation implements HasOffset {
   }
 
   private static class BratEntitySpansAnnotation implements
-      CoreAnnotation<List<Range<Integer>>> {
+      CoreAnnotation<RangeSet<Integer>> {
 
     @Override
-    public Class<List<Range<Integer>>> getType() {
+    public Class<RangeSet<Integer>> getType() {
       return ErasureUtils
-          .<Class<List<Range<Integer>>>> uncheckedCast(List.class);
+          .<Class<RangeSet<Integer>>> uncheckedCast(List.class);
     }
 
   }

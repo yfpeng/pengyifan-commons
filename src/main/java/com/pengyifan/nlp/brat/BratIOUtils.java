@@ -9,12 +9,15 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
+
+import com.google.common.collect.Range;
 
 public class BratIOUtils {
-	
-	private BratIOUtils () {
-	}
-  
+
+  private BratIOUtils() {
+  }
+
   public static void write(Writer writer, BratDocument doc)
       throws IOException {
     StringBuilder sb = new StringBuilder();
@@ -137,7 +140,9 @@ public class BratIOUtils {
 
     for (int i = 1; i < toks.length; i++) {
       index = toks[i].indexOf(':');
-      event.addArgument(toks[i].substring(0, index), toks[i].substring(index + 1));
+      event.addArgument(
+          toks[i].substring(0, index),
+          toks[i].substring(index + 1));
     }
 
     return event;
@@ -206,13 +211,15 @@ public class BratIOUtils {
 
   public static String write(BratEntity entity) {
     StringBuilder sb = new StringBuilder();
+    // id \t type
     sb.append(entity.getId()).append('\t').append(entity.getType()).append(' ');
-    for (int i = 0; i < entity.numberOfSpans(); i++) {
-      if (i != 0) {
-        sb.append(';');
-      }
-      sb.append(entity.start(i)).append(' ').append(entity.end(i));
+    // span
+    StringJoiner joiner = new StringJoiner(";");
+    for (Range<Integer> range : entity.getSpans().asRanges()) {
+      joiner.add(range.lowerEndpoint() + " " + range.upperEndpoint());
     }
+    sb.append(joiner.toString());
+    // text
     sb.append('\t').append(entity.getText());
     return sb.toString();
   }
