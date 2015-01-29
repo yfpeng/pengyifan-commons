@@ -4,10 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.biocreative.bioc.BioCAnnotation;
-import org.biocreative.bioc.BioCLocation;
-import org.biocreative.bioc.BioCRelation;
 
+import com.pengyifan.bioc.BioCAnnotation;
+import com.pengyifan.bioc.BioCLocation;
+import com.pengyifan.bioc.BioCNode;
+import com.pengyifan.bioc.BioCRelation;
 import com.google.common.collect.Range;
 import com.pengyifan.nlp.brat.BratEntity;
 import com.pengyifan.nlp.brat.BratEvent;
@@ -16,46 +17,44 @@ import com.pengyifan.nlp.brat.BratRelation;
 public class BioCBratFactory {
 
   public static BioCRelation createRelation(BratRelation bratRel) {
-    BioCRelation.Builder biocRelBuilder = BioCRelation.newBuilder();
-    biocRelBuilder.setID(bratRel.getId());
+    BioCRelation biocRel = new BioCRelation();
+    biocRel.setID(bratRel.getId());
     Map<String, String> infons = new HashMap<String, String>();
     infons.put("type", bratRel.getType());
-    biocRelBuilder.setInfons(infons);
+    biocRel.setInfons(infons);
     // arg
     for (Pair<String, String> pair : bratRel.getArguments()) {
-      biocRelBuilder.addNode(pair.getValue(), pair.getKey());
+      biocRel.addNode(new BioCNode(pair.getValue(), pair.getKey()));
     }
-    return biocRelBuilder.build();
+    return biocRel;
   }
 
   public static BioCRelation createRelation(BratEvent event) {
-    BioCRelation.Builder biocRelBuilder = BioCRelation.newBuilder();
-    biocRelBuilder.setID(event.getId());
+    BioCRelation biocRel = new BioCRelation();
+    biocRel.setID(event.getId());
     Map<String, String> infons = new HashMap<String, String>();
     infons.put("type", event.getType());
-    biocRelBuilder.setInfons(infons);
+    biocRel.setInfons(infons);
     // trigger
-    biocRelBuilder.addNode(event.getTriggerId(), event.getType());
+    biocRel.addNode(new BioCNode(event.getTriggerId(), event.getType()));
     // arg
     for (Pair<String, String> pair : event.getArguments()) {
-      biocRelBuilder.addNode(pair.getValue(), pair.getKey());
+      biocRel.addNode(new BioCNode(pair.getValue(), pair.getKey()));
     }
-    return biocRelBuilder.build();
+    return biocRel;
   }
 
   public static BioCAnnotation createAnnotation(BratEntity entity) {
-    BioCAnnotation.Builder annBuilder = BioCAnnotation.newBuilder();
-    annBuilder.setID(entity.getId());
-    annBuilder.setText(entity.getText());
-    for(Range<Integer> range: entity.getSpans().asRanges()) {
-      annBuilder.addLocation(BioCLocation.newBuilder()
-          .setOffset(range.lowerEndpoint())
-          .setLength(range.upperEndpoint() - range.lowerEndpoint())
-          .build());
+    BioCAnnotation ann = new BioCAnnotation();
+    ann.setID(entity.getId());
+    ann.setText(entity.getText());
+    for (Range<Integer> range : entity.getSpans().asRanges()) {
+      ann.addLocation(new BioCLocation(range.lowerEndpoint(), range
+          .upperEndpoint() - range.lowerEndpoint()));
     }
     Map<String, String> infons = new HashMap<String, String>();
     infons.put("type", entity.getType());
-    annBuilder.setInfons(infons);
-    return annBuilder.build();
+    ann.setInfons(infons);
+    return ann;
   }
 }

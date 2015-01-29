@@ -9,18 +9,16 @@ import javax.xml.stream.XMLStreamException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.Validate;
-import org.biocreative.bioc.BioCAnnotation;
-import org.biocreative.bioc.BioCCollection;
-import org.biocreative.bioc.BioCDocument;
-import org.biocreative.bioc.BioCLocation;
-import org.biocreative.bioc.BioCNode;
-import org.biocreative.bioc.BioCPassage;
-import org.biocreative.bioc.BioCRelation;
-import org.biocreative.bioc.io.BioCCollectionReader;
-import org.biocreative.bioc.io.BioCFactory;
-import org.biocreative.bioc.io.standard.JdkStrategy;
 
 import com.google.common.io.Files;
+import com.pengyifan.bioc.BioCAnnotation;
+import com.pengyifan.bioc.BioCCollection;
+import com.pengyifan.bioc.BioCDocument;
+import com.pengyifan.bioc.BioCLocation;
+import com.pengyifan.bioc.BioCNode;
+import com.pengyifan.bioc.BioCPassage;
+import com.pengyifan.bioc.BioCRelation;
+import com.pengyifan.bioc.io.BioCCollectionReader;
 import com.pengyifan.nlp.brat.BratDocument;
 import com.pengyifan.nlp.brat.BratEntity;
 import com.pengyifan.nlp.brat.BratRelation;
@@ -31,10 +29,8 @@ public class BioC2Brat {
   public static void bioc2brat(File biocFile, File bratDir)
       throws IOException, XMLStreamException {
 
-    BioCFactory factory = BioCFactory.newFactory(new JdkStrategy());
-
     FileReader freader = new FileReader(biocFile);
-    BioCCollectionReader breader = factory.createBioCCollectionReader(freader);
+    BioCCollectionReader breader = new BioCCollectionReader(freader);
     BioCCollection collection = breader.readCollection();
     breader.close();
 

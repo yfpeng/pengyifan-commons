@@ -82,8 +82,8 @@ public class LibSVMPrintStream implements Closeable {
    * That is, in the training file the first column must be the "ID" of xi. In
    * testing, ? can be any value.
    * 
-   * @param label
-   * @param row
+   * @param label svm label
+   * @param row svm instance
    * @param rowNumber starts at 1
    */
   public void printPrecomputedRow(int label, double row[], int rowNumber) {

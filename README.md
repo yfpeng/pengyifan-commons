@@ -18,4 +18,29 @@ The Common includes but not limited to the following components
     Brat format is widely used in the BioNLP Shared Task 2009, 2011, and 2013. One of its advantages is that annotations are stored separately from the annotated document text. Common includes fully supports of the Brat format, including reading/writing/searching text and annotation files (entity, relation, event, modification, normalization, and note). For more details about the Brat format, please visit the [link](http://brat.nlplab.org/standoff.html)
 1. Math: Common classes used throughout the math library.
 
-Copyright (c) 2014 by Yifan Peng. All Rights Reserved. 
+### Getting started
+
+The latest release is 0.1.0-SNAPSHOT.
+
+It is available in Maven Central as com.pengyifan:pengyifan-commons:jar:0.1.0-SNAPSHOT
+
+```XML
+<repositories>
+    <repository>
+        <id>oss-sonatype</id>
+        <name>oss-sonatype</name>
+        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
+    </repository>
+</repositories>
+...
+<dependency>
+  <groupId>com.pengyifan</groupId>
+  <artifactId>pengyifan-commons</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+</dependency>
+```
+
+Copyright (c) 2015 by Yifan Peng. All Rights Reserved. 

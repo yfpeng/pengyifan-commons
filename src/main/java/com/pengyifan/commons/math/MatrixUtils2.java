@@ -58,6 +58,7 @@ public class MatrixUtils2 {
    * @param m Matrix
    * @param w Column width.
    * @param d Number of digits after the decimal.
+   * @return string of the matrix
    */
   public static String print(Matrix m, int w, int d) {
     StringWriter sw = new StringWriter();

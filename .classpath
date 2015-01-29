@@ -82,7 +82,6 @@
 			<attribute name="javadoc_location" value="jar:file:/home/ypeng/.m2/repository/gov/nist/math/jama/1.0.3/jama-1.0.3-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="var" path="M2_REPO/org/biocreative/bioc/bioc/2.0-SNAPSHOT/bioc-2.0-SNAPSHOT.jar" sourcepath="/M2_REPO/org/biocreative/bioc/bioc/2.0-SNAPSHOT/bioc-2.0-SNAPSHOT-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/xmlunit/xmlunit/1.5/xmlunit-1.5.jar"/>
 	<classpathentry kind="var" path="M2_REPO/com/google/guava/guava/17.0/guava-17.0.jar" sourcepath="M2_REPO/com/google/guava/guava/17.0/guava-17.0-sources.jar">
 		<attributes>

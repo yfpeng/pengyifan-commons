@@ -152,8 +152,7 @@ public class SparseRealVector {
   /**
    * Creates a unit vector pointing in the direction of this vector. The
    * instance is changed by this method.
-   *
-   * @return a unit vector pointing in direction of this vector.
+   * 
    * @throws MathArithmeticException if the norm is zero.
    */
   public void normalize() {
