@@ -10,9 +10,9 @@ import com.pengyifan.bioc.BioCLocation;
 import com.pengyifan.bioc.BioCNode;
 import com.pengyifan.bioc.BioCRelation;
 import com.google.common.collect.Range;
-import com.pengyifan.nlp.brat.BratEntity;
-import com.pengyifan.nlp.brat.BratEvent;
-import com.pengyifan.nlp.brat.BratRelation;
+import com.pengyifan.brat.BratEntity;
+import com.pengyifan.brat.BratEvent;
+import com.pengyifan.brat.BratRelation;
 
 public class BioCBratFactory {
 

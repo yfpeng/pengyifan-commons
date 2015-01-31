@@ -9,8 +9,8 @@ import java.util.Collection;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import com.pengyifan.nlp.brat.BratEntity;
-import com.pengyifan.nlp.brat.BratIOUtils;
+import com.pengyifan.brat.BratEntity;
+import com.pengyifan.brat.BratIOUtils;
 
 import edu.stanford.nlp.io.FileSequentialCollection;
 import edu.stanford.nlp.ling.CoreAnnotations.CharacterOffsetBeginAnnotation;

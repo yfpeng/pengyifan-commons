@@ -4,9 +4,9 @@ import java.util.HashMap;
 
 import org.apache.commons.lang3.Validate;
 
-import com.pengyifan.nlp.brat.BratDocument;
-import com.pengyifan.nlp.brat.BratEntity;
-import com.pengyifan.nlp.brat.BratRelation;
+import com.pengyifan.brat.BratDocument;
+import com.pengyifan.brat.BratEntity;
+import com.pengyifan.brat.BratRelation;
 
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.trees.LabeledScoredTreeNode;

@@ -19,10 +19,10 @@ import com.pengyifan.bioc.BioCNode;
 import com.pengyifan.bioc.BioCPassage;
 import com.pengyifan.bioc.BioCRelation;
 import com.pengyifan.bioc.io.BioCCollectionReader;
-import com.pengyifan.nlp.brat.BratDocument;
-import com.pengyifan.nlp.brat.BratEntity;
-import com.pengyifan.nlp.brat.BratRelation;
-import com.pengyifan.nlp.brat.BratIOUtils;
+import com.pengyifan.brat.BratDocument;
+import com.pengyifan.brat.BratEntity;
+import com.pengyifan.brat.BratRelation;
+import com.pengyifan.brat.BratIOUtils;
 
 public class BioC2Brat {
 
