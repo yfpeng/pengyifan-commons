@@ -22,7 +22,7 @@ import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 
-public class Lemma {
+public class ExtractLemmaBatch {
 
   private static Logger logger = Logger.getAnonymousLogger();
   private static final int NUM_THREADS = 8;
@@ -30,7 +30,7 @@ public class Lemma {
   private final StanfordCoreNLP pipeline;
   private final Path inputDir;
 
-  public Lemma(Path inputDir, Path outputDir) {
+  public ExtractLemmaBatch(Path inputDir, Path outputDir) {
     this.inputDir = inputDir;
     Properties props = new Properties();
     props.put("annotators", "tokenize, ssplit, pos, lemma");
