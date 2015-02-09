@@ -13,6 +13,7 @@ import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.trees.MemoryTreebank;
 import edu.stanford.nlp.trees.Tree;
 
+@Deprecated
 public class Ptb2Brat {
 
   public static void bratString(MemoryTreebank treebank, BratDocument bratDoc) {
@@ -54,7 +55,7 @@ public class Ptb2Brat {
         Tree[] children = t.children();
         for (int i = 0; i < children.length; i++) {
           BratAnnotation ann = map.get(System.identityHashCode(children[i]));
-          rel.addArgument("C" + i, ann.getId());
+          rel.putArgument("C" + i, ann.getId());
         }
 
         bratDoc.addAnnotation(rel);

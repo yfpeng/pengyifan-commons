@@ -2,17 +2,15 @@ package com.pengyifan.commons.convert;
 
 import java.util.HashMap;
 
-import org.apache.commons.lang3.Validate;
-
 import com.pengyifan.brat.BratDocument;
 import com.pengyifan.brat.BratEntity;
-import com.pengyifan.brat.BratRelation;
 
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.trees.LabeledScoredTreeNode;
 import edu.stanford.nlp.trees.MemoryTreebank;
 import edu.stanford.nlp.trees.Tree;
 
+@Deprecated
 public class Brat2Ptb {
 
   public static MemoryTreebank pennTree(BratDocument bratDoc) {
@@ -36,24 +34,24 @@ public class Brat2Ptb {
       map.put(ent.getId(), preTerminal);
     }
 
-    for (BratRelation rel : bratDoc.getRelations()) {
-      CoreLabel label = new CoreLabel();
-      label.setCategory(rel.getType());
-      Tree phrasal = new LabeledScoredTreeNode(label);
-      for (int i = 0; i < rel.numberOfArguments(); i++) {
-        Validate.isTrue(
-            Integer.parseInt(rel.getArgRole(i).substring(1)) == i,
-              "children is not ordered: %s",
-              rel);
-        phrasal.addChild(map.get(rel.getArgId(i)));
-      }
-
-      map.put(rel.getId(), phrasal);
-      // root
-      if (rel.getType().equals("S1")) {
-        treebank.add(phrasal);
-      }
-    }
+//    for (BratRelation rel : bratDoc.getRelations()) {
+//      CoreLabel label = new CoreLabel();
+//      label.setCategory(rel.getType());
+//      Tree phrasal = new LabeledScoredTreeNode(label);
+//      for (int i = 0; i < rel.numberOfArguments(); i++) {
+//        Validate.isTrue(
+//            Integer.parseInt(rel.getArgRole(i).substring(1)) == i,
+//              "children is not ordered: %s",
+//              rel);
+//        phrasal.addChild(map.get(rel.getArgId(i)));
+//      }
+//
+//      map.put(rel.getId(), phrasal);
+//      // root
+//      if (rel.getType().equals("S1")) {
+//        treebank.add(phrasal);
+//      }
+//    }
 
     return treebank;
   }

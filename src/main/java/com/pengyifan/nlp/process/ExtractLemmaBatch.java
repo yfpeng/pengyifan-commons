@@ -10,7 +10,8 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 import com.pengyifan.brat.BratEntity;
-import com.pengyifan.brat.BratIOUtils;
+import com.pengyifan.brat.io.BratAnnotationsWriter;
+import com.pengyifan.brat.io.BratIOUtils;
 
 import edu.stanford.nlp.io.FileSequentialCollection;
 import edu.stanford.nlp.ling.CoreAnnotations.CharacterOffsetBeginAnnotation;
@@ -76,6 +77,7 @@ public class ExtractLemmaBatch {
      */
     @Override
     public void prettyPrint(Annotation annotation, PrintWriter writer) {
+      BratAnnotationsWriter bratWriter = new BratAnnotationsWriter(writer);
       int entityIndex = 0;
       for (CoreMap sentence : annotation.get(SentencesAnnotation.class)) {
         for (CoreMap token : sentence.get(TokensAnnotation.class)) {
@@ -87,10 +89,19 @@ public class ExtractLemmaBatch {
           entity.setText(token.get(LemmaAnnotation.class));
           entity.setType("Lemma");
           entityIndex++;
-          writer.println(BratIOUtils.write(entity));
+          try {
+            bratWriter.write(entity);
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
         }
       }
-      writer.flush();
+      try {
+        bratWriter.close();
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
     }
   }
 }

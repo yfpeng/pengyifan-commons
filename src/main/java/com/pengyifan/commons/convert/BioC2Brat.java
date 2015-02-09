@@ -22,7 +22,7 @@ import com.pengyifan.bioc.io.BioCCollectionReader;
 import com.pengyifan.brat.BratDocument;
 import com.pengyifan.brat.BratEntity;
 import com.pengyifan.brat.BratRelation;
-import com.pengyifan.brat.BratIOUtils;
+import com.pengyifan.brat.io.BratIOUtils;
 
 public class BioC2Brat {
 
@@ -69,7 +69,7 @@ public class BioC2Brat {
         relation.setId(rel.getID());
         relation.setType(rel.getInfon("relation type").get());
         for (BioCNode node : rel.getNodes()) {
-          relation.addArgument(node.getRole(), node.getRefid());
+          relation.putArgument(node.getRole(), node.getRefid());
         }
         bratdoc.addAnnotation(relation);
       }

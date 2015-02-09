@@ -2,14 +2,13 @@ package com.pengyifan.commons.convert;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
-import org.apache.commons.lang3.tuple.Pair;
-
+import com.google.common.collect.Range;
 import com.pengyifan.bioc.BioCAnnotation;
 import com.pengyifan.bioc.BioCLocation;
 import com.pengyifan.bioc.BioCNode;
 import com.pengyifan.bioc.BioCRelation;
-import com.google.common.collect.Range;
 import com.pengyifan.brat.BratEntity;
 import com.pengyifan.brat.BratEvent;
 import com.pengyifan.brat.BratRelation;
@@ -23,7 +22,7 @@ public class BioCBratFactory {
     infons.put("type", bratRel.getType());
     biocRel.setInfons(infons);
     // arg
-    for (Pair<String, String> pair : bratRel.getArguments()) {
+    for (Entry<String, String> pair : bratRel.getArguments().entrySet()) {
       biocRel.addNode(new BioCNode(pair.getValue(), pair.getKey()));
     }
     return biocRel;
@@ -38,7 +37,7 @@ public class BioCBratFactory {
     // trigger
     biocRel.addNode(new BioCNode(event.getTriggerId(), event.getType()));
     // arg
-    for (Pair<String, String> pair : event.getArguments()) {
+    for (Entry<String, String> pair : event.getArguments().entrySet()) {
       biocRel.addNode(new BioCNode(pair.getValue(), pair.getKey()));
     }
     return biocRel;
