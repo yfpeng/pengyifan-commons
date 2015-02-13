@@ -35,6 +35,10 @@ public class ExtractLemma {
   public String lemmatize(String word) {
     return morphology.stem(word);
   }
+  
+  public String lemmatize(String word, String tag) {
+    return morphology.lemma(word, tag, false);
+  }
 
   /**
    * Returns the stemmer result of the sentence.
