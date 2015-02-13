@@ -46,7 +46,7 @@ public class TreeString {
       } else {
         sb.append(StringUtils.END + " ");
       }
-      sb.append(tn.getObject() + "\n");
+      sb.append(tn + "\n");
 
     }
 
