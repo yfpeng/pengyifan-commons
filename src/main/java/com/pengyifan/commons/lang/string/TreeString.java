@@ -3,6 +3,7 @@ package com.pengyifan.commons.lang.string;
 import java.util.Iterator;
 
 import com.pengyifan.commons.collections.tree.TreeNode;
+import com.pengyifan.commons.collections.tree.TreeNodeStringFormatter;
 import com.pengyifan.commons.lang.StringUtils;
 
 /**
@@ -19,6 +20,7 @@ import com.pengyifan.commons.lang.StringUtils;
  * </pre>
  * 
  * @author Yifan Peng
+ * @deprecated use {@link TreeNodeStringFormatter} instead
  */
 public class TreeString {
 

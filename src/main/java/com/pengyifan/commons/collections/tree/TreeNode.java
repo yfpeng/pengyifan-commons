@@ -10,6 +10,8 @@ import java.util.Queue;
 import java.util.Stack;
 import java.util.Vector;
 
+import com.pengyifan.commons.lang.StringUtils;
+
 /**
  * A <code>TreeNode</code> is a general-purpose node in a tree data structure.
  * 
@@ -981,10 +983,74 @@ public class TreeNode implements Iterable<TreeNode> {
    */
   @Override
   public String toString() {
-    if (obj == null) {
-      return null;
-    } else {
-      return obj.toString();
-    }
+    return toString(SIMPLE);
   }
+
+  public String toString(TreeNodeStringFormatter format) {
+    return format.format(this);
+  }
+
+  /**
+   * Returns the result of sending <code>toString()</code> to this node's user
+   * object, or null if this node has no user object.
+   */
+  public static final TreeNodeStringFormatter SIMPLE = new TreeNodeStringFormatter() {
+
+    @Override
+    public String format(TreeNode treeNode) {
+      if (treeNode.obj == null) {
+        return null;
+      } else {
+        return treeNode.obj.toString();
+      }
+    }
+  };
+
+  /**
+   * Given a <code>TreeNode</code> structure, <code>TreeString</code> will
+   * print a string like
+   * 
+   * <pre>
+   * └ a
+   *   ├ b
+   *   ├ c
+   *   │ ├ e
+   *   │ └ f
+   *   └ d
+   * </pre>
+   * 
+   * @author Yifan Peng
+   */
+  public static final TreeNodeStringFormatter HUMAN_READABLE = new TreeNodeStringFormatter() {
+
+    @Override
+    public String format(TreeNode treeNode) {
+      StringBuilder sb = new StringBuilder();
+      Iterator<TreeNode> itr = treeNode.preorderIterator();
+      while (itr.hasNext()) {
+        TreeNode tn = itr.next();
+        // add prefix
+        for (TreeNode p : tn.getPathFromRoot()) {
+          // if parent has sibling node
+          if (p == tn) {
+            ;
+          } else if (p.hasNextSiblingNode()) {
+            sb.append(StringUtils.BAR + " ");
+          } else {
+            sb.append("  ");
+          }
+        }
+        // if root has sibling node
+        if (tn.hasNextSiblingNode()) {
+          sb.append(StringUtils.MIDDLE + " ");
+        } else {
+          sb.append(StringUtils.END + " ");
+        }
+        sb.append(tn.getObject() + "\n");
+
+      }
+      return sb.toString();
+    }
+  };
+
 }
