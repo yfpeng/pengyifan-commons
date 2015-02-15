@@ -27,24 +27,31 @@ public class ExtractLemma {
   }
 
   /**
-   * Returns the stem of the word.
+   * Returns the lemma of the word.
    * 
    * @param word the word
-   * @return the stem of the word
+   * @return the lemma of the word
    */
   public String lemmatize(String word) {
     return morphology.stem(word);
   }
   
+  /**
+   * Returns the lemma of the word.
+   * 
+   * @param word the word
+   * @param tag the part-of-speech of the word
+   * @return the lemma of the word
+   */
   public String lemmatize(String word, String tag) {
-    return morphology.lemma(word, tag, false);
+    return morphology.lemma(word, tag);
   }
 
   /**
-   * Returns the stemmer result of the sentence.
+   * Returns the lemma result of the sentence.
    * 
    * @param sentence the sentence
-   * @return stem of the sentence
+   * @return lemma of the sentence
    */
   public String lemmatizeSentence(String sentence) {
     List<String> words = Lists.newArrayList(sentence.split(" "));
