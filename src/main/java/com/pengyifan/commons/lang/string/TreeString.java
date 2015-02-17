@@ -3,7 +3,6 @@ package com.pengyifan.commons.lang.string;
 import java.util.Iterator;
 
 import com.pengyifan.commons.collections.tree.TreeNode;
-import com.pengyifan.commons.collections.tree.TreeNodeStringFormatter;
 import com.pengyifan.commons.lang.StringUtils;
 
 /**
