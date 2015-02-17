@@ -2,7 +2,7 @@ package com.pengyifan.commons.lang;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-public class IndentStringFormat {
+public class IndentStringFormatter {
 
   private int indent;
   private int width;
@@ -14,11 +14,11 @@ public class IndentStringFormat {
    * <p>
    * Indent is 2, width is 80, splitWithSpaces is true, hang indent is false
    */
-  public static IndentStringFormat newFormat() {
-    return new IndentStringFormat();
+  public static IndentStringFormatter newFormat() {
+    return new IndentStringFormatter();
   }
 
-  private IndentStringFormat() {
+  private IndentStringFormatter() {
     indent = 2;
     width = 80;
     splitAtWhiteSpaces = true;
@@ -28,7 +28,7 @@ public class IndentStringFormat {
   /**
    * Indent indentation. indent >= 0
    */
-  public IndentStringFormat withIndent(int indent) {
+  public IndentStringFormatter withIndent(int indent) {
     checkArgument(indent >= 0, "Indent should not be negative: %s", indent);
     this.indent = indent;
     return this;
@@ -37,7 +37,7 @@ public class IndentStringFormat {
   /**
    * The width of formatted paragraph
    */
-  public IndentStringFormat withWidth(int width) {
+  public IndentStringFormatter withWidth(int width) {
     checkArgument(
         width > 0,
         "text width should not be negative or zero: %s",
@@ -49,7 +49,7 @@ public class IndentStringFormat {
   /**
    * Set true if only split at white spaces.
    */
-  public IndentStringFormat withSplitAtWhiteSpaces(boolean splitAtWhiteSpaces) {
+  public IndentStringFormatter withSplitAtWhiteSpaces(boolean splitAtWhiteSpaces) {
     this.splitAtWhiteSpaces = splitAtWhiteSpaces;
     return this;
   }
@@ -58,7 +58,7 @@ public class IndentStringFormat {
    * If true, format a paragraph to that has all lines but the first indented.
    * Otherwise, format a paragraph to that has the first indented.
    */
-  public IndentStringFormat withHangIndent(boolean isHangIndent) {
+  public IndentStringFormatter withHangIndent(boolean isHangIndent) {
     this.isHangIndent = isHangIndent;
     return this;
   }

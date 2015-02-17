@@ -1,7 +1,5 @@
 package com.pengyifan.commons.collections.heap;
 
-import com.pengyifan.commons.collections.heap.FibonacciHeap;
-import com.pengyifan.commons.collections.heap.FibonacciHeapString;
 import com.pengyifan.commons.collections.heap.FibonacciHeap.Entry;
 
 /**

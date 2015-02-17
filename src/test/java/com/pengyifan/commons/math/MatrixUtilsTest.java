@@ -8,8 +8,6 @@ import org.junit.rules.ExpectedException;
 
 import Jama.Matrix;
 
-import com.pengyifan.commons.math.MatrixUtils2;
-
 public class MatrixUtilsTest {
 
   @Rule

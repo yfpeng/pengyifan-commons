@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.pengyifan.commons.collections.tree.TreeNode;
-import com.pengyifan.commons.lang.string.TreeString;
 
 /**
  * @author Yifan Peng

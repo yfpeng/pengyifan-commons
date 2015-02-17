@@ -8,12 +8,12 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang3.Validate;
-
 import libsvm.svm;
 import libsvm.svm_node;
 import libsvm.svm_parameter;
 import libsvm.svm_problem;
+
+import org.apache.commons.lang3.Validate;
 
 @Deprecated
 public class LibSVMTrainer {

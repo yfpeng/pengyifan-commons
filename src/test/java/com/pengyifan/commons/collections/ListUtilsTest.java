@@ -10,8 +10,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.pengyifan.commons.collections.ListUtils;
-
 public class ListUtilsTest {
 
   private List<Integer> inputList = Arrays.asList(90, 50, 20, 80, 70, 30,

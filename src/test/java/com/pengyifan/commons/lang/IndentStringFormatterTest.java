@@ -7,7 +7,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-public class IndentStringFormatTest {
+public class IndentStringFormatterTest {
 
   @Rule
   public ExpectedException exception = ExpectedException.none();
@@ -41,11 +41,11 @@ public class IndentStringFormatTest {
           + "   12345 7\n"
           + "  89123";
 
-  private IndentStringFormat baseBuilder;
+  private IndentStringFormatter baseBuilder;
 
   @Before
   public void setUp() {
-    baseBuilder = IndentStringFormat.newFormat()
+    baseBuilder = IndentStringFormatter.newFormat()
         .withWidth(WIDTH)
         .withIndent(INDENT);
   }

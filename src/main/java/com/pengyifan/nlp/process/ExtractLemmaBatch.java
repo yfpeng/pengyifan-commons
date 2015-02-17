@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 
 import com.pengyifan.brat.BratEntity;
 import com.pengyifan.brat.io.BratAnnotationsWriter;
-import com.pengyifan.brat.io.BratIOUtils;
 
 import edu.stanford.nlp.io.FileSequentialCollection;
 import edu.stanford.nlp.ling.CoreAnnotations.CharacterOffsetBeginAnnotation;
