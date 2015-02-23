@@ -9,7 +9,10 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+
+import com.pengyifan.commons.lang.StringUtils;
 
 /**
  * @author Yifan Peng
@@ -63,8 +66,8 @@ public class TreeNodeTest {
     TreeNode dst = a.deepCopy();
     assertEquals(
         "deep copy is incorrect",
-          toString(a.postorderIterator()),
-          toString(dst.postorderIterator()));
+        toString(a.postorderIterator()),
+        toString(dst.postorderIterator()));
   }
 
   @Test
@@ -183,13 +186,13 @@ public class TreeNodeTest {
   @Test
   public void testIsNodeSibling() {
     assertFalse(c.isNodeSibling(e));
-    assertTrue( b.isNodeSibling(e));
+    assertTrue(b.isNodeSibling(e));
   }
 
   @Test
   public void testIsRoot() {
     assertEquals(true, a.isRoot());
-    assertFalse( c.isRoot());
+    assertFalse(c.isRoot());
   }
 
   @Test
@@ -236,6 +239,42 @@ public class TreeNodeTest {
   @Test
   public void testToString() {
     assertEquals("B", b.toString());
+  }
+
+  @Test
+  @Ignore
+  public void testToString2() {
+    System.out.println(a.toString(new TreeNodeStringFormatter() {
+
+      @Override
+      public String format(TreeNode treeNode) {
+        StringBuilder sb = new StringBuilder();
+        Iterator<TreeNode> itr = treeNode.preorderIterator();
+        while (itr.hasNext()) {
+          TreeNode tn = itr.next();
+          // add prefix
+          for (TreeNode p : tn.getPathFromRoot()) {
+            // if parent has sibling node
+            if (p == tn) {
+              ;
+            } else if (p.hasNextSiblingNode()) {
+              sb.append(StringUtils.BAR + " ");
+            } else {
+              sb.append("  ");
+            }
+          }
+          // if root has sibling node
+          if (tn.hasNextSiblingNode()) {
+            sb.append(StringUtils.MIDDLE + " ");
+          } else {
+            sb.append(StringUtils.END + " ");
+          }
+          sb.append(tn + "\n");
+
+        }
+        return sb.toString();
+      }
+    }));
   }
 
   String toString(Iterator<TreeNode> itr) {
