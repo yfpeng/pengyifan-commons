@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.function.Function;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -244,10 +245,10 @@ public class TreeNodeTest {
   @Test
   @Ignore
   public void testToString2() {
-    System.out.println(a.toString(new TreeNodeStringFormatter() {
+    System.out.println(a.toString(new Function<TreeNode, String>() {
 
       @Override
-      public String format(TreeNode treeNode) {
+      public String apply(TreeNode treeNode) {
         StringBuilder sb = new StringBuilder();
         Iterator<TreeNode> itr = treeNode.preorderIterator();
         while (itr.hasNext()) {
