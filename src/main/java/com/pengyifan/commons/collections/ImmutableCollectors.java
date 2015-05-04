@@ -1,8 +1,5 @@
 package com.pengyifan.commons.collections;
 
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collector;
@@ -29,12 +26,6 @@ import com.google.common.collect.ImmutableSet;
  * </pre>
  */
 public class ImmutableCollectors {
-
-  static final Set<Collector.Characteristics> CH_ID = Collections
-      .unmodifiableSet(EnumSet.of(Collector.Characteristics.IDENTITY_FINISH));
-  static final Set<Collector.Characteristics> CH_UNORDERED_ID = Collections
-      .unmodifiableSet(EnumSet.of(Collector.Characteristics.UNORDERED,
-          Collector.Characteristics.IDENTITY_FINISH));
 
   /**
    * Returns a {@code Collector} that accumulates the input elements into a new
@@ -65,7 +56,8 @@ public class ImmutableCollectors {
         ImmutableSet.Builder::new, 
         ImmutableSet.Builder::add, 
         (left, right) -> left.addAll(right.build()), 
-        (Function<ImmutableSet.Builder<T>, ImmutableSet<T>>)ImmutableSet.Builder::build);
+        (Function<ImmutableSet.Builder<T>, ImmutableSet<T>>)ImmutableSet.Builder::build,
+        Collector.Characteristics.UNORDERED);
   }
 
   /**
@@ -99,8 +91,7 @@ public class ImmutableCollectors {
         ImmutableMap.Builder::new,
         accumulator,
         (left, right) -> left.putAll(right.build()),
-        ImmutableMap.Builder::build,
-        Collector.Characteristics.IDENTITY_FINISH);
+        ImmutableMap.Builder::build);
   }
 
 }

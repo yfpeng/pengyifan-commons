@@ -9,6 +9,7 @@ import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.Stack;
 import java.util.Vector;
+import java.util.function.Function;
 
 import com.pengyifan.commons.lang.StringUtils;
 
@@ -983,21 +984,26 @@ public class TreeNode implements Iterable<TreeNode> {
    */
   @Override
   public String toString() {
-    return toString(SIMPLE);
+    return toString(SIMPLE_PRINT);
   }
 
-  public String toString(TreeNodeStringFormatter format) {
-    return format.format(this);
+  /**
+   * An intermediary "Formatter" interface. An implementation of this interface
+   * outputs the data of {@link TreeNode} formatted as appropriate.
+   */
+  public String toString(Function<TreeNode, String> formatter) {
+    return formatter.apply(this);
   }
 
   /**
    * Returns the result of sending <code>toString()</code> to this node's user
    * object, or null if this node has no user object.
    */
-  public static final TreeNodeStringFormatter SIMPLE = new TreeNodeStringFormatter() {
+  public static final Function<TreeNode, String> SIMPLE_PRINT = 
+                             new Function<TreeNode, String>() {
 
     @Override
-    public String format(TreeNode treeNode) {
+    public String apply(TreeNode treeNode) {
       if (treeNode.obj == null) {
         return null;
       } else {
@@ -1021,10 +1027,11 @@ public class TreeNode implements Iterable<TreeNode> {
    * 
    * @author Yifan Peng
    */
-  public static final TreeNodeStringFormatter HUMAN_READABLE = new TreeNodeStringFormatter() {
+  public static final Function<TreeNode, String> PRETTY_PRINT = 
+      new Function<TreeNode, String>() {
 
     @Override
-    public String format(TreeNode treeNode) {
+    public String apply(TreeNode treeNode) {
       StringBuilder sb = new StringBuilder();
       Iterator<TreeNode> itr = treeNode.preorderIterator();
       while (itr.hasNext()) {
