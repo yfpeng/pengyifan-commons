@@ -128,28 +128,6 @@ class RegInfixToPostfix {
 
     return postfix;
   }
-
-
-  public static void main(String[] args) {  // Test method for the class.
-
-    String[] testString = {"a",
-        "ab",
-        "abc",
-        "(a|c)",
-        "(a|c)b"};
-
-    RegInfixToPostfix converter = new RegInfixToPostfix();
-
-    System.out.println("\nTest for convertToPostfix:\n");
-
-    for (int i = 0; i < testString.length; i++) {
-      System.out.println("infix: " + testString[i]);
-      System.out.println("postfix: " + converter.convertToPostfix(testString[i]));
-      System.out.println();
-    }
-  }
-
-
 }
 
 
