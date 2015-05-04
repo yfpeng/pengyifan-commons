@@ -35,6 +35,9 @@ import java.util.stream.Collectors;
  */
 public class RegExpPattern {
 
+  private final static char epsilon = 0;
+  private final static char contactChar = 8;
+
   /**
    * NFA Table is stored in a deque of CAG_States. Each RegExpState object has a multimap of
    * transitions where the key is the input character and values are the references to states to
@@ -130,7 +133,7 @@ public class RegExpPattern {
     // Add this character to the input character Set
     inputSet.add(ch);
 
-    System.err.printf("PUSH %c\n", ch);
+    // System.err.printf("PUSH %c\n", ch);
   }
 
   /**
@@ -154,12 +157,16 @@ public class RegExpPattern {
    * @return true if the character is an operator
    */
   private boolean isOperator(char ch) {
-    return ch == '*' || ch == '|' || ch == '(' || ch == ')' || ch == 8;
+    return ch == '*' || ch == '|' || ch == '(' || ch == ')' || ch == contactChar;
   }
 
   /**
-   * Returns operator precedence <ul><li> Kleens Closure	- highest <li>Concatenation	- middle
-   * <li>Union			- lowest </ul>
+   * Returns operator precedence
+   * <ul>
+   * <li> Kleens Closure	- highest
+   * <li>Concatenation	- middle
+   * <li>Union			- lowest
+   * </ul>
    *
    * @param opLeft  left operator
    * @param opRight right operator
@@ -175,10 +182,10 @@ public class RegExpPattern {
     if (opRight == '*') {
       return true;
     }
-    if (opLeft == 8) {
+    if (opLeft == contactChar) {
       return false;
     }
-    if (opRight == 8) {
+    if (opRight == contactChar) {
       return true;
     }
     if (opLeft == '|') {
@@ -187,25 +194,42 @@ public class RegExpPattern {
     return true;
   }
 
-  //! Checks if the specific character is input character
+  /**
+   * Checks if the specific character is input character
+   *
+   * @param ch input character
+   * @return true if the input character is an input character
+   */
   private boolean isInput(char ch) {
     return !isOperator(ch);
   }
 
-  //! Checks is a character left parantheses
-  private boolean isLeftParanthesis(char ch) {
+  /**
+   * Checks is a character left parentheses
+   * @param ch input character
+   * @return true if the input character is left parentheses
+   */
+  private boolean isLeftParenthesis(char ch) {
     return ch == '(';
   }
 
-  //! Checks is a character right parantheses
-  private boolean isRightParanthesis(char ch) {
+  /**
+   * Checks is a character right parentheses
+   * @param ch input character
+   * @return true if the right character is left parentheses
+   */
+  private boolean isRightParenthesis(char ch) {
     return ch == ')';
   }
 
-  //! Evaluates the next operator from the operator stack
+  /**
+   * Evaluates the next operator from the operator stack
+   *
+   * @return true if successful
+   */
   private boolean eval() {
     // First pop the operator from the stack
-    if (operatorStack.size() > 0) {
+    if (!operatorStack.isEmpty()) {
       char chOperator = operatorStack.pop();
 
       // Check which operator it is
@@ -214,7 +238,7 @@ public class RegExpPattern {
         return star();
       case '|':
         return union();
-      case 8:
+      case contactChar:
         return concat();
       default:
         return false;
@@ -242,13 +266,13 @@ public class RegExpPattern {
     // and add an epsilon transition to the
     // first state of B. Store the result into
     // new NFA_TABLE and push it onto the stack
-    A.getLast().addTransition((char) 0, B.getFirst());
+    A.getLast().addTransition(epsilon, B.getFirst());
     A.addAll(B);
 
     // push the result onto the stack
     operandStack.push(A);
 
-    System.err.println("CONCAT");
+    // System.err.println("CONCAT");
 
     return true;
   }
@@ -275,16 +299,16 @@ public class RegExpPattern {
     // added at the end will be the destination
     RegExpState pStartState = new RegExpState(++nextStateID);
     RegExpState pEndState = new RegExpState(++nextStateID);
-    pStartState.addTransition((char) 0, pEndState);
+    pStartState.addTransition(epsilon, pEndState);
 
     // add epsilon transition from start state to the first state of A
-    pStartState.addTransition((char) 0, A.getFirst());
+    pStartState.addTransition(epsilon, A.getFirst());
 
     // add epsilon transition from A last state to end state
-    A.getLast().addTransition((char) 0, pEndState);
+    A.getLast().addTransition(epsilon, pEndState);
 
     // From A last to A first state
-    A.getLast().addTransition((char) 0, A.getFirst());
+    A.getLast().addTransition(epsilon, A.getFirst());
 
     // construct new DFA and store it onto the stack
     A.add(pEndState);
@@ -320,10 +344,10 @@ public class RegExpPattern {
     // states of A and B to the new end state
     RegExpState pStartState = new RegExpState(++nextStateID);
     RegExpState pEndState = new RegExpState(++nextStateID);
-    pStartState.addTransition((char) 0, A.getFirst());
-    pStartState.addTransition((char) 0, B.getFirst());
-    A.getLast().addTransition((char) 0, pEndState);
-    B.getLast().addTransition((char) 0, pEndState);
+    pStartState.addTransition(epsilon, A.getFirst());
+    pStartState.addTransition(epsilon, B.getFirst());
+    A.getLast().addTransition(epsilon, pEndState);
+    B.getLast().addTransition(epsilon, pEndState);
 
     // Create new NFA from A
     B.add(pEndState);
@@ -333,17 +357,17 @@ public class RegExpPattern {
     // push the result onto the stack
     operandStack.push(A);
 
-    System.err.printf("UNION\n");
+    // System.err.printf("UNION\n");
 
     return true;
   }
 
   /**
-   * Inserts char 8 where the concatenation needs to occur. The method used to parse regular
+   * Inserts contactChar where the concatenation needs to occur. The method used to parse regular
    * expression here is similar to method of evaluating the arithmetic expressions. A difference
    * here is that each arithmetic expression is denoted by a sign. In regular expressions the
-   * concatenation is not denoted by ny sign so I will detect concatenation and add a character 8
-   * between operands.
+   * concatenation is not denoted by ny sign so I will detect concatenation and add a character
+   * contactChar between operands.
    *
    * @return normalized pattern
    */
@@ -354,9 +378,9 @@ public class RegExpPattern {
       char cLeft = pattern.charAt(i);
       char cRight = pattern.charAt(i + 1);
       strRes.append(cLeft);
-      if (isInput(cLeft) || isRightParanthesis(cLeft) || cLeft == '*') {
-        if (isInput(cRight) || isLeftParanthesis(cRight)) {
-          strRes.append((char) 8);
+      if (isInput(cLeft) || isRightParenthesis(cLeft) || cLeft == '*') {
+        if (isInput(cRight) || isLeftParenthesis(cRight)) {
+          strRes.append(contactChar);
         }
       }
     }
@@ -373,7 +397,7 @@ public class RegExpPattern {
     // Parse regular expresion using similar
     // method to evaluate arithmetic expressions
     // But first we will detect concatenation and
-    // add char(8) at the position where
+    // add contactChar at the position where
     // concatenation needs to occur
     String expandedPattern = normalize();
 
@@ -385,11 +409,11 @@ public class RegExpPattern {
         push(c);
       } else if (operatorStack.isEmpty()) {
         operatorStack.push(c);
-      } else if (isLeftParanthesis(c)) {
+      } else if (isLeftParenthesis(c)) {
         operatorStack.push(c);
-      } else if (isRightParanthesis(c)) {
-        // Evaluate everyting in paranthesis
-        while (!isLeftParanthesis(operatorStack.peek())) {
+      } else if (isRightParenthesis(c)) {
+        // Evaluate everything in parenthesis
+        while (!isLeftParenthesis(operatorStack.peek())) {
           if (!eval()) {
             return false;
           }
@@ -447,7 +471,7 @@ public class RegExpPattern {
 
       // Get all epsilon transition for this state
       // For each state u with an edge from t to u labeled epsilon
-      for (RegExpState u : t.getTransition((char) 0)) {
+      for (RegExpState u : t.getTransition(epsilon)) {
         // if u not in e-closure(T)
         if (!Res.contains(u)) {
           Res.add(u);
@@ -486,7 +510,7 @@ public class RegExpPattern {
     dfaTable.clear();
 
     // Check is NFA table empty
-    if (nfaTable.size() == 0) {
+    if (nfaTable.isEmpty()) {
       return;
     }
     // ReSet the state id for new naming
@@ -636,7 +660,7 @@ public class RegExpPattern {
       }
       // Add all epsilon transitions
       strNFATable.append("\t\t")
-          .append(getStateString(pState.getTransition((char) 0)))
+          .append(getStateString(pState.getTransition(epsilon)))
           .append("\n");
     }
     // Save table to the file
@@ -703,7 +727,7 @@ public class RegExpPattern {
 
     // Record transitions
     for (RegExpState s1 : table) {
-      for (RegExpState s2 : s1.getTransition((char) 0)) {
+      for (RegExpState s2 : s1.getTransition(epsilon)) {
         // Record transition
         strDFAGraph.append("\t")
             .append(s1.getStateID()).append(" -> ").append(s2.getStateID())
