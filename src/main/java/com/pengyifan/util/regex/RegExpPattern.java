@@ -7,7 +7,13 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.Stack;
+import java.util.StringJoiner;
 import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collectors;
 
@@ -36,7 +42,7 @@ import java.util.stream.Collectors;
 public class RegExpPattern {
 
   private final static char epsilon = 0;
-  private final static char contactChar = 8;
+  private final static RegInfixToPostfix converter = new RegInfixToPostfix();
 
   /**
    * NFA Table is stored in a deque of CAG_States. Each RegExpState object has a multimap of
@@ -148,103 +154,6 @@ public class RegExpPattern {
       table.addAll(operandStack.pop());
     }
     return table;
-  }
-
-  /**
-   * Checks is a specific character and operator
-   *
-   * @param ch The input character
-   * @return true if the character is an operator
-   */
-  private boolean isOperator(char ch) {
-    return ch == '*' || ch == '|' || ch == '(' || ch == ')' || ch == contactChar;
-  }
-
-  /**
-   * Returns operator precedence
-   * <ul>
-   * <li> Kleens Closure	- highest
-   * <li>Concatenation	- middle
-   * <li>Union			- lowest
-   * </ul>
-   *
-   * @param opLeft  left operator
-   * @param opRight right operator
-   * @return true if precedence of opLeft <= opRight.
-   */
-  private boolean precedence(char opLeft, char opRight) {
-    if (opLeft == opRight) {
-      return true;
-    }
-    if (opLeft == '*') {
-      return false;
-    }
-    if (opRight == '*') {
-      return true;
-    }
-    if (opLeft == contactChar) {
-      return false;
-    }
-    if (opRight == contactChar) {
-      return true;
-    }
-    if (opLeft == '|') {
-      return false;
-    }
-    return true;
-  }
-
-  /**
-   * Checks if the specific character is input character
-   *
-   * @param ch input character
-   * @return true if the input character is an input character
-   */
-  private boolean isInput(char ch) {
-    return !isOperator(ch);
-  }
-
-  /**
-   * Checks is a character left parentheses
-   * @param ch input character
-   * @return true if the input character is left parentheses
-   */
-  private boolean isLeftParenthesis(char ch) {
-    return ch == '(';
-  }
-
-  /**
-   * Checks is a character right parentheses
-   * @param ch input character
-   * @return true if the right character is left parentheses
-   */
-  private boolean isRightParenthesis(char ch) {
-    return ch == ')';
-  }
-
-  /**
-   * Evaluates the next operator from the operator stack
-   *
-   * @return true if successful
-   */
-  private boolean eval() {
-    // First pop the operator from the stack
-    if (!operatorStack.isEmpty()) {
-      char chOperator = operatorStack.pop();
-
-      // Check which operator it is
-      switch (chOperator) {
-      case '*':
-        return star();
-      case '|':
-        return union();
-      case contactChar:
-        return concat();
-      default:
-        return false;
-      }
-    }
-    return false;
   }
 
   /**
@@ -363,32 +272,6 @@ public class RegExpPattern {
   }
 
   /**
-   * Inserts contactChar where the concatenation needs to occur. The method used to parse regular
-   * expression here is similar to method of evaluating the arithmetic expressions. A difference
-   * here is that each arithmetic expression is denoted by a sign. In regular expressions the
-   * concatenation is not denoted by ny sign so I will detect concatenation and add a character
-   * contactChar between operands.
-   *
-   * @return normalized pattern
-   */
-  private String normalize() {
-    StringBuilder strRes = new StringBuilder();
-
-    for (int i = 0; i < pattern.length() - 1; ++i) {
-      char cLeft = pattern.charAt(i);
-      char cRight = pattern.charAt(i + 1);
-      strRes.append(cLeft);
-      if (isInput(cLeft) || isRightParenthesis(cLeft) || cLeft == '*') {
-        if (isInput(cRight) || isLeftParenthesis(cRight)) {
-          strRes.append(contactChar);
-        }
-      }
-    }
-    strRes.append(pattern.charAt(pattern.length() - 1));
-    return strRes.toString();
-  }
-
-  /**
    * Creates Nondeterministic Finite Automata from a Regular Expression
    *
    * @return true if successful
@@ -396,46 +279,29 @@ public class RegExpPattern {
   private boolean createNfa() {
     // Parse regular expresion using similar
     // method to evaluate arithmetic expressions
-    // But first we will detect concatenation and
-    // add contactChar at the position where
-    // concatenation needs to occur
-    String expandedPattern = normalize();
+    List<Character> postfix = converter.convertToPostfix(pattern);
 
-    for (int i = 0; i < expandedPattern.length(); ++i) {
-      // get the character
-      char c = expandedPattern.charAt(i);
-
-      if (isInput(c)) {
+    for(char c: postfix) {
+      if (!RegInfixToPostfix.isOperator(c)) {
         push(c);
-      } else if (operatorStack.isEmpty()) {
-        operatorStack.push(c);
-      } else if (isLeftParenthesis(c)) {
-        operatorStack.push(c);
-      } else if (isRightParenthesis(c)) {
-        // Evaluate everything in parenthesis
-        while (!isLeftParenthesis(operatorStack.peek())) {
-          if (!eval()) {
-            return false;
-          }
-        }
-        // Remove left parenthesis after the evaluation
-        operatorStack.pop();
       } else {
-        while (!operatorStack.isEmpty() && precedence(c, operatorStack.peek())) {
-          if (!eval()) {
-            return false;
-          }
+        // Check which operator it is
+        switch (c) {
+        case '*':
+          star();
+          break;
+        case '|':
+          union();
+          break;
+        case RegInfixToPostfix.CONTACT_CHAR:
+          concat();
+          break;
+        default:
+          return false;
         }
-        operatorStack.push(c);
       }
     }
 
-    // Evaluate the rest of operators
-    while (!operatorStack.isEmpty()) {
-      if (!eval()) {
-        return false;
-      }
-    }
     // pop the result from the stack
     FsaTable table = pop();
     if (table.isEmpty()) {
