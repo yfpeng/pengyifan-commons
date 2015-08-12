@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.pengyifan.commons</groupId>
   <artifactId>pengyifan-commons</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0.2.0-SNAPSHOT</version>
   <name>${project.groupId}:${project.artifactId}</name>
   <description>Java commons for NLP and others</description>
   <url>https://github.com/yfpeng/pengyifan-commons</url>
@@ -101,7 +101,7 @@
         <configuration>
           <serverId>ossrh</serverId>
           <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+          <!--<autoReleaseAfterClose>true</autoReleaseAfterClose>-->
         </configuration>
       </plugin>
     </plugins>
@@ -176,6 +176,16 @@
     	<groupId>tw.edu.ntu.csie</groupId>
     	<artifactId>libsvm</artifactId>
     	<version>3.17</version>
+    </dependency>
+    <dependency>
+      <groupId>org.javabits.jgrapht</groupId>
+      <artifactId>jgrapht-core</artifactId>
+      <version>0.9.3</version>
+    </dependency>
+    <dependency>
+      <groupId>org.javatuples</groupId>
+      <artifactId>javatuples</artifactId>
+      <version>1.2</version>
     </dependency>
   </dependencies>
   <distributionManagement>
