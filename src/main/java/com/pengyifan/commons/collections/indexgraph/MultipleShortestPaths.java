@@ -1,15 +1,16 @@
 package com.pengyifan.commons.collections.indexgraph;
 
 import com.google.common.collect.Lists;
-import com.pengyifan.commons.collections.DirectedMultiLoopGraph;
-import edu.emory.mathcs.backport.java.util.Collections;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.KShortestPaths;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * Find all shortest paths between start and end vertices.
