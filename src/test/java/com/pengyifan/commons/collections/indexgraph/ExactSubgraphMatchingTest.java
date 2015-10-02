@@ -67,18 +67,18 @@ public class ExactSubgraphMatchingTest {
         subgraph, graph);
 
     List<Map<Vertex, Vertex>> matches = esm.getSubgraphMatchingMatches();
-    assertEquals(2, matches.size());
+    assertEquals(1, matches.size());
     Map<Vertex, Vertex> m = matches.get(0);
     Vertex actualA = m.get(a1);
     assertEquals(a, actualA);
     Vertex actualB = m.get(b1);
     assertEquals(b, actualB);
 
-    m = matches.get(1);
-    actualA = m.get(a1);
-    assertEquals(a, actualA);
-    actualB = m.get(b1);
-    assertEquals(b, actualB);
+//    m = matches.get(1);
+//    actualA = m.get(a1);
+//    assertEquals(a, actualA);
+//    actualB = m.get(b1);
+//    assertEquals(b, actualB);
   }
 
   private class Edge extends IndexObject {
