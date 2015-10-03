@@ -13,7 +13,7 @@ import org.junit.Test;
 public class ExactSubgraphMatchingTest {
 
   @Test
-  public void test() {
+  public void test_isSubgraphIsomorphism() {
     Vertex a = new Vertex(1, "a");
     Vertex b = new Vertex(2, "b");
     Vertex c = new Vertex(3, "c");
@@ -40,15 +40,15 @@ public class ExactSubgraphMatchingTest {
     subgraph2.addVertex(a1);
     subgraph2.addVertex(b1);
     subgraph2.addEdge(b1, a1, new Edge(4, "DEP"));
-    esm = new ExactSubgraphMatching<Vertex, Edge>(subgraph2, graph);
+    esm = new ExactSubgraphMatching<>(subgraph2, graph);
     assertFalse(esm.isSubgraphIsomorphism());
   }
 
   @Test
-  public void test_getSubgraphMatchingMatches2() {
+  public void test_getSubgraphMatchingMatches() {
     Vertex a = new Vertex(1, "a");
     Vertex b = new Vertex(2, "b");
-    Vertex c = new Vertex(3, "a");
+    Vertex c = new Vertex(3, "c");
     IndexGraph<Vertex, Edge> graph = new IndexGraph<Vertex, Edge>(Edge.class);
     graph.addVertex(a);
     graph.addVertex(b);
@@ -56,8 +56,8 @@ public class ExactSubgraphMatchingTest {
     graph.addEdge(b, a, new Edge(4, "NSUBJ"));
     graph.addEdge(b, c, new Edge(5, "NSUBJ"));
 
-    Vertex a1 = new Vertex(1, "a");
-    Vertex b1 = new Vertex(2, "b");
+    Vertex a1 = new Vertex(11, "a");
+    Vertex b1 = new Vertex(12, "b");
     IndexGraph<Vertex, Edge> subgraph = new IndexGraph<Vertex, Edge>(Edge.class);
     subgraph.addVertex(a1);
     subgraph.addVertex(b1);
@@ -73,12 +73,6 @@ public class ExactSubgraphMatchingTest {
     assertEquals(a, actualA);
     Vertex actualB = m.get(b1);
     assertEquals(b, actualB);
-
-//    m = matches.get(1);
-//    actualA = m.get(a1);
-//    assertEquals(a, actualA);
-//    actualB = m.get(b1);
-//    assertEquals(b, actualB);
   }
 
   private class Edge extends IndexObject {
