@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -24,6 +25,7 @@ import com.pengyifan.brat.BratEntity;
 import com.pengyifan.brat.BratRelation;
 import com.pengyifan.brat.io.BratIOUtils;
 
+@Deprecated
 public class BioC2Brat {
 
   public static void bioc2brat(File biocFile, File bratDir)
@@ -34,46 +36,9 @@ public class BioC2Brat {
     BioCCollection collection = breader.readCollection();
     breader.close();
 
-    for (BioCDocument doc : collection.getDocuments()) {
-
-      Validate.isTrue(doc.getPassageCount() == 1);
-      BioCPassage pass = doc.getPassage(0);
-
-      BratDocument bratdoc = new BratDocument();
-      bratdoc.setDocId(doc.getID());
-
-      // text
-      Validate.isTrue(pass.getText().isPresent(), "BioC passage has no text");
-      bratdoc.setText(pass.getText().get());
-
-      // ann
-      for (BioCAnnotation ann : pass.getAnnotations()) {
-        BratEntity entity = new BratEntity();
-        entity.setId(ann.getID());
-        Validate.isTrue(
-            ann.getText().isPresent(),
-            "BioC annotation has no text");
-        entity.setText(ann.getText().get());
-        Validate.isTrue(
-            ann.getInfon("type").isPresent(),
-            "BioC annotation has no type information");
-        entity.setType(ann.getInfon("type").get());
-        for (BioCLocation loc : ann.getLocations()) {
-          entity.addSpan(loc.getOffset(), loc.getOffset() + loc.getLength());
-        }
-        bratdoc.addAnnotation(entity);
-      }
-      // rel
-      for (BioCRelation rel : pass.getRelations()) {
-        BratRelation relation = new BratRelation();
-        relation.setId(rel.getID());
-        relation.setType(rel.getInfon("relation type").get());
-        for (BioCNode node : rel.getNodes()) {
-          relation.putArgument(node.getRole(), node.getRefid());
-        }
-        bratdoc.addAnnotation(relation);
-      }
-
+    final BioC2BratConverter converter = new BioC2BratConverter();
+    List<BratDocument> docs = converter.bioc2brat(collection);
+    for(BratDocument bratdoc: docs) {
       FileUtils.write(
           new File(bratDir + "/" + bratdoc.getDocId() + ".txt"),
           bratdoc.getText());
@@ -84,5 +49,4 @@ public class BioC2Brat {
           bratdoc);
     }
   }
-
 }

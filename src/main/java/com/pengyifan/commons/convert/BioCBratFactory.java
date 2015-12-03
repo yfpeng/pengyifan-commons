@@ -12,7 +12,7 @@ import com.pengyifan.bioc.BioCRelation;
 import com.pengyifan.brat.BratEntity;
 import com.pengyifan.brat.BratEvent;
 import com.pengyifan.brat.BratRelation;
-
+@Deprecated
 public class BioCBratFactory {
 
   public static BioCRelation createRelation(BratRelation bratRel) {

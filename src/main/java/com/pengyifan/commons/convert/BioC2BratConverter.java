@@ -16,6 +16,7 @@ import com.pengyifan.brat.BratDocument;
 import com.pengyifan.brat.BratEntity;
 import com.pengyifan.brat.BratRelation;
 
+@Deprecated
 public class BioC2BratConverter {
   
   /**
