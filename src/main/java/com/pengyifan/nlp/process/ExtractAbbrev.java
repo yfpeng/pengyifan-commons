@@ -208,10 +208,10 @@ public class ExtractAbbrev {
 
   public static class AbbrInfo {
 
-    public String shortForm;
-    public String longForm;
-    public int shortFormIndex;
-    public int longFormIndex;
+    public final String shortForm;
+    public final String longForm;
+    public final int shortFormIndex;
+    public final int longFormIndex;
 
     public AbbrInfo(
         String inShortForm,
