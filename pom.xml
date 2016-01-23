@@ -124,11 +124,6 @@
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
-      <artifactId>commons-collections4</artifactId>
-      <version>4.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>3.3.1</version>
     </dependency>
@@ -143,34 +138,19 @@
       <version>1.0.3</version>
     </dependency>
     <dependency>
-      <groupId>com.pengyifan.bioc</groupId>
-      <artifactId>pengyifan-bioc</artifactId>
-      <version>1.0.1</version>
-    </dependency>
-    <dependency>
-      <groupId>com.pengyifan.brat</groupId>
-      <artifactId>pengyifan-brat</artifactId>
-      <version>1.1.0</version>
-    </dependency>
-    <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>18.0</version>
     </dependency>
     <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-      <version>3.0</version>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava-testlib</artifactId>
+      <version>18.0</version>
     </dependency>
     <dependency>
     	<groupId>org.mockito</groupId>
     	<artifactId>mockito-all</artifactId>
     	<version>1.9.5</version>
-    </dependency>
-    <dependency>
-    	<groupId>com.google.code.findbugs</groupId>
-    	<artifactId>jsr305</artifactId>
-    	<version>2.0.3</version>
     </dependency>
     <dependency>
     	<groupId>tw.edu.ntu.csie</groupId>
@@ -186,6 +166,11 @@
       <groupId>org.javatuples</groupId>
       <artifactId>javatuples</artifactId>
       <version>1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>args4j</groupId>
+      <artifactId>args4j</artifactId>
+      <version>2.32</version>
     </dependency>
   </dependencies>
   <distributionManagement>
