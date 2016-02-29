@@ -14,12 +14,12 @@ import java.util.function.Function;
 import com.pengyifan.commons.lang.StringUtils;
 
 /**
- * A <code>TreeNode</code> is a general-purpose node in a tree data structure.
+ * A <code>Tree</code> is a general-purpose node in a tree data structure.
  * 
  * <p>
  * 
  * A tree node may have at most one parent and 0 or more children.
- * <code>TreeNode</code> provides operations for examining and modifying a
+ * <code>Tree</code> provides operations for examining and modifying a
  * node's parent and children and also operations for examining the tree that
  * the node is a part of. A node's tree is the set of all nodes that can be
  * reached by starting at the node and following all the possible links to
@@ -29,12 +29,12 @@ import com.pengyifan.commons.lang.StringUtils;
  * <p>
  * This class provides iterator for efficiently traversing a tree or subtree in
  * various orders or for following the path between two nodes. A
- * <code>TreeNode</code> may also hold a reference to a user object, the use of
- * which is left to the user. Asking a <code>TreeNode</code> for its string
+ * <code>Tree</code> may also hold a reference to a user object, the use of
+ * which is left to the user. Asking a <code>Tree</code> for its string
  * representation with <code>toString()</code> returns the string
  * representation of its user object.
  * <p>
- * <b>This is not a thread safe class.</b>If you intend to use a TreeNode (or a
+ * <b>This is not a thread safe class.</b>If you intend to use a Tree (or a
  * tree of TreeNodes) in more than one thread, you need to do your own
  * synchronizing. A good convention to adopt is synchronizing on the root node
  * of a tree.
@@ -283,8 +283,8 @@ public class TreeNode implements Iterable<TreeNode> {
     }
   }
 
-  // public void addChildren(List<TreeNode> children) {
-  // for (TreeNode child : children) {
+  // public void addChildren(List<Tree> children) {
+  // for (Tree child : children) {
   // add(child);
   // }
   // }
@@ -379,7 +379,7 @@ public class TreeNode implements Iterable<TreeNode> {
    * @param index an index into this node's child array
    * @exception ArrayIndexOutOfBoundsException if <code>index</code> is out of
    *              bounds
-   * @return the TreeNode in this node's child array at the specified index
+   * @return the Tree in this node's child array at the specified index
    */
   public TreeNode getChild(int index) {
     if (children == null) {
@@ -642,7 +642,7 @@ public class TreeNode implements Iterable<TreeNode> {
   /**
    * Returns this node's parent or null if this node has no parent.
    * 
-   * @return this node's parent TreeNode, or null if this node has no parent
+   * @return this node's parent Tree, or null if this node has no parent
    */
   public TreeNode getParent() {
     return parent;
@@ -652,7 +652,7 @@ public class TreeNode implements Iterable<TreeNode> {
    * Returns the path from this node to the root. The first element in the path
    * is this node.
    * 
-   * @return a list of TreeNode objects giving the path, where the first
+   * @return a list of Tree objects giving the path, where the first
    *         element in the path is this node and the last element is the root.
    */
   public List<TreeNode> getPathToRoot() {
@@ -667,7 +667,7 @@ public class TreeNode implements Iterable<TreeNode> {
    * Returns the path from the root, to get to this node. The last element in
    * the path is this node.
    * 
-   * @return a list of TreeNode objects giving the path, where the first
+   * @return a list of Tree objects giving the path, where the first
    *         element in the path is the root and the last element is this node.
    */
   public List<TreeNode> getPathFromRoot() {
@@ -686,7 +686,7 @@ public class TreeNode implements Iterable<TreeNode> {
    * This method performs a linear search and is O(n) where n is the number of
    * children.
    * 
-   * @param aChild the TreeNode to search for among this node's children
+   * @param aChild the Tree to search for among this node's children
    * @exception IllegalArgumentException if <code>aChild</code> is null
    * @return an int giving the index of the node in this node's child array, or
    *         <code>-1</code> if the specified node is a not a child of this
@@ -1013,7 +1013,7 @@ public class TreeNode implements Iterable<TreeNode> {
   };
 
   /**
-   * Given a <code>TreeNode</code> structure, <code>TreeString</code> will
+   * Given a <code>Tree</code> structure, <code>TreeString</code> will
    * print a string like
    * 
    * <pre>
