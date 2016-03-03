@@ -14,6 +14,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -49,15 +50,15 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
   private List<T> children;
 
   /**
-   * Creates a tree node that has no parent and no children, but which allows children.
+   * Creates a tree node that has no parent and no children.
    */
   public Tree() {
     this(null);
   }
 
   /**
-   * Creates a tree node with no parent, no children, but which allows children, and initializes it
-   * with the specified user object.
+   * Creates a tree node with no parent, no children, and initializes it with the specified user
+   * object.
    *
    * @param obj an Object provided by the user that constitutes the node's data
    */
@@ -67,44 +68,32 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
   }
 
   /**
-   * Removes <code>newChild</code> from its present parent (if it has a parent), sets the child's
-   * parent to this node, and then adds the child to this node's child array at index
-   * <code>childIndex</code>. <code>newChild</code> must not be null and must not be an ancestor of
-   * this node.
+   * Insert the child at the specified position in this node's child array. Shifts the child
+   * currently at that position (if any) and any subsequent children to the right (adds one to
+   * their indices). Sets the child's parent to this node.
    *
-   * @param newChild   the MutableTreeNode to insert under this node
-   * @param childIndex the index in this node's child array where this node is to be inserted
-   * @throws ArrayIndexOutOfBoundsException if <code>childIndex</code> is out of bounds
-   * @throws IllegalArgumentException       if <code>newChild</code> is null or is an ancestor of
-   *                                        this node
-   * @throws IllegalStateException          if this node does not allow children
+   * @param index the index in this node's child array where this node is to be inserted
+   * @param child the child to be inserted under this node
+   * @throws ArrayIndexOutOfBoundsException if the index is out of range
+   * @throws NullPointerException           if the child is null
+   * @throws IllegalArgumentException       if the child is an ancestor of this node
    */
-  public void add(int childIndex, T newChild) {
-    if (newChild == null) {
-      throw new IllegalArgumentException("new child is null");
-    } else if (isNodeAncestor(newChild)) {
-      throw new IllegalArgumentException("new child is an ancestor");
-    }
-
-    T oldParent = newChild.getParent();
-
-    if (oldParent != null) {
-      oldParent.remove(newChild);
-    }
-    newChild.setParent((T) this);
+  public void add(int index, T child) {
+    checkNotNull(child, "The child is null");
+    checkArgument(!isNodeAncestor(child), "The child is an ancestor of this node");
+    child.setParent((T) this);
     if (children == null) {
       children = Lists.newLinkedList();
     }
-    children.add(childIndex, newChild);
+    children.add(index, child);
   }
 
   /**
-   * Removes <code>newChild</code> from its parent and makes it a child of this node by adding it
-   * to the end of this node's child array.
+   * Appends the child to the end of this node's child array. Sets the child's parent to this node.
    *
-   * @param child node to add as a child of this node
-   * @throws IllegalArgumentException if <code>child</code> is null
-   * @throws IllegalStateException    if this node does not allow children
+   * @param child the child node to be appended under this node
+   * @throws NullPointerException     if the child is null
+   * @throws IllegalArgumentException if the child is an ancestor of this node
    */
   public void add(T child) {
     if (child != null && child.getParent() == this) {
@@ -136,6 +125,8 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
   }
 
   /**
+   * Gets the list of this node's children.
+   *
    * @return a list of this node's children, or empty list if it is a leaf
    */
   public List<T> children() {
@@ -207,26 +198,22 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
   }
 
   /**
-   * Returns the child in this node's child array that immediately follows <code>aChild</code>,
-   * which must be a child of this node. If <code>aChild</code> is the last child, returns null.
-   * This method performs a linear search of this node's children for <code>aChild</code> and is
+   * Returns the child in this node's child array that immediately follows the specified child,
+   * which must be a child of this node. If the specified child is the last child, returns null.
+   * This method performs a linear search of this node's children for the specified child and is
    * O(n) where n is the number of children; to traverse the entire array of children, use an
    * enumeration instead.
    *
-   * @return the child of this node that immediately follows <code>aChild</code>
-   * @throws IllegalArgumentException if <code>aChild</code> is null or is not a child of this node
+   * @return the child of this node that immediately follows the child
+   * @throws NullPointerException     if the child is null
+   * @throws IllegalArgumentException if the child is not a child of this node
    * @see #children()
    */
   public T getChildAfter(T child) {
-    if (child == null) {
-      throw new IllegalArgumentException("argument is null");
-    }
+    checkNotNull(child, "The child is null");
 
     int index = indexOf(child); // linear search
-
-    if (index == -1) {
-      throw new IllegalArgumentException("node is not a child");
-    }
+    checkArgument(index != -1, "The child is not a child of this node");
 
     if (index < getChildCount() - 1) {
       return getChild(index + 1);
@@ -236,24 +223,20 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
   }
 
   /**
-   * Returns the child in this node's child array that immediately precedes <code>aChild</code>,
-   * which must be a child of this node. If <code>child</code> is the first child, returns null.
-   * This method performs a linear search of this node's children for <code>child</code> and is
+   * Returns the child in this node's child array that immediately precedes the specified child,
+   * which must be a child of this node. If the specified child is the first child, returns null.
+   * This method performs a linear search of this node's children for the specified child and is
    * O(n) where n is the number of children.
    *
-   * @return the child of this node that immediately precedes <code>child</code>
-   * @throws IllegalArgumentException if <code>child</code> is null or is not a child of this node
+   * @return the child of this node that immediately precedes the child
+   * @throws NullPointerException     if the child is null
+   * @throws IllegalArgumentException if the child is not a child of this node
    */
   public T getChildBefore(T child) {
-    if (child == null) {
-      throw new IllegalArgumentException("argument is null");
-    }
+    checkNotNull(child, "The child is null");
 
     int index = indexOf(child); // linear search
-
-    if (index == -1) {
-      throw new IllegalArgumentException("argument is not a child");
-    }
+    checkArgument(index != -1, "The child is not a child of this node");
 
     if (index > 0) {
       return getChild(index - 1);
@@ -265,7 +248,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
   /**
    * Returns the number of children of this node.
    *
-   * @return an int giving the number of children of this node
+   * @return the number of children of this node
    */
   public int getChildCount() {
     if (children == null) {
@@ -281,26 +264,24 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    * {@link #getLevel()} because it must effectively traverse the entire tree rooted at this
    * node.
    *
-   * @return the depth of the tree whose root is this node
+   * @return the depth of the tree rooted at this node
    * @see #getLevel()
    */
   public int getDepth() {
     Iterator<T> itr = breadthFirstIterator();
     T last = Iterators.getLast(itr, null);
-    checkNotNull(last, "nodes should be null");
     return last.getLevel() - getLevel();
   }
 
   /**
-   * Returns this node's first child. If this node has no children, throws {@link
-   * NoSuchElementException}.
+   * Returns the first child of this node.
    *
    * @return the first child of this node
-   * @throws java.util.NoSuchElementException if this node has no children
+   * @throws NoSuchElementException if this node has no child
    */
   public T getFirstChild() {
     if (getChildCount() == 0) {
-      throw new NoSuchElementException("node has no children");
+      throw new NoSuchElementException("This node has no child");
     }
     return getChild(0);
   }
@@ -309,7 +290,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    * Finds and returns the first leaf that is a descendant of this node -- either this node or its
    * first child's first leaf. Returns this node if it is a leaf.
    *
-   * @return the first leaf in the subtree rooted at this node
+   * @return the first leaf that is a descendant of this node
    * @see #isLeaf()
    */
   public T getFirstLeaf() {
@@ -327,18 +308,18 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    * java.util.NoSuchElementException}.
    *
    * @return the last child of this node
-   * @throws java.util.NoSuchElementException if this node has no children
+   * @throws NoSuchElementException if this node has no child
    */
   public T getLastChild() {
     if (getChildCount() == 0) {
-      throw new NoSuchElementException("node has no children");
+      throw new NoSuchElementException("This node has no child");
     }
     return getChild(getChildCount() - 1);
   }
 
   /**
-   * Finds and returns the last leaf that is a descendant of this node -- either this node or its
-   * last child's last leaf. Returns this node if it is a leaf.
+   * Returns the last leaf that is a descendant of this node -- either this node or its last child's
+   * last leaf. Returns this node if it is a leaf.
    *
    * @return the last leaf in the subtree rooted at this node
    * @see #isLeaf()
@@ -354,16 +335,16 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
   }
 
   /**
-   * returns the leaves in a Tree in the order by the natural left to right.
+   * Returns the leaves under this node in the order by the natural left to right.
    *
-   * @return the leaves in a Tree in the order by the natural left to right.
+   * @return the leaves under this node in the order by the natural left to right
    */
   public List<T> getLeaves() {
     return Lists.newArrayList(leavesIterator());
   }
 
   /**
-   * Gets a List of the data in the tree's leaves. The Object of all leaf nodes is returned as a
+   * Returns a list of the data in the tree's leaves. The object of all leaf nodes is returned as a
    * list ordered by the natural left to right order of the leaves. Null values, if any, are
    * inserted into the list like any other value.
    *
