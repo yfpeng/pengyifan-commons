@@ -6,7 +6,13 @@ import com.pengyifan.commons.lang.StringUtils;
 import edu.stanford.nlp.util.ErasureUtils;
 
 import java.lang.reflect.Array;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Queue;
+import java.util.Stack;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -376,7 +382,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    * @return a List of the data in the tree's leaves.
    */
   public List<E> getLeafObjects() {
-    final Iterable<T> iterable = () -> leavesIterator();
+    final Iterable<T> iterable = this::leavesIterator;
     return StreamSupport.stream(iterable.spliterator(), false)
         .map(T::getObject)
         .collect(Collectors.toList());
@@ -548,12 +554,10 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
 
     if (child == null) {
       val = false;
+    } else if (getChildCount() == 0) {
+      val = false;
     } else {
-      if (getChildCount() == 0) {
-        val = false;
-      } else {
-        val = (child.getParent() == this);
-      }
+      val = (child.getParent() == this);
     }
 
     return val;
@@ -766,7 +770,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
 
     @Override
     public boolean hasNext() {
-      return (!queue.isEmpty() && queue.peek().hasNext());
+      return !queue.isEmpty() && queue.peek().hasNext();
     }
 
     @Override
@@ -842,19 +846,19 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
 
     @Override
     public T next() {
-      T retval;
+      T val;
 
       if (subtree.hasNext()) {
-        retval = subtree.next();
+        val = subtree.next();
       } else if (children.hasNext()) {
         subtree = new PostorderIterator<>(children.next());
-        retval = subtree.next();
+        val = subtree.next();
       } else {
-        retval = root;
+        val = root;
         root = null;
       }
 
-      return retval;
+      return val;
     }
 
     @Override
