@@ -41,11 +41,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
 
+  private List<T> children;
+
   private E obj;
 
   private T parent;
-
-  private List<T> children;
 
   /**
    * Creates a tree node that has no parent and no children.
@@ -79,7 +79,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
   public void add(int index, T child) {
     checkNotNull(child, "The child is null");
     checkArgument(!isNodeAncestor(child), "The child is an ancestor of this node");
-    child.setParent(ErasureUtils.uncheckedCast(this));
+    child.setParent(getThis());
     if (children == null) {
       children = Lists.newLinkedList();
     }
@@ -115,7 +115,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    * @see #preorderIterator()
    */
   public Iterator<T> breadthFirstIterator() {
-    return new BreadthFirstIterator<>(ErasureUtils.uncheckedCast(this));
+    return new BreadthFirstIterator<>(getThis());
   }
 
   public List<T> breadthFirstList() {
@@ -179,6 +179,15 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    */
   public Iterator<T> depthFirstIterator() {
     return postorderIterator();
+  }
+
+  /**
+   * Returns true if the specified node is dominated by this node. Object equality (==)
+   * rather
+   * than .equals() is used to determine domination. t.dominates(t) returns false.
+   */
+  public boolean dominates(T t) {
+    return !(getDominationPath(t).isEmpty());
   }
 
   /**
@@ -268,6 +277,41 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
   }
 
   /**
+   * Returns the path of nodes leading down to a dominated node, including
+   * <code>this</code> and the dominated node itself. Returns null if t is not
+   * dominated by <code>this</code>. Object equality (==) is the relevant
+   * criterion. t.dominationPath(t) returns emptyList.
+   */
+  public List<T> getDominationPath(T t) {
+    T[] result = getDominationPath(t, 0);
+    if (result == null) {
+      return Collections.emptyList();
+    }
+    return Arrays.asList(result);
+  }
+
+  T[] getDominationPath(T t, int depth) {
+    if (this == t) {
+      T[] result = ErasureUtils.uncheckedCast(Array.newInstance(this.getClass(), depth + 1));
+      result[depth] = getThis();
+      return result;
+    }
+    List<T> kids = children();
+    for (int i = kids.size() - 1; i >= 0; i--) {
+      T t1 = kids.get(i);
+      if (t1 == null) {
+        return null;
+      }
+      T[] result;
+      if ((result = t1.getDominationPath(t, depth + 1)) != null) {
+        result[depth] = getThis();
+        return result;
+      }
+    }
+    return null;
+  }
+
+  /**
    * Returns the first child of this node.
    *
    * @return the first child of this node
@@ -288,7 +332,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    * @see #isLeaf()
    */
   public T getFirstLeaf() {
-    T node = ErasureUtils.uncheckedCast(this);
+    T node = getThis();
     while (!node.isLeaf()) {
       node = node.getFirstChild();
     }
@@ -317,20 +361,11 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    * @see #isLeaf()
    */
   public T getLastLeaf() {
-    T node = ErasureUtils.uncheckedCast(this);
+    T node = getThis();
     while (!node.isLeaf()) {
       node = node.getLastChild();
     }
     return node;
-  }
-
-  /**
-   * Returns the leaves under this node in the order by the natural left to right.
-   *
-   * @return the leaves under this node in the order by the natural left to right
-   */
-  public List<T> getLeaves() {
-    return Lists.newArrayList(leavesIterator());
   }
 
   /**
@@ -348,6 +383,15 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
   }
 
   /**
+   * Returns the leaves under this node in the order by the natural left to right.
+   *
+   * @return the leaves under this node in the order by the natural left to right
+   */
+  public List<T> getLeaves() {
+    return Lists.newArrayList(leavesIterator());
+  }
+
+  /**
    * Returns the number of levels above this node -- the distance from the root to this node. If
    * this node is the root, returns 0.
    *
@@ -355,7 +399,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    * @see #getDepth()
    */
   public int getLevel() {
-    T ancestor = ErasureUtils.uncheckedCast(this);
+    T ancestor = getThis();
     int levels = 0;
 
     while ((ancestor = ancestor.getParent()) != null) {
@@ -380,7 +424,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
     if (myParent == null) {
       val = null;
     } else {
-      val = myParent.getChildAfter(ErasureUtils.uncheckedCast(this)); // linear search
+      val = myParent.getChildAfter(getThis()); // linear search
     }
     checkArgument(val==null || isNodeSibling(val), "The child of parent is not a sibling");
     return val;
@@ -407,20 +451,6 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
   }
 
   /**
-   * Returns the path from this node to the root. The first element in the path is this node.
-   *
-   * @return a list of Tree objects giving the path, where the first element in the path is this
-   * node and the last element is the root.
-   */
-  public List<T> getPathToRoot() {
-    List<T> elderList = Lists.newLinkedList();
-    for (T p = ErasureUtils.uncheckedCast(this); p != null; p = p.getParent()) {
-      elderList.add(p);
-    }
-    return elderList;
-  }
-
-  /**
    * Returns the path from the root, to get to this node. The last element in the path is this
    * node.
    *
@@ -431,6 +461,24 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
     List<T> elderList = getPathToRoot();
     Collections.reverse(elderList);
     return elderList;
+  }
+
+  /**
+   * Returns the path from this node to the root. The first element in the path is this node.
+   *
+   * @return a list of Tree objects giving the path, where the first element in the path is this
+   * node and the last element is the root.
+   */
+  public List<T> getPathToRoot() {
+    List<T> elderList = Lists.newLinkedList();
+    for (T p = getThis(); p != null; p = p.getParent()) {
+      elderList.add(p);
+    }
+    return elderList;
+  }
+
+  T getThis() {
+    return ErasureUtils.uncheckedCast(this);
   }
 
   public boolean hasNextSiblingNode() {
@@ -478,7 +526,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
       return false;
     }
 
-    T ancestor = ErasureUtils.uncheckedCast(this);
+    T ancestor = getThis();
 
     do {
       if (ancestor == anotherNode) {
@@ -547,7 +595,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
   }
 
   public Iterator<T> leavesIterator() {
-    return new LeavesIterator<>(ErasureUtils.uncheckedCast(this));
+    return new LeavesIterator<>(getThis());
   }
 
   /**
@@ -564,7 +612,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    * @see #preorderIterator
    */
   public Iterator<T> postorderIterator() {
-    return new PostorderIterator<>(ErasureUtils.uncheckedCast(this));
+    return new PostorderIterator<>(getThis());
   }
 
   public List<Tree> postorderList() {
@@ -582,7 +630,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    * @see #postorderIterator()
    */
   public Iterator<T> preorderIterator() {
-    return new PreorderIterator<>(ErasureUtils.uncheckedCast(this));
+    return new PreorderIterator<>(getThis());
   }
 
   public List<T> preorderList() {
@@ -642,50 +690,6 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    */
   public void setParent(T parent) {
     this.parent = parent;
-  }
-
-  /**
-   * Returns true if the specified node is dominated by this node. Object equality (==)
-   * rather
-   * than .equals() is used to determine domination. t.dominates(t) returns false.
-   */
-  public boolean dominates(T t) {
-    return !(getDominationPath(t).isEmpty());
-  }
-
-  /**
-   * Returns the path of nodes leading down to a dominated node, including
-   * <code>this</code> and the dominated node itself. Returns null if t is not
-   * dominated by <code>this</code>. Object equality (==) is the relevant
-   * criterion. t.dominationPath(t) returns emptyList.
-   */
-  public List<T> getDominationPath(T t) {
-    T[] result = getDominationPath(t, 0);
-    if (result == null) {
-      return Collections.emptyList();
-    }
-    return Arrays.asList(result);
-  }
-
-  T[] getDominationPath(T t, int depth) {
-    if (this == t) {
-      T[] result = ErasureUtils.uncheckedCast(Array.newInstance(this.getClass(), depth + 1));
-      result[depth] = ErasureUtils.uncheckedCast(this);
-      return result;
-    }
-    List<T> kids = children();
-    for (int i = kids.size() - 1; i >= 0; i--) {
-      T t1 = kids.get(i);
-      if (t1 == null) {
-        return null;
-      }
-      T[] result;
-      if ((result = t1.getDominationPath(t, depth + 1)) != null) {
-        result[depth] = ErasureUtils.uncheckedCast(this);
-        return result;
-      }
-    }
-    return null;
   }
 
   /**
