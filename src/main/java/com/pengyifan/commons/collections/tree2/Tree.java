@@ -386,13 +386,10 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    */
   public T getNextSibling() {
     T retval;
-
-    T myParent = getParent();
-
-    if (myParent == null) {
+    if (parent == null) {
       retval = null;
     } else {
-      retval = myParent.getChildAfter((T) this); // linear search
+      retval = parent.getChildAfter((T) this); // linear search
     }
 
     if (retval != null && !isNodeSibling(retval)) {
