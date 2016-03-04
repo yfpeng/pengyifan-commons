@@ -16,15 +16,15 @@ public class TreeUtils {
    * @param t1
    * @param t2
    */
-  public static TreeNode getLowestCommonAncestor(TreeNode t1, TreeNode t2) {
-    List<TreeNode> t1Path = t1.getPathFromRoot();
-    List<TreeNode> t2Path = t2.getPathFromRoot();
+  public static <E, T extends Tree<E, T>> T getLowestCommonAncestor(T t1, T t2) {
+    List<T> t1Path = t1.getPathFromRoot();
+    List<T> t2Path = t2.getPathFromRoot();
     if (t1Path.isEmpty() || t2Path.isEmpty()) {
       return null;
     }
 
     int min = Math.min(t1Path.size(), t2Path.size());
-    TreeNode commonAncestor = null;
+    T commonAncestor = null;
     for (int i = 0; i < min && t1Path.get(i).equals(t2Path.get(i)); ++i) {
       commonAncestor = t1Path.get(i);
     }
@@ -37,7 +37,7 @@ public class TreeUtils {
    * given root, as defined by the size of the yield of all material preceding
    * <i>t</i>.
    */
-  public static int leftEdge(TreeNode t, TreeNode root) {
+  public static <E, T extends Tree<E, T>> int leftEdge(T t, T root) {
     int i[] = new int[] { 0 };
     if (leftEdge(t, root, i)) {
       return i[0];
@@ -46,7 +46,7 @@ public class TreeUtils {
     }
   }
 
-  static boolean leftEdge(TreeNode t, TreeNode t1, int i[]) {
+  static <E, T extends Tree<E, T>> boolean leftEdge(T t, T t1, int i[]) {
     if (t == t1) {
       return true;
     } else if (t1.isLeaf()) {
@@ -54,7 +54,7 @@ public class TreeUtils {
       i[0] = i[0] + j;
       return false;
     } else {
-      for (TreeNode kid : t1.children()) {
+      for (T kid : t1.children()) {
         if (leftEdge(t, kid, i)) {
           return true;
         }
@@ -68,7 +68,7 @@ public class TreeUtils {
    * given root, as defined by the size of the yield of all material preceding
    * <i>t</i> plus all the material contained in <i>t</i>.
    */
-  public static int rightEdge(TreeNode t, TreeNode root) {
+  public static <E, T extends Tree<E, T>> int rightEdge(T t, T root) {
     int i[] = new int[] { root.getLeaves().size() };
     if (rightEdge(t, root, i)) {
       return i[0];
@@ -78,7 +78,7 @@ public class TreeUtils {
     }
   }
 
-  static boolean rightEdge(TreeNode t, TreeNode t1, int i[]) {
+  static <E, T extends Tree<E, T>> boolean rightEdge(T t, T t1, int i[]) {
     if (t == t1) {
       return true;
     } else if (t1.isLeaf()) {
@@ -86,9 +86,9 @@ public class TreeUtils {
       i[0] = i[0] - j;
       return false;
     } else {
-      TreeNode[] kids = t1.children().toArray(new TreeNode[0]);
-      for (int j = kids.length - 1; j >= 0; j--) {
-        if (rightEdge(t, kids[j], i)) {
+      List<T> kids = t1.children();
+      for (int j = kids.size() - 1; j >= 0; j--) {
+        if (rightEdge(t, kids.get(j), i)) {
           return true;
         }
       }

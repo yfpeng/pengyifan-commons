@@ -11,6 +11,7 @@ import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 import org.kohsuke.args4j.ParserProperties;
 
+@Deprecated
 public class LibSVMPredictClient {
 
   @Option(name = "-b", usage = "whether to predict probability estimates, 0 or "

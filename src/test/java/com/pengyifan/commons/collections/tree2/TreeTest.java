@@ -1,14 +1,18 @@
 package com.pengyifan.commons.collections.tree2;
 
+import com.google.common.collect.Lists;
+import com.pengyifan.commons.collections.tree.Tree;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class TreeTest {
@@ -19,6 +23,7 @@ public class TreeTest {
   private final StringTree d = new StringTree("D");
   private final StringTree e = new StringTree("E");
   private final StringTree f = new StringTree("F");
+  private final StringTree g = new StringTree("G");
 
   @Before
   public void setUp() {
@@ -26,42 +31,55 @@ public class TreeTest {
     a.add(b);
     a.add(d);
     a.add(e);
-
     b.add(c);
     b.add(f);
   }
 
   @Test
-  public void testAddIntTreeNode() {
-    StringTree dst = a.deepCopy(new StringTreeFactory());
-    dst.add(0, new StringTree("G"));
-    assertEquals("AGBCFDE", toString(dst.preorderIterator()));
+  public void testAdd() {
+    a.add(g);
+    assertEquals(g, a.getChild(3));
   }
 
   @Test
-  public void testAddTreeNode() {
-    StringTree dst = a.deepCopy(new StringTreeFactory());
-    dst.add(new StringTree("G"));
-    assertEquals("ABCFDEG", toString(dst.preorderIterator()));
+  public void testAddIndex() {
+    assertEquals(b, a.getChild(0));
+    a.add(0, g);
+    assertEquals(g, a.getChild(0));
   }
 
   @Test
   public void testBreadthFirstIterator() {
-    assertEquals("ABDECF", toString(a.breadthFirstIterator()));
+    assertThat(Lists.newArrayList(a.breadthFirstIterator()),
+        is(Lists.newArrayList(a, b, d, e, c, f)));
+  }
+
+  @Test
+  public void testBreadthFirstList() {
+    assertThat(a.breadthFirstList(), is(Lists.newArrayList(a, b, d, e, c, f)));
+  }
+
+  @Test
+  public void testChildren() {
+    assertThat(a.children(), is(Lists.newArrayList(b, d, e)));
   }
 
   @Test
   public void testChildrenIterator() {
-    assertEquals("BDE", toString(a.childrenIterator()));
+    assertThat(Lists.newArrayList(a.children()), is(Lists.newArrayList(b, d, e)));
   }
 
   @Test
   public void testDeepCopy() {
-    StringTree dst = a.deepCopy(new StringTreeFactory());
-    assertEquals(
-        "deep copy is incorrect",
-        toString(a.postorderIterator()),
-        toString(dst.postorderIterator()));
+    StringTree dst = a.deepCopy(StringTree::new);
+    assertThat(dst.postorderList(), is(Lists.newArrayList(c, f, b, d, e, a)));
+    assertThat(dst.preorderList(), is(Lists.newArrayList(a, b, c, f, d, e)));
+  }
+
+  @Test
+  public void testDepthFirstIterator() {
+    assertThat(Lists.newArrayList(a.depthFirstIterator()),
+        is(Lists.newArrayList(c, f, b, d, e, a)));
   }
 
   @Test
@@ -114,6 +132,16 @@ public class TreeTest {
   }
 
   @Test
+  public void testGetLeaves() {
+    assertThat(a.getLeaves(), is(Lists.newArrayList(c, f, d, e)));
+  }
+
+  @Test
+  public void testGetLeafObjects() {
+    assertThat(a.getLeafObjects(), is(Lists.newArrayList("C", "F", "D", "E")));
+  }
+
+  @Test
   public void testGetLevel() {
     assertEquals(0, a.getLevel());
     assertEquals(2, c.getLevel());
@@ -137,13 +165,13 @@ public class TreeTest {
   }
 
   @Test
-  public void testGetPathFromRoot() {
-    assertEquals("ABF", toString(f.getPathFromRoot().iterator()));
+  public void testGetPathToRoot() {
+    assertThat(f.getPathToRoot(), is(Lists.newArrayList(f, b, a)));
   }
 
   @Test
-  public void testGetPathToRoot() {
-    assertEquals("FBA", toString(f.getPathToRoot().iterator()));
+  public void testGetPathFromRoot() {
+    assertThat(f.getPathFromRoot(), is(Lists.newArrayList(a, b, f)));
   }
 
   @Test
@@ -185,49 +213,92 @@ public class TreeTest {
 
   @Test
   public void testIsRoot() {
-    assertEquals(true, a.isRoot());
+    assertTrue(a.isRoot());
     assertFalse(c.isRoot());
   }
 
   @Test
   public void testIterator() {
-    assertEquals("ABCFDE", toString(a.iterator()));
+    assertThat(Lists.newArrayList(a.iterator()),
+        is(Lists.newArrayList(a, b, c, f, d, e)));
   }
 
   @Test
   public void testLeavesIterator() {
-    assertEquals("CFDE", toString(a.leavesIterator()));
+    assertThat(Lists.newArrayList(a.leavesIterator()),
+        is(Lists.newArrayList(c, f, d, e)));
   }
 
   @Test
   public void testPostorderIterator() {
-    assertEquals("CFBDEA", toString(a.postorderIterator()));
+    assertThat(Lists.newArrayList(a.postorderIterator()),
+        is(Lists.newArrayList(c, f, b, d, e, a)));
+  }
+
+  @Test
+  public void testPostorderList() {
+    assertThat(a.postorderList(), is(Lists.newArrayList(c, f, b, d, e, a)));
   }
 
   @Test
   public void testPreorderIterator() {
-    assertEquals("ABCFDE", toString(a.preorderIterator()));
+    assertThat(Lists.newArrayList(a.preorderIterator()),
+        is(Lists.newArrayList(a, b, c, f, d, e)));
   }
 
   @Test
-  public void testRemoveInt() {
-    StringTree dst = a.deepCopy(new StringTreeFactory());
-    dst.remove(1);
-    assertEquals("ABCFE", toString(dst.preorderIterator()));
+  public void testPreorderList() {
+    assertThat(a.preorderList(), is(Lists.newArrayList(a, b, c, f, d, e)));
   }
 
   @Test
-  public void testRemoveTreeNode() {
-    StringTree dst = a.deepCopy(new StringTreeFactory());
-    dst.remove(dst.getChild(0));
-    assertEquals("ADE", toString(dst.preorderIterator()));
+  public void testRemove() {
+    assertEquals(b, a.getChild(0));
+    a.remove(b);
+    assertEquals(d, a.getChild(0));
+  }
+
+  @Test
+  public void testRemoveIndex() {
+    assertEquals(d, a.getChild(1));
+    a.remove(1);
+    assertEquals(e, a.getChild(1));
   }
 
   @Test
   public void testReversal() {
-    StringTree dst = a.deepCopy(new StringTreeFactory());
-    dst.reversal();
-    assertEquals("AEDBFC", toString(dst.preorderIterator()));
+    a.reversal();
+    assertEquals(e, a.getChild(0));
+    assertEquals(d, a.getChild(1));
+    assertEquals(b, a.getChild(2));
+    assertEquals(f, b.getChild(0));
+    assertEquals(c, b.getChild(1));
+  }
+
+  @Test
+  public void testSetObject() {
+    assertEquals("A", a.getObject());
+    a.setObject("Z");
+    assertEquals("Z", a.getObject());
+  }
+
+  @Test
+  public void testSetParent() {
+    assertEquals(a, b.getParent());
+    b.setParent(c);
+    assertEquals(c, b.getParent());
+  }
+
+  @Test
+  public void testDominates() {
+    assertTrue(a.dominates(b));
+    assertTrue(a.dominates(f));
+    assertFalse(f.dominates(e));
+  }
+
+  @Test
+  public void testGetDominationPath() {
+    assertThat(a.getDominationPath(f), is(Lists.newArrayList(a, b, f)));
   }
 
   @Test
@@ -235,25 +306,21 @@ public class TreeTest {
     assertEquals("B", b.toString());
   }
 
-  String toString(Iterator<StringTree> itr) {
-    String str = "";
-    while (itr.hasNext()) {
-      str += (itr.next().getObject());
-    }
-    return str;
-  }
-
-  class StringTree extends Tree<String, StringTree> {
+  private class StringTree extends Tree<String, StringTree> {
     StringTree(String s) {
       setObject(s);
     }
-  }
-
-  class StringTreeFactory implements TreeFactory<String, StringTree> {
 
     @Override
-    public StringTree newTree(String s) {
-      return new StringTree(s);
+    public boolean equals(Object obj) {
+      if (this == obj) {
+        return true;
+      }
+      if (!(obj instanceof StringTree)) {
+        return false;
+      }
+      StringTree rhs = (StringTree) obj;
+      return Objects.equals(getObject(), rhs.getObject());
     }
   }
 }
