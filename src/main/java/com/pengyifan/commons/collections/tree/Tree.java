@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import com.pengyifan.commons.lang.StringUtils;
 import edu.stanford.nlp.util.ErasureUtils;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
@@ -298,7 +297,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
 
   T[] getDominationPath(T t, int depth) {
     if (this == t) {
-      T[] result = ErasureUtils.uncheckedCast(Array.newInstance(this.getClass(), depth + 1));
+      T[] result = ErasureUtils.mkTArray(this.getClass(), depth + 1);
       result[depth] = getThis();
       return result;
     }

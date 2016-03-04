@@ -1,7 +1,6 @@
-package com.pengyifan.commons.collections.tree2;
+package com.pengyifan.commons.collections.tree;
 
 import com.google.common.collect.Lists;
-import com.pengyifan.commons.collections.tree.Tree;
 import org.junit.Before;
 import org.junit.Test;
 

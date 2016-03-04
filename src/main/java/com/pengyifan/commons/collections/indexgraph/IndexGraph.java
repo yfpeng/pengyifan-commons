@@ -24,9 +24,6 @@ public class IndexGraph<V extends IndexObject, E extends IndexObject>
   private static class DirectedMultiLoopGraph<V, E> extends
       AbstractBaseGraph<V, E>
       implements DirectedGraph<V, E> {
-
-    private static final long serialVersionUID = 6915751290785053251L;
-
     public DirectedMultiLoopGraph(Class<E> edgeClass) {
       super(new ClassBasedEdgeFactory<>(edgeClass), true, true);
     }
@@ -56,7 +53,7 @@ public class IndexGraph<V extends IndexObject, E extends IndexObject>
         source,
         target);
     updateIndex(e.getIndex());
-    return isSuccess;
+    return true;
   }
 
   public void addSelfLoop(V v, E e) {
@@ -75,7 +72,7 @@ public class IndexGraph<V extends IndexObject, E extends IndexObject>
         "the vertex is present: Vertex[index=%s]",
         v.getIndex());
     updateIndex(v.getIndex());
-    return isSuccess;
+    return true;
   }
 
   public boolean containsEdge(V source, V target) {
@@ -216,15 +213,13 @@ public class IndexGraph<V extends IndexObject, E extends IndexObject>
   }
 
   public ImmutableSet<V> incomingEdgeSourcesOf(V vertex) {
-    return incomingEdgesOf(vertex)
-        .stream()
+    return incomingEdgesOf(vertex).stream()
         .map(e -> getEdgeSource(e))
         .collect(ImmutableCollectors.toSet());
   }
 
   public ImmutableSet<V> outgoingEdgeTargetsOf(V vertex) {
-    return outgoingEdgesOf(vertex)
-        .stream()
+    return outgoingEdgesOf(vertex).stream()
         .map(e -> getEdgeTarget(e))
         .collect(ImmutableCollectors.toSet());
   }
@@ -252,8 +247,7 @@ public class IndexGraph<V extends IndexObject, E extends IndexObject>
   
   @Override
   public boolean containsEdge(E e) {
-    return graph.edgeSet()
-        .stream()
+    return graph.edgeSet().stream()
         .filter(edge -> e.getIndex() == edge.getIndex())
         .findFirst()
         .isPresent();

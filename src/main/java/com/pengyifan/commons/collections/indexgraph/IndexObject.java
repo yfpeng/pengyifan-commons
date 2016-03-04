@@ -1,11 +1,12 @@
 package com.pengyifan.commons.collections.indexgraph;
 
 import edu.stanford.nlp.ling.CoreLabel;
-import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Objects;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 public class IndexObject {
 
@@ -17,7 +18,7 @@ public class IndexObject {
   }
 
   public int getIndex() {
-    Validate.isTrue(label.index() != -1, "index is not set");
+    checkArgument(label.index() != -1, "index is not set");
     return label.index();
   }
 

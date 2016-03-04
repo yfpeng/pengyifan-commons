@@ -37,7 +37,7 @@ import static com.google.common.base.Preconditions.checkArgument;
  * This ESM implementation also provides a function to determine the graph
  * isomorphism between two graphs.
  * </p>
- * 
+ *
  * @author "Yifan Peng"
  */
 public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject> {
@@ -63,9 +63,9 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
   /**
    * Constructor to initialize the subgraph and graph and specify the start
    * node of the subgraph and the set of start nodes of the graph
-   * 
+   *
    * @param subgraph subgraph (supposed to be smaller)
-   * @param graph graph (supposed to be bigger)
+   * @param graph    graph (supposed to be bigger)
    */
   public ExactSubgraphMatching(IndexGraph<V, E> subgraph, IndexGraph<V, E> graph) {
     this.graph = graph;
@@ -77,8 +77,8 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
   }
 
   /**
-   * randomly choose the start node of the subgraph (default setting)
-   * 
+   * Randomly choose the start node of the subgraph (default setting)
+   *
    * @param subgraphNodes
    * @return start node of the subgraph
    */
@@ -92,7 +92,7 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
   /**
    * Instead of the default random start node, users can specify the start node
    * for the subgraph
-   * 
+   *
    * @param vertex user-specified start node
    */
   public void setSubgraphStartNode(V vertex) {
@@ -106,7 +106,7 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
    * want to use to compare with the subgraph start node. This will narrow down
    * the search by avoiding to match the subgraph start node with every graph
    * node. Consequently, more efficient.
-   * 
+   *
    * @param vertices user-specified set of start nodes
    */
   public void setGraphStartNodes(List<V> vertices) {
@@ -119,7 +119,7 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
    * value is the injective matching node in the graph Since a subgraph can
    * match different places of a graph, we record all the matchings by putting
    * each matching into a List
-   * 
+   *
    * @return a list of matchings between two graphs
    */
   public List<Map<V, V>> getSubgraphMatchingMatches() {
@@ -132,15 +132,10 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
     List<Map<V, V>> matches = null;
 
     for (int i = 0; i < graphStartNodes.size(); i++) {
-      Map<V, V> subgraphToGraph = Maps
-          .newHashMap();
-      Map<V, V> graphToSubgraph = Maps
-          .newHashMap();
-      List<Map<V, V>> total = Lists
-          .newArrayList();
-      List<V> toMatch = Arrays.asList(
-          subgraphStartNode,
-          graphStartNodes.get(i));
+      Map<V, V> subgraphToGraph = Maps.newHashMap();
+      Map<V, V> graphToSubgraph = Maps.newHashMap();
+      List<Map<V, V>> total = Lists.newArrayList();
+      List<V> toMatch = Arrays.asList(subgraphStartNode, graphStartNodes.get(i));
 
       if (matchNodeForAllMatches(
           toMatch,
@@ -169,7 +164,7 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
 
   /**
    * Check if two maps are equal
-   * 
+   *
    * @param m1 : first map
    * @param m2 : second map
    * @return true of false
@@ -192,14 +187,12 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
    * The main recursive function for subgraph isomorphism this function helps
    * retrieve all possible matchings between two graphs because a subgraph can
    * have multiple matchings with a graph
-   * 
-   * @param toMatchs : nodes to be matched in two graphs
-   * @param subgraphToGraphs : map to record mapping from the subgraph to the
-   *          graph
-   * @param graphToSubgraphs : map to record mapping from the graph to the
-   *          subgraph
-   * @param total : store all possible matchings between two graphs
-   * @return boolean to indicate if the matching is successful or not
+   *
+   * @param toMatchs         : nodes to be matched in two graphs
+   * @param subgraphToGraphs : map to record mapping from the subgraph to the graph
+   * @param graphToSubgraphs : map to record mapping from the graph to the subgraph
+   * @param total            : store all possible matchings between two graphs
+   * @return true if the matching is successful
    */
   private boolean matchNodeForAllMatches(List<V> toMatchs,
       Map<V, V> subgraphToGraphs,
@@ -207,13 +200,9 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
       List<Map<V, V>> total) {
     // generate local copies
     List<V> toMatch = Lists.newArrayList(toMatchs);
-    Map<V, V> subgraphToGraph = Maps
-        .newHashMap(subgraphToGraphs);
-    Map<V, V> graphToSubgraph = Maps
-        .newHashMap(graphToSubgraphs);
+    Map<V, V> subgraphToGraph = Maps.newHashMap(subgraphToGraphs);
+    Map<V, V> graphToSubgraph = Maps.newHashMap(graphToSubgraphs);
 
-    boolean failure = false;
-    boolean success = true;
     while (toMatch.size() != 0) {
       V noder = toMatch.remove(0);
       V nodes = toMatch.remove(0);
@@ -221,26 +210,25 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
       // this is the place to check whether they can be matched
       if (subgraphToGraph.containsKey(noder)
           && !graphToSubgraph.containsKey(nodes)) {
-        return failure;
+        return false;
       }
       if (!subgraphToGraph.containsKey(noder)
           && graphToSubgraph.containsKey(nodes)) {
-        return failure;
+        return false;
       }
       if (subgraphToGraph.containsKey(noder)
           && graphToSubgraph.containsKey(nodes)) {
         if (subgraphToGraph.get(noder).equals(nodes)
             && graphToSubgraph.get(nodes).equals(noder)) {
           // do nothing
-        }
-        else {
-          return failure;
+        } else {
+          return false;
         }
       }
 
       // Here we can make checks whether noder and nodes should match
       if (!matchNodeContent(noder, nodes)) {
-        return failure;
+        return false;
       }
 
       // record the injective match
@@ -270,8 +258,7 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
                 && graphToSubgraph.get(s).equals(r)) {
               terminate = true;
               break;
-            }
-            else {
+            } else {
               continue;
             }
           }
@@ -291,11 +278,7 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
         if (terminate) {
           continue;
         }
-        if (flag) {
-          return success;
-        }
-
-        return failure;
+        return flag;
       }
 
       // the other direction match (as dependent)
@@ -321,8 +304,7 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
                 && graphToSubgraph.get(s).equals(r)) {
               terminate = true;
               break;
-            }
-            else {
+            } else {
               continue;
             }
           }
@@ -342,27 +324,22 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
         if (terminate) {
           continue;
         }
-        if (flag) {
-          return success;
-        }
-
-        return failure;
+        return flag;
       }
 
     }
 
     // success return
     total.add(subgraphToGraph);
-    return success;
+    return true;
   }
 
   /**
    * Check if the input subgraph is subsumed by the input graph
-   * 
+   *
    * @return true or false
    */
   public boolean isSubgraphIsomorphism() {
-    boolean isSubgraphIsomorphism = false;
     if (!isSubgraphSmaller()) {
       System.err.println("The size of the subgraph: "
           +
@@ -371,14 +348,13 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
           +
           graph.vertexSet().size()
           + ". Please check.");
-      return isSubgraphIsomorphism;
+      return false;
     }
+    boolean isSubgraphIsomorphism = false;
     for (int i = 0; i < graphStartNodes.size(); i++) {
-      Map<V, V> subgraphToGraph = new HashMap<V, V>();
-      Map<V, V> graphToSubgraph = new HashMap<V, V>();
-      List<V> toMatch = Arrays.asList(
-          subgraphStartNode,
-          graphStartNodes.get(i));
+      Map<V, V> subgraphToGraph = Maps.newHashMap();
+      Map<V, V> graphToSubgraph = Maps.newHashMap();
+      List<V> toMatch = Arrays.asList(subgraphStartNode, graphStartNodes.get(i));
 
       if (matchNodeForSingleMatch(
           toMatch,
@@ -397,15 +373,10 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
    * Provide an additional function to determine if two graphs are isomorphic
    * to each other based on the fact that if two graphs are subgraph isomorphic
    * to each other, then they are isomorphic to each other
-   * 
+   *
    * @return true or false
    */
   public boolean isGraphIsomorphism() {
-
-    boolean isGraphIsomorphism = false;
-    boolean isSubgraphIsomorphicToGraph = false;
-    boolean isgraphIsomorphicToSubgraph = false;
-
     if (!isGraphSizeSame()) {
       System.err.println("The size of the subgraph: "
           +
@@ -414,17 +385,16 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
           +
           graph.vertexSet().size()
           + ". Please check.");
-      return isGraphIsomorphism;
+      return false;
     }
+    boolean isGraphIsomorphism = false;
+    boolean isSubgraphIsomorphicToGraph = false;
+    boolean isgraphIsomorphicToSubgraph = false;
     // subgraph against graph
     for (int i = 0; i < graphStartNodes.size(); i++) {
-      Map<V, V> subgraphToGraph = Maps
-          .newHashMap();
-      Map<V, V> graphToSubgraph = Maps
-          .newHashMap();
-      List<V> toMatch = Arrays.asList(
-          subgraphStartNode,
-          graphStartNodes.get(i));
+      Map<V, V> subgraphToGraph = Maps.newHashMap();
+      Map<V, V> graphToSubgraph = Maps.newHashMap();
+      List<V> toMatch = Arrays.asList(subgraphStartNode, graphStartNodes.get(i));
       if (matchNodeForSingleMatch(
           toMatch,
           subgraphToGraph,
@@ -438,19 +408,12 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
 
     // graph against subgraph
     // reset the startnode(s)
-    subgraphStartNode = getRandomStartNode(Lists
-        .newArrayList(graph.vertexSet()));
-    graphStartNodes = new ArrayList<V>(
-        subgraph.vertexSet());
+    subgraphStartNode = getRandomStartNode(Lists.newArrayList(graph.vertexSet()));
+    graphStartNodes = Lists.newArrayList(graph.vertexSet());
     for (int i = 0; i < graphStartNodes.size(); i++) {
-      Map<V, V> subgraphToGraph = Maps
-          .newHashMap();
-      Map<V, V> graphToSubgraph = Maps
-          .newHashMap();
-
-      List<V> toMatch = Arrays.asList(
-          subgraphStartNode,
-          graphStartNodes.get(i));
+      Map<V, V> subgraphToGraph = Maps.newHashMap();
+      Map<V, V> graphToSubgraph = Maps.newHashMap();
+      List<V> toMatch = Arrays.asList(subgraphStartNode, graphStartNodes.get(i));
       if (matchNodeForSingleMatch(
           toMatch,
           subgraphToGraph,
@@ -467,8 +430,7 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
     }
 
     // set the startnode(s) back
-    subgraphStartNode = getRandomStartNode(Lists.newArrayList(
-        subgraph.vertexSet()));
+    subgraphStartNode = getRandomStartNode(Lists.newArrayList(subgraph.vertexSet()));
     graphStartNodes = Lists.newArrayList(graph.vertexSet());
 
     return isGraphIsomorphism;
@@ -480,14 +442,12 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
    * isomorphic subgraph, it returns. Thus, this function is used to determine
    * the subgraph isomorphism, instead of retrieving all possible matchings
    * between two graphs. Therefore, faster.
-   * 
-   * @param toMatchs : nodes to be matched in two graphs
-   * @param subgraphToGraphs : map to record mapping from the subgraph to the
-   *          graph
-   * @param graphToSubgraphs : map to record mapping from the graph to the
-   *          subgraph
-   * @param subgraph : the input subgraph
-   * @param graph : the input graph
+   *
+   * @param toMatchs         nodes to be matched in two graphs
+   * @param subgraphToGraphs map to record mapping from the subgraph to the graph
+   * @param graphToSubgraphs map to record mapping from the graph to the subgraph
+   * @param subgraph         the input subgraph
+   * @param graph            the input graph
    * @return boolean to indicate if the subgraph isomorphism exists or not
    */
   private boolean matchNodeForSingleMatch(List<V> toMatchs,
@@ -496,15 +456,10 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
       IndexGraph<V, E> subgraph,
       IndexGraph<V, E> graph) {
     // generate local copies
-    List<V> toMatch = new ArrayList<V>(
-        toMatchs);
-    Map<V, V> subgraphToGraph = Maps
-        .newHashMap(subgraphToGraphs);
-    Map<V, V> graphToSubgraph = Maps
-        .newHashMap(graphToSubgraphs);
+    List<V> toMatch = Lists.newArrayList(toMatchs);
+    Map<V, V> subgraphToGraph = Maps.newHashMap(subgraphToGraphs);
+    Map<V, V> graphToSubgraph = Maps.newHashMap(graphToSubgraphs);
 
-    boolean failure = false;
-    boolean success = true;
     while (toMatch.size() != 0) {
       V noder = toMatch.remove(0);
       V nodes = toMatch.remove(0);
@@ -513,26 +468,25 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
       // this is the place to check whether they can be matched
       if (subgraphToGraph.containsKey(noder)
           && !graphToSubgraph.containsKey(nodes)) {
-        return failure;
+        return false;
       }
       if (!subgraphToGraph.containsKey(noder)
           && graphToSubgraph.containsKey(nodes)) {
-        return failure;
+        return false;
       }
       if (subgraphToGraph.containsKey(noder)
           && graphToSubgraph.containsKey(nodes)) {
         if (subgraphToGraph.get(noder).equals(nodes)
             && graphToSubgraph.get(nodes).equals(noder)) {
           // do nothing
-        }
-        else {
-          return failure;
+        } else {
+          return false;
         }
       }
 
       // Here we can make checks whether noder and nodes should match
       if (!matchNodeContent(noder, nodes)) {
-        return failure;
+        return false;
       }
 
       // record the injective match
@@ -563,8 +517,7 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
                 && graphToSubgraph.get(s).equals(r)) {
               terminate = true;
               break;
-            }
-            else {
+            } else {
               continue;
             }
           }
@@ -581,14 +534,14 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
               graph)) {
             subgraphToGraphs = Maps.newHashMap(subgraphToGraph);
             graphToSubgraphs = Maps.newHashMap(graphToSubgraph);
-            return success;
+            return true;
           }
         }
         if (terminate) {
           continue;
         }
 
-        return failure;
+        return false;
       }
 
       // the other direction match (as dependent)
@@ -613,8 +566,7 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
                 && graphToSubgraph.get(s).equals(r)) {
               terminate = true;
               break;
-            }
-            else {
+            } else {
               continue;
             }
           }
@@ -632,13 +584,13 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
               graph)) {
             subgraphToGraphs = Maps.newHashMap(subgraphToGraph);
             graphToSubgraphs = Maps.newHashMap(graphToSubgraph);
-            return success;
+            return true;
           }
         }
         if (terminate)
           continue;
 
-        return failure;
+        return false;
       }
 
     }
@@ -650,7 +602,7 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
     // subgraphToGraphs.entrySet())
     // System.out.println(entry.getKey().getToken() + " -> " +
     // entry.getValue().getToken());
-    return success;
+    return true;
   }
 
   /**
@@ -658,7 +610,7 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
    * Current implementation check the compareForm in each node, which includes
    * the generalized POS tag and the lemma information computed by the
    * BioLemmatizer
-   * 
+   *
    * @param noder : node in the subgraph
    * @param nodes : node in the graph
    * @return true of false
@@ -675,7 +627,7 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
    * Sanity check if the specified subgraph is smaller or equal to the
    * specified graph This function is called first when determining the
    * subgraph isomorphism
-   * 
+   *
    * @return true or false
    */
   private Boolean isSubgraphSmaller() {
@@ -685,7 +637,7 @@ public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject>
   /**
    * Sanity check if the specified subgraph is equal to the specified graph
    * This function is called first when determining the graph isomorphism
-   * 
+   *
    * @return true or false
    */
   private Boolean isGraphSizeSame() {
