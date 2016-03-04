@@ -11,6 +11,10 @@ public class StringUtils {
   // ├
   public static final String MIDDLE = bar(3);
 
+  private StringUtils() throws InstantiationException {
+    throw new InstantiationException("This class is not for instantiation");
+  }
+
   private static String bar(int i) {
     try {
       switch (i) {

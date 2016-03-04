@@ -8,7 +8,12 @@ import java.util.AbstractList;
  * This class contains static utility methods that operate on or return objects
  * of type Iterable.
  */
-public class MyIterables {
+public final class MyIterables {
+
+  private MyIterables() throws InstantiationException {
+    throw new InstantiationException("This class is not for instantiation");
+  }
+
   /**
    * Creates an iterable combining the first element and an array
    * 

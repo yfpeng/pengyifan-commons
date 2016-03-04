@@ -16,7 +16,7 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.Validate;
 
-public class FileUtils2 {
+public final class FileUtils2 {
 
   private static final FileFilter ACCEPT_ALL = new FileFilter() {
 
@@ -25,6 +25,10 @@ public class FileUtils2 {
       return true;
     }
   };
+
+  private FileUtils2() throws InstantiationException {
+    throw new InstantiationException("This class is not for instantiation");    
+  }
 
   public static void mergeFile(File destination, List<File> sources)
       throws IOException {

@@ -25,8 +25,11 @@ import com.google.common.collect.ImmutableSet;
  *     .collect(ImmutableCollectors.toSet());
  * </pre>
  */
-public class ImmutableCollectors {
+public final class ImmutableCollectors {
 
+  private ImmutableCollectors() throws InstantiationException {
+    throw new InstantiationException("This class is not for instantiation");
+  }
   /**
    * Returns a {@code Collector} that accumulates the input elements into a new
    * {@code ImmutableList}.

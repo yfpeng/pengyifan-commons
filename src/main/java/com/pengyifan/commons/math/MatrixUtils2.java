@@ -12,7 +12,11 @@ import org.apache.commons.math3.linear.RealMatrix;
 
 import Jama.Matrix;
 
-public class MatrixUtils2 {
+public final class MatrixUtils2 {
+
+  private MatrixUtils2() throws InstantiationException {
+    throw new InstantiationException("This class is not for instantiation");    
+  }
 
   public static String printInOneline(String[][] matrix) {
     StringBuilder sb = new StringBuilder();

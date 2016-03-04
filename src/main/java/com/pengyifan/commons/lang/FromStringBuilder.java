@@ -9,10 +9,14 @@ import java.util.regex.Pattern;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class FromStringBuilder {
+public final class FromStringBuilder {
 
   private static final Pattern pattern = Pattern
       .compile("([a-z]+)=\"([^\"]+|\")\"");
+
+  private FromStringBuilder() throws InstantiationException {
+    throw new InstantiationException("This class is not for instantiation");    
+  }
 
   /**
    * Parses a string formatted with toStringBuilder

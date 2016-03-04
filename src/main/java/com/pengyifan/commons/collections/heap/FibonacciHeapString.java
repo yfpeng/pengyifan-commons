@@ -2,7 +2,11 @@ package com.pengyifan.commons.collections.heap;
 
 import com.pengyifan.commons.lang.StringUtils;
 
-public class FibonacciHeapString {
+public final class FibonacciHeapString {
+
+  private FibonacciHeapString() throws InstantiationException {
+    throw new InstantiationException("This class is not for instantiation");
+  }
 
   public static StringBuilder toString(FibonacciHeap heap, StringBuilder sb) {
     if (heap.minimum() == null) {
