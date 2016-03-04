@@ -5,8 +5,11 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ListUtils {
+public final class ListUtils {
 
+  private ListUtils() throws InstantiationException {
+    throw new InstantiationException("This class is not for instantiation");
+  }
   /**
    * Given a sequence of s1,...,sn, find the first subsequence si1 < si2 < ...<
    * sik with i1 < ... < ik so that k is as large as possible.

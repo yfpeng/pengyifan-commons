@@ -6,7 +6,11 @@ import org.javatuples.Pair;
 import java.util.Collection;
 import java.util.List;
 
-public class Pairs {
+public final class Pairs {
+
+  private Pairs() throws InstantiationException {
+    throw new InstantiationException("This class is not for instantiation");
+  }
 
   public static <E> Collection<Pair<E, E>> getPairs(Collection<E> set) {
     List<Pair<E, E>> pairs = Lists.newArrayList();

@@ -6,7 +6,11 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.Validate;
 
-public class RangeUtils {
+public final class RangeUtils {
+  
+  private RangeUtils() throws InstantiationException {
+    throw new InstantiationException("This class is not for instantiation");    
+  }
 
   /**
    * Returns true if range1 &le; range2.
