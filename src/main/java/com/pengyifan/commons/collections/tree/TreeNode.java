@@ -45,6 +45,7 @@ import com.pengyifan.commons.lang.StringUtils;
  * 
  * 
  * @author Yifan Peng
+ * @deprecated
  */
 public class TreeNode implements Iterable<TreeNode> {
 

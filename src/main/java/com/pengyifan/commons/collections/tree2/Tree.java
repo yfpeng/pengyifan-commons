@@ -3,18 +3,17 @@ package com.pengyifan.commons.collections.tree2;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.pengyifan.commons.lang.StringUtils;
+import edu.stanford.nlp.util.ErasureUtils;
+import org.apache.commons.lang3.Validate;
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkElementIndex;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -81,7 +80,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
   public void add(int index, T child) {
     checkNotNull(child, "The child is null");
     checkArgument(!isNodeAncestor(child), "The child is an ancestor of this node");
-    child.setParent((T) this);
+    child.setParent(ErasureUtils.uncheckedCast(this));
     if (children == null) {
       children = Lists.newLinkedList();
     }
@@ -117,7 +116,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    * @see #preorderIterator()
    */
   public Iterator<T> breadthFirstIterator() {
-    return new BreadthFirstIterator(this);
+    return new BreadthFirstIterator<>(ErasureUtils.uncheckedCast(this));
   }
 
   public List<T> breadthFirstList() {
@@ -268,8 +267,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    * @see #getLevel()
    */
   public int getDepth() {
-    Iterator<T> itr = breadthFirstIterator();
-    T last = Iterators.getLast(itr, null);
+    T last = Iterators.getLast(breadthFirstIterator());
     return last.getLevel() - getLevel();
   }
 
@@ -294,12 +292,10 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    * @see #isLeaf()
    */
   public T getFirstLeaf() {
-    T node = (T) this;
-
+    T node = ErasureUtils.uncheckedCast(this);
     while (!node.isLeaf()) {
       node = node.getFirstChild();
     }
-
     return node;
   }
 
@@ -325,12 +321,10 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    * @see #isLeaf()
    */
   public T getLastLeaf() {
-    T node = (T) this;
-
+    T node = ErasureUtils.uncheckedCast(this);
     while (!node.isLeaf()) {
       node = node.getLastChild();
     }
-
     return node;
   }
 
@@ -353,7 +347,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
   public List<E> getLeafObjects() {
     final Iterable<T> iterable = () -> leavesIterator();
     return StreamSupport.stream(iterable.spliterator(), false)
-        .map(t -> t.getObject())
+        .map(T::getObject)
         .collect(Collectors.toList());
   }
 
@@ -365,7 +359,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    * @see #getDepth()
    */
   public int getLevel() {
-    T ancestor = (T) this;
+    T ancestor = ErasureUtils.uncheckedCast(this);
     int levels = 0;
 
     while ((ancestor = ancestor.getParent()) != null) {
@@ -385,14 +379,13 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    * @see #children()
    */
   public T getNextSibling() {
-    T retval;
-
     T myParent = getParent();
 
+    T retval;
     if (myParent == null) {
       retval = null;
     } else {
-      retval = myParent.getChildAfter((T) this); // linear search
+      retval = myParent.getChildAfter(ErasureUtils.uncheckedCast(this)); // linear search
     }
 
     if (retval != null && !isNodeSibling(retval)) {
@@ -430,7 +423,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    */
   public List<T> getPathToRoot() {
     List<T> elderList = Lists.newLinkedList();
-    for (T p = (T) this; p != null; p = p.getParent()) {
+    for (T p = ErasureUtils.uncheckedCast(this); p != null; p = p.getParent()) {
       elderList.add(p);
     }
     return elderList;
@@ -455,13 +448,13 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
 
   /**
    * Returns the index of the specified child in this node's child array. If the specified node is
-   * not a child of this node, returns <code>-1</code>. This method performs a linear search and is
-   * O(n) where n is the number of children.
+   * not a child of this node, returns -1. This method performs a linear search and is O(n) where
+   * n is the number of children.
    *
    * @param child the Tree to search for among this node's children
    * @return an int giving the index of the node in this node's child array, or <code>-1</code> if
    * the specified node is a not a child of this node
-   * @throws NullPointerException if <code>child</code> is null
+   * @throws NullPointerException if the specified child is null
    */
   public int indexOf(T child) {
     checkNotNull(child, "argument is null");
@@ -494,7 +487,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
       return false;
     }
 
-    T ancestor = (T) this;
+    T ancestor = ErasureUtils.uncheckedCast(this);
 
     do {
       if (ancestor == anotherNode) {
@@ -506,21 +499,21 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
   }
 
   /**
-   * Returns true if <code>t</code> is a child of this node. If <code>t</code> is null,
-   * this method returns false.
+   * Returns true if the child is a child of this node. Returns false if the child is null.
    *
-   * @return true if <code>t</code> is a child of this node; false if <code>t</code> is null
+   * @param child the specified child
+   * @return true if the child is a child of this node
    */
-  public boolean isNodeChild(T t) {
+  public boolean isNodeChild(T child) {
     boolean retval = false;
 
-    if (t == null) {
+    if (child == null) {
       retval = false;
     } else {
       if (getChildCount() == 0) {
         retval = false;
       } else {
-        retval = (t.getParent() == this);
+        retval = (child.getParent() == this);
       }
     }
 
@@ -528,29 +521,25 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
   }
 
   /**
-   * Returns true if <code>anotherNode</code> is a sibling of (has the same parent as) this node. A
-   * node is its own sibling. If <code>anotherNode</code> is null, returns false.
+   * Returns true if the specified node is a sibling of (has the same parent as) this node. A
+   * node is its own sibling. Returns false if the node is null.
    *
-   * @param anotherNode node to test as sibling of this node
-   * @return true if <code>anotherNode</code> is a sibling of this node
+   * @param t node to test as sibling of this node
+   * @return true if the specified node is a sibling of this node
    */
-  public boolean isNodeSibling(T anotherNode) {
-    boolean retval = false;
-
-    if (anotherNode == null) {
-      retval = false;
-    } else if (anotherNode == this) {
-      retval = true;
+  public boolean isNodeSibling(T t) {
+    boolean val;
+    if (t == null) {
+      val = false;
+    } else if (t == this) {
+      val = true;
     } else {
-      Tree myParent = getParent();
-      retval = (myParent != null && myParent == anotherNode.getParent());
-
-      if (retval && !(getParent()).isNodeChild(anotherNode)) {
+      val = (parent != null && parent == t.getParent());
+      if (val && !(getParent()).isNodeChild(t)) {
         throw new Error("sibling has different parent");
       }
     }
-
-    return retval;
+    return val;
   }
 
   /**
@@ -570,7 +559,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
   }
 
   public Iterator<T> leavesIterator() {
-    return new LeavesIterator(this);
+    return new LeavesIterator<>(ErasureUtils.uncheckedCast(this));
   }
 
   /**
@@ -587,7 +576,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    * @see #preorderIterator
    */
   public Iterator<T> postorderIterator() {
-    return new PostorderIterator(this);
+    return new PostorderIterator<>(ErasureUtils.uncheckedCast(this));
   }
 
   public List<Tree> postorderList() {
@@ -605,7 +594,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    * @see #postorderIterator()
    */
   public Iterator<T> preorderIterator() {
-    return new PreorderIterator(this);
+    return new PreorderIterator<>(ErasureUtils.uncheckedCast(this));
   }
 
   public List<T> preorderList() {
@@ -613,48 +602,35 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
   }
 
   /**
-   * Removes the child at the specified index from this node's children and
-   * sets that node's parent to null. The child node to remove must be a
-   * <code>MutableTreeNode</code>.
+   * Removes the child at the specified index from this node's children. Sets that node's parent
+   * to null.
    *
-   * @param childIndex the index in this node's child array of the child to
-   *                   remove
-   * @throws ArrayIndexOutOfBoundsException if <code>childIndex</code> is
-   *                                        out of bounds
+   * @param index the index in this node's child array of the child to be removed
+   * @throws IndexOutOfBoundsException if the index is out of bounds
    */
-  public void remove(int childIndex) {
-    Tree child = getChild(childIndex);
-    children.remove(childIndex);
+  public void remove(int index) {
+    T child = children.remove(index);
     child.setParent(null);
   }
 
   /**
-   * Removes <code>aChild</code> from this node's child array, giving it a null
-   * parent.
+   * Removes the child from this node's child array, giving it a null parent.
    *
-   * @param aChild a child of this node to remove
-   * @throws IllegalArgumentException if <code>aChild</code> is null or is
-   *                                  not a child of this node
+   * @param child a child of this node to remove
+   * @throws NullPointerException     if the child is null
+   * @throws IllegalArgumentException if the child is not a child of this node
    */
-  public void remove(T aChild) {
-    if (aChild == null) {
-      throw new IllegalArgumentException("argument is null");
-    }
-
-    if (!isNodeChild(aChild)) {
-      throw new IllegalArgumentException("argument is not a child");
-    }
-    remove(indexOf(aChild)); // linear search
+  public void remove(T child) {
+    checkNotNull(child, "The child is null");
+    checkArgument(!isNodeChild(child), "The child is not a child of this node");
+    children.remove(child);
+    child.setParent(null);
   }
 
   public void reversal() {
-    if (children == null) {
-      return;
-    } else {
-      Collections.reverse(this.children);
-      for (Tree child : children) {
-        child.reversal();
-      }
+    if (children != null) {
+      Collections.reverse(children);
+      children.forEach(T::reversal);
     }
   }
 
@@ -670,14 +646,14 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
   }
 
   /**
-   * Sets this node's parent to <code>newParent</code> but does not change the parent's child
-   * array. This method is called from <code>insert()</code> and <code>remove()</code> to reassign
+   * Sets this node's parent to the specified parent but does not change the parent's child
+   * array. This method is called from {@link #add(Tree)} and {@link #remove(Tree)} to reassign
    * a child's parent, it should not be messaged from anywhere else.
    *
-   * @param newParent this node's new parent
+   * @param parent this node's new parent
    */
-  public void setParent(T newParent) {
-    parent = newParent;
+  public void setParent(T parent) {
+    this.parent = parent;
   }
 
   /**
@@ -695,8 +671,8 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    * dominated by <code>this</code>. Object equality (==) is the relevant
    * criterion. t.dominationPath(t) returns emptyList.
    */
-  public List<Tree> getDominationPath(T t) {
-    Tree[] result = getDominationPath(t, 0);
+  public List<T> getDominationPath(T t) {
+    T[] result = getDominationPath(t, 0);
     if (result == null) {
       return Collections.emptyList();
     }
@@ -705,8 +681,8 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
 
   T[] getDominationPath(T t, int depth) {
     if (this == t) {
-      T[] result = (T[]) Array.newInstance(this.getClass(), depth + 1);
-      result[depth] = (T) this;
+      T[] result = ErasureUtils.uncheckedCast(Array.newInstance(this.getClass(), depth + 1));
+      result[depth] = ErasureUtils.uncheckedCast(this);
       return result;
     }
     List<T> kids = children();
@@ -717,7 +693,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
       }
       T[] result;
       if ((result = t1.getDominationPath(t, depth + 1)) != null) {
-        result[depth] = (T) this;
+        result[depth] = ErasureUtils.uncheckedCast(this);
         return result;
       }
     }
@@ -732,7 +708,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    */
   @Override
   public String toString() {
-    return toString(SIMPLE_PRINT);
+    return toString(tree -> tree.obj == null ? null : tree.obj.toString());
   }
 
   /**
@@ -743,23 +719,8 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
     return formatter.apply(this);
   }
 
-
-  public static final Function<Tree, String> SIMPLE_PRINT =
-      new Function<Tree, String>() {
-
-        @Override
-        public String apply(Tree tree) {
-          if (tree.obj == null) {
-            return null;
-          } else {
-            return tree.obj.toString();
-          }
-        }
-      };
-
   /**
-   * Given a <code>Tree</code> structure, <code>TreeString</code> will
-   * print a string like
+   * Print a string of a tree structure like
    * <p>
    * <pre>
    * └ a
@@ -769,40 +730,181 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    *   │ └ f
    *   └ d
    * </pre>
-   *
-   * @author Yifan Peng
    */
-  public static final Function<Tree, String> PRETTY_PRINT =
-      new Function<Tree, String>() {
+  public static class PrettyPrint<E, T extends Tree<E, T>> implements Function<T, String> {
 
-        @Override
-        public String apply(Tree tree) {
-          StringBuilder sb = new StringBuilder();
-          Iterator<Tree> itr = tree.preorderIterator();
-          while (itr.hasNext()) {
-            Tree tn = itr.next();
-            // add prefix
-            for (Object p : tn.getPathFromRoot()) {
-              // if parent has sibling node
-              if (p == tn) {
-                ;
-              } else if (((Tree) p).hasNextSiblingNode()) {
-                sb.append(StringUtils.BAR + " ");
-              } else {
-                sb.append("  ");
-              }
-            }
-            // if root has sibling node
-            if (tn.hasNextSiblingNode()) {
-              sb.append(StringUtils.MIDDLE + " ");
-            } else {
-              sb.append(StringUtils.END + " ");
-            }
-            sb.append(tn.getObject() + "\n");
-
+    @Override
+    public String apply(T tree) {
+      StringBuilder sb = new StringBuilder();
+      Iterator<T> itr = tree.preorderIterator();
+      while (itr.hasNext()) {
+        T tn = itr.next();
+        // add prefix
+        for (T p : tn.getPathFromRoot()) {
+          // if parent has sibling node
+          if (p == tn) {
+            ;
+          } else if (p.hasNextSiblingNode()) {
+            sb.append(StringUtils.BAR).append(" ");
+          } else {
+            sb.append("  ");
           }
-          return sb.toString();
         }
-      };
+        // if root has sibling node
+        if (tn.hasNextSiblingNode()) {
+          sb.append(StringUtils.MIDDLE);
+        } else {
+          sb.append(StringUtils.END);
+        }
+        sb.append(" ").append(tn.getObject()).append("\n");
 
+      }
+      return sb.toString();
+    }
+  }
+
+  public static class BreadthFirstIterator<E, T extends Tree<E, T>> implements Iterator<T> {
+
+    private Queue<Iterator<T>> queue;
+
+    public BreadthFirstIterator(T rootNode) {
+      queue = Lists.newLinkedList();
+      queue.offer(Iterators.singletonIterator(rootNode));
+    }
+
+    @Override
+    public boolean hasNext() {
+      return (!queue.isEmpty() && queue.peek().hasNext());
+    }
+
+    @Override
+    public T next() {
+      Iterator<T> itr = queue.peek();
+      T node = itr.next();
+      Iterator<T> children = node.childrenIterator();
+
+      if (!itr.hasNext()) {
+        queue.poll();
+      }
+      if (children.hasNext()) {
+        queue.offer(children);
+      }
+      return node;
+    }
+
+    @Override
+    public void remove() {
+      throw new UnsupportedOperationException("remove() is not supported.");
+    }
+  }
+
+  public static class LeavesIterator<E, T extends Tree<E, T>> implements Iterator<T> {
+
+    private Iterator<T> depthFirstItr;
+    private T nextLeaf;
+
+    public LeavesIterator(T rootNode) {
+      depthFirstItr = rootNode.depthFirstIterator();
+    }
+
+    @Override
+    public boolean hasNext() {
+      nextLeaf = null;
+      while (depthFirstItr.hasNext()) {
+        T next = depthFirstItr.next();
+        if (next.isLeaf()) {
+          nextLeaf = next;
+          return true;
+        }
+      }
+      return false;
+    }
+
+    @Override
+    public T next() {
+      return nextLeaf;
+    }
+
+    @Override
+    public void remove() {
+      throw new UnsupportedOperationException("remove() is not supported.");
+    }
+  }
+
+  public static class PostorderIterator<E, T extends Tree<E, T>> implements Iterator<T> {
+
+    private T root;
+    private Iterator<T> children;
+    private Iterator<T> subtree;
+
+    public PostorderIterator(T rootNode) {
+      root = rootNode;
+      children = root.childrenIterator();
+      subtree = Collections.emptyIterator();
+    }
+
+    @Override
+    public boolean hasNext() {
+      return root != null;
+    }
+
+    @Override
+    public T next() {
+      T retval;
+
+      if (subtree.hasNext()) {
+        retval = subtree.next();
+      } else if (children.hasNext()) {
+        subtree = new PostorderIterator<>(children.next());
+        retval = subtree.next();
+      } else {
+        retval = root;
+        root = null;
+      }
+
+      return retval;
+    }
+
+    @Override
+    public void remove() {
+      throw new UnsupportedOperationException("remove() is not supported.");
+    }
+
+  }
+
+  public static class PreorderIterator<E, T extends Tree<E, T>> implements Iterator<T> {
+
+    private final Stack<Iterator<T>> stack;
+
+    public PreorderIterator(T t) {
+      stack = new Stack<>();
+      stack.push(Iterators.singletonIterator(t));
+    }
+
+    @Override
+    public boolean hasNext() {
+      return (!stack.empty() && stack.peek().hasNext());
+    }
+
+    @Override
+    public T next() {
+      Iterator<T> itr = stack.peek();
+      T node = itr.next();
+      Iterator<T> childrenItr = node.childrenIterator();
+
+      if (!itr.hasNext()) {
+        stack.pop();
+      }
+      if (childrenItr.hasNext()) {
+        stack.push(childrenItr);
+      }
+      return node;
+    }
+
+    @Override
+    public void remove() {
+      throw new UnsupportedOperationException("remove() is not supported.");
+    }
+
+  }
 }
