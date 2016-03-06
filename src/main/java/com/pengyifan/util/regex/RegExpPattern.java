@@ -364,7 +364,7 @@ public class RegExpPattern {
 	*/
     return T.stream()
         .map(s -> s.getTransition(ch))
-        .flatMap(l -> l.stream())
+        .flatMap(List::stream)
         .collect(Collectors.toSet());
   }
 
@@ -441,7 +441,7 @@ public class RegExpPattern {
   private void reduceDfa() {
     // Get the Set of all dead end states in DFA
     Set<RegExpState> DeadEndSet = dfaTable.stream()
-        .filter(s -> s.isDeadEnd())
+        .filter(RegExpState::isDeadEnd)
         .collect(Collectors.toSet());
 
     // If there are no dead ends then there is nothing to reduce
@@ -582,7 +582,7 @@ public class RegExpPattern {
 
     // Final states are double circled
     table.stream()
-        .filter(s -> s.isAcceptingState())
+        .filter(RegExpState::isAcceptingState)
         .forEach(
             s -> strDFAGraph.append("\t")
                 .append(s.getStateID())

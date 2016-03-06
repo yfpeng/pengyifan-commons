@@ -21,8 +21,7 @@ public final class FromStringBuilder {
   /**
    * Parses a string formatted with toStringBuilder
    * 
-   * @param input - ex.
-   *          "Path[id=1039916,displayName=School Home,description=<null>,...]"
+   * @param input - ex. "Path[id=1039916,displayName=School Home,description=<null>,...]"
    * @return hashmap of name value pairs - ex. id=1039916,...
    */
   public static Map<String, String> stringToMap(String input) {

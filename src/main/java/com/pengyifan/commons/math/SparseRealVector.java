@@ -11,11 +11,10 @@ import java.util.StringJoiner;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
+import com.google.common.collect.Maps;
 import org.apache.commons.math3.exception.MathArithmeticException;
 import org.apache.commons.math3.util.FastMath;
 import org.apache.commons.math3.util.Precision;
-
-import com.google.common.collect.MapMaker;
 
 /**
  * This implementation assumes that the vector requires sparse backing storage.
@@ -36,7 +35,7 @@ public class SparseRealVector {
    */
   public SparseRealVector(int dimension) {
     this.dimension = dimension;
-    map = new MapMaker().makeMap();
+    map = Maps.newConcurrentMap();
   }
 
   /**
@@ -47,10 +46,8 @@ public class SparseRealVector {
    * @see #getEntry(int)
    */
   public void setEntry(int index, double value) {
-    checkArgument(
-        index >= 0 && index < dimension,
-        "Index is out of dimension: %s",
-        index);
+    checkArgument(index >= 0 && index < dimension,
+        "Index is out of dimension: %s", index);
     if (Precision.equals(value, DEFAULT_VALUE, PRECISION)) {
       map.remove(index);
     } else {
@@ -211,11 +208,9 @@ public class SparseRealVector {
 
   public List<Entry<Integer, Double>> toList() {
     return map.entrySet().stream()
-        .filter(entry -> {
-          return !Precision.equals(entry.getValue(), DEFAULT_VALUE);
-        }).sorted((e1, e2) -> {
-          return Integer.compare(e1.getKey(), e2.getKey());
-        }).collect(Collectors.toList());
+        .filter(entry -> !Precision.equals(entry.getValue(), DEFAULT_VALUE))
+        .sorted((e1, e2) -> Integer.compare(e1.getKey(), e2.getKey()))
+        .collect(Collectors.toList());
   }
 
   protected Map<Integer, Double> getMap() {

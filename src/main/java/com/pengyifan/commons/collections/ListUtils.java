@@ -1,5 +1,7 @@
 package com.pengyifan.commons.collections;
 
+import com.google.common.collect.Lists;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -15,18 +17,9 @@ public final class ListUtils {
    * sik with i1 < ... < ik so that k is as large as possible.
    * <p>
    * O(n^2)
-   * 
-   * @param list
    */
-  public static <E extends Comparable<E>> List<E> longestIncreasingSubsequence(
-      List<E> list) {
-    return longestIncreasingSubsequence(list, new Comparator<E>() {
-
-      @Override
-      public int compare(E o1, E o2) {
-        return o1.compareTo(o2);
-      }
-    });
+  public static <E extends Comparable<E>> List<E> longestIncreasingSubsequence(List<E> list) {
+    return longestIncreasingSubsequence(list, E::compareTo);
   }
 
   /**
@@ -34,12 +27,8 @@ public final class ListUtils {
    * sik with i1 < ... < ik so that k is as large as possible.
    * <p>
    * O(n^2)
-   * 
-   * @param list
-   * @param comp
    */
-  public static <E> List<E> longestIncreasingSubsequence(List<E> list,
-      Comparator<E> comp) {
+  public static <E> List<E> longestIncreasingSubsequence(List<E> list, Comparator<E> comp) {
 
     if (list == null) {
       return null;
@@ -78,7 +67,7 @@ public final class ListUtils {
       }
     }
     // walk backwards through P[j] pointers to find the sequence
-    LinkedList<E> lis = new LinkedList<E>();
+    LinkedList<E> lis = Lists.newLinkedList();
     lis.addFirst(list.get(maxIndex));
     int j = maxIndex;
     while (p[j] != -1) {

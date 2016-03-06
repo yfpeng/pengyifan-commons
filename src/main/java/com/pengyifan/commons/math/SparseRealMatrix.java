@@ -3,6 +3,7 @@ package com.pengyifan.commons.math;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.collect.Maps;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.math3.linear.AnyMatrix;
 
@@ -15,7 +16,7 @@ public class SparseRealMatrix implements AnyMatrix {
   public SparseRealMatrix(int rowDimension, int columnDimension) {
     this.rowDimension = rowDimension;
     this.columnDimension = columnDimension;
-    map = new HashMap<Integer, SparseRealVector>();
+    map = Maps.newHashMap();
   }
 
   @Override

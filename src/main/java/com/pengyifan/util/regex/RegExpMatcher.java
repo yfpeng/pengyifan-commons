@@ -1,10 +1,13 @@
 package com.pengyifan.util.regex;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.pengyifan.util.regex.RegExpPattern.FsaTable;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+
+import static com.google.common.base.Preconditions.checkState;
 
 public class RegExpMatcher {
 
@@ -23,9 +26,13 @@ public class RegExpMatcher {
    * The original string being matched.
    */
   private CharSequence text;
-  // Contains all found patterns
+  /**
+   * Contains all found patterns
+   */
   private LinkedList<CharSequence> groupList;
-  // Contains all position where these pattern start in the text
+  /**
+   * Contains all position where these pattern start in the text
+   */
   private LinkedList<Integer> startList;
 
   RegExpMatcher(RegExpPattern pattern, CharSequence text) {
@@ -47,8 +54,8 @@ public class RegExpMatcher {
    * Returns the start index of the previous matcher.
    *
    * @return the start index of the previous matcher
-   * @throws java.lang.IllegalStateException If no matcher has yet been attempted, or if the previous
-   *                                         matcher operation failed
+   * @throws IllegalStateException If no matcher has yet been attempted, or if the
+   *                               previous matcher operation failed
    */
   public int start() {
     if (patternIndex == NOT_FOUND) {
@@ -64,7 +71,8 @@ public class RegExpMatcher {
    * Returns the offset after the last character matched.
    *
    * @return The offset after the last character matched
-   * @throws java.lang.IllegalStateException If no matcher has yet been attempted, or if the previous
+   * @throws java.lang.IllegalStateException If no matcher has yet been attempted, or if the
+   *                                         previous
    *                                         matcher operation failed
    */
   public int end() {
@@ -75,16 +83,12 @@ public class RegExpMatcher {
    * Returns the input subsequence matched by the previous matcher.
    *
    * @return the input subsequence matched by the previous matcher
-   * @throws java.lang.IllegalStateException If no matcher has yet been attempted, or if the previous
-   *                                         matcher operation failed
+   * @throws IllegalStateException If no matcher has yet been attempted, or if the
+   *                               previous matcher operation failed
    */
   public String group() {
-    if (patternIndex == NOT_FOUND) {
-      throw new IllegalStateException("No matcher available");
-    }
-    if (patternIndex >= groupList.size()) {
-      throw new IllegalStateException("No matcher available");
-    }
+    checkState(patternIndex != NOT_FOUND, "No matcher available");
+    checkState(patternIndex < groupList.size(), "No matcher available");
     return groupList.get(patternIndex).toString();
   }
 
@@ -92,7 +96,8 @@ public class RegExpMatcher {
    * Attempts to find the next subsequence of the input sequence that matches the pattern. This
    * method starts at the beginning of this matcher's region, or, if a previous invocation of the
    * method was successful and the matcher has not since been reset, at the first character not
-   * matched by the previous matcher. If the matcher succeeds then more information can be obtained via
+   * matched by the previous matcher. If the matcher succeeds then more information can be obtained
+   * via
    * the start, end, and group methods.
    *
    * @return true if, and only if, a subsequence of the input sequence matches this matcher's
