@@ -49,26 +49,26 @@ public class RegExpPattern {
    * transitions where the key is the input character and values are the references to states to
    * which it transfers.
    */
-  private FsaTable nfaTable;
+  private final FsaTable nfaTable;
   //! DFA table is stores in same format as NFA table
   private FsaTable dfaTable;
   //! Operand Stack
   /*! If we use the Thompson's Algorithm then we realize
     that each operand is a NFA automata on its own!
 	*/
-  private Stack<FsaTable> operandStack;
+  private final Stack<FsaTable> operandStack;
   //! Operator Stack
   /*! Operators are simple characters like "*" & "|" */
-  private Stack<Character> operatorStack;
+  private final Stack<Character> operatorStack;
   //! Keeps track of state IDs
   private int nextStateID;
   //! Set of input characters
-  private Set<Character> inputSet;
+  private final Set<Character> inputSet;
 
   /**
    * The original regular-expression pattern string.
    */
-  private String pattern;
+  private final String pattern;
 
   /**
    * This private constructor is used to create all Patterns. The pattern string is all that is

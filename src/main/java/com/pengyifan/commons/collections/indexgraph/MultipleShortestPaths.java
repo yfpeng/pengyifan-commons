@@ -23,7 +23,7 @@ public class MultipleShortestPaths<V extends Comparable<V>, E extends DefaultWei
   private final Comparator<GraphPath<V, E>> byEdges =
       (p1, p2) -> Integer.compare(p1.getEdgeList().size(), p2.getEdgeList().size());
 
-  private DirectedMultiLoopGraph<V, E> graph;
+  private final DirectedMultiLoopGraph<V, E> graph;
 
   public MultipleShortestPaths(DirectedMultiLoopGraph<V, E> graph) {
     this.graph = graph;

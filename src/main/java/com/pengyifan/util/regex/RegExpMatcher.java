@@ -25,7 +25,7 @@ public class RegExpMatcher {
   /**
    * The original string being matched.
    */
-  private CharSequence text;
+  private final CharSequence text;
   /**
    * Contains all found patterns
    */
