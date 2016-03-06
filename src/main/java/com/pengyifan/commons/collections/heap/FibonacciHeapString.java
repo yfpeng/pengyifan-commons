@@ -28,7 +28,7 @@ public final class FibonacciHeapString {
         } else {
           s += StringUtils.END + " ";
         }
-        sb.append(s).append(cur).append("\n");
+        sb.append(s).append(cur).append('\n');
         toStringPreOrder(cur.child, sb);
       }
     }

@@ -59,7 +59,7 @@ public class FibonacciHeap<E> {
     // then assign the new key to x
     if (key > x.key) {
       throw new IllegalArgumentException(
-          "new key is greater than current key: " + key + ">" + x.key);
+          "new key is greater than current key: " + key + '>' + x.key);
     }
     x.key = key;
 
