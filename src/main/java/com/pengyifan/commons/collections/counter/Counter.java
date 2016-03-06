@@ -10,28 +10,28 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 /**
- * 
  * Defines a collection that counts the number of times an object appears in
  * the collection.
- * 
+ * <p>
  * Suppose you have a Counter that contains {a, a, b, c}. Calling
  * getCount(Object) on "a" would return 2, while calling uniqueSet()/keySet()
  * would return {a, b, c}.
- * 
+ * <p>
  * It works like a Map, but with different methods for easily
  * getting/setting/incrementing counts for objects and computing various
  * functions with the counts. The Counter constructor and addAll method can be
  * used to copy another Counter's contents over.
- * 
+ * <p>
  * Modified according edu.stanford.nlp.stats.IntCounter and
  * org.apache.commons.collections4.bag.AbstractMapBag
- * 
+ * <p>
  * TODO: whether to use AtomicInteger or to create a mutable Integer remains a
  * question
- * 
+ *
  * @author Yifan Peng
  * @version 10/12/2013
- * @deprecated Use {@link com.google.common.collect.Multiset} instead
+ * @deprecated Use {@link com.google.common.collect.Multiset} and {@link
+ * com.pengyifan.commons.collections.Multisets} instead
  */
 @Deprecated
 public abstract class Counter<K> {
@@ -59,7 +59,7 @@ public abstract class Counter<K> {
   /**
    * Adds the counts in the given Counter to the counts in this Counter. To
    * copy the values from another Counter rather than adding them, use
-   * 
+   *
    * @param counter
    */
   public void addAll(Counter<K> counter) {
@@ -73,9 +73,10 @@ public abstract class Counter<K> {
    * Finds and returns the key in this Counter with the largest count. If there
    * are several max counts, random value is returned. Returns null if this
    * Counter is empty.
-   * 
+   *
    * @return the key in this Counter with the largest count
    */
+  @Deprecated
   public K argmax() {
     int max = Integer.MIN_VALUE;
     K argmax = null;
@@ -92,7 +93,7 @@ public abstract class Counter<K> {
   /**
    * Finds and returns the keys in this Counter with the largest count. Returns
    * empty set if this Counter is empty.
-   * 
+   *
    * @return the set of keys in this Counter with the largest count
    */
   public Set<K> argmaxSet() {
@@ -118,7 +119,7 @@ public abstract class Counter<K> {
    * Finds and returns the key in this Counter with the smallest count. If
    * there are several min counts, random value is returned. Returns null if
    * this Counter is empty.
-   * 
+   *
    * @return the key in this Counter with the smallest count
    */
   public K argmin() {
@@ -137,7 +138,7 @@ public abstract class Counter<K> {
   /**
    * Finds and returns the keys in this Counter with the smallest count.
    * Returns empty set if this Counter is empty.
-   * 
+   *
    * @return the set of keys in this Counter with the smallest count
    */
   public Set<K> argminSet() {
@@ -182,12 +183,12 @@ public abstract class Counter<K> {
    * Subtracts 1 from the count for the given key. If the key hasn't been seen
    * before, it is assumed to have count 0, and thus this method will set its
    * count to -1.
-   * <p/>
+   * <p>
    * To decrement the count by a value other than 1, use
-   * {@link #decrementCount(Object,int)}.
-   * <p/>
+   * {@link #decrementCount(Object, int)}.
+   * <p>
    * To set a count to a specific value instead of decrementing it, use
-   * {@link #setCount(Object,int)}.
+   * {@link #setCount(Object, int)}.
    */
   public double decrementCount(K key) {
     return decrementCount(key, 1);
@@ -198,12 +199,12 @@ public abstract class Counter<K> {
    * key hasn't been seen before, it is assumed to have count 0, and thus this
    * method will set its count to the negative of the given amount. Negative
    * increments are equivalent to calling <tt>incrementCount</tt>.
-   * <p/>
+   * <p>
    * To more conveniently decrement the count by 1, use
    * {@link #decrementCount(Object)}.
-   * <p/>
+   * <p>
    * To set a count to a specific value instead of decrementing it, use
-   * {@link #setCount(Object,int)}.
+   * {@link #setCount(Object, int)}.
    */
   public int decrementCount(K key, int count) {
     return incrementCount(key, -count);
@@ -271,7 +272,7 @@ public abstract class Counter<K> {
    * Returns the current count for the given key, which is 0 if it hasn't been
    * seen before. This is a convenient version of <code>get</code> that casts
    * and extracts the primitive value.
-   * 
+   *
    * @param key the object to search for
    * @return the number of occurrences of the object, zero if not found
    */
@@ -287,13 +288,13 @@ public abstract class Counter<K> {
    * Adds 1 to the count for the given key. If the key hasn't been seen before,
    * it is assumed to have count 0, and thus this method will set its count to
    * 1.
-   * <p/>
+   * <p>
    * To increment the count by a value other than 1, use
-   * {@link #incrementCount(Object,int)}.
-   * <p/>
+   * {@link #incrementCount(Object, int)}.
+   * <p>
    * To set a count to a specific value instead of incrementing it, use
-   * {@link #setCount(Object,int)}.
-   * 
+   * {@link #setCount(Object, int)}.
+   *
    * @param key the object to search for
    */
   public int incrementCount(K key) {
@@ -305,14 +306,14 @@ public abstract class Counter<K> {
    * hasn't been seen before, it is assumed to have count 0, and thus this
    * method will set its count to the given amount. Negative increments are
    * equivalent to calling <tt>decrementCount</tt>.
-   * <p/>
+   * <p>
    * To more conveniently increment the count by 1, use
    * {@link #incrementCount(Object)}.
-   * <p/>
+   * <p>
    * To set a count to a specific value instead of incrementing it, use
-   * {@link #setCount(Object,int)}.
-   * 
-   * @param key the object to search for
+   * {@link #setCount(Object, int)}.
+   *
+   * @param key   the object to search for
    * @param count the number of copies to add
    */
   public int incrementCount(K key, int count) {
@@ -328,7 +329,7 @@ public abstract class Counter<K> {
 
   /**
    * Returns true if the underlying map is empty.
-   * 
+   *
    * @return true if there are no elements in this counter
    */
   public boolean isEmpty() {
@@ -379,7 +380,7 @@ public abstract class Counter<K> {
 
   /**
    * Returns an unmodifiable view of the underlying map's key set.
-   * 
+   *
    * @return the set of unique elements in this counter
    */
   public Set<K> keySet() {
@@ -388,7 +389,7 @@ public abstract class Counter<K> {
 
   /**
    * Returns an unmodifiable view of the underlying map's key set.
-   * 
+   *
    * @return the set of unique elements in this counter
    */
   public Set<K> uniqueSet() {
@@ -446,7 +447,7 @@ public abstract class Counter<K> {
    * counts or adding and subtracting Counters, there may be keys left whose
    * count is 0, though normally this is undesirable. This method cleans up the
    * map.
-   * 
+   * <p>
    * Maybe in the future we should try to do this more on-the-fly, though it's
    * not clear whether a distinction should be made between "never seen" (i.e.
    * null count) and "seen with 0 count". Certainly there's no distinction in
@@ -466,9 +467,9 @@ public abstract class Counter<K> {
   /**
    * Sets the current count for the given key. This will wipe out any existing
    * count for that key.
-   * 
+   * <p>
    * To add to a count instead of replacing it, use
-   * {@link #incrementCount(Object,int)}.
+   * {@link #incrementCount(Object, int)}.
    */
   public void setCount(K key, int count) {
     MutableInteger tmpCount = new MutableInteger(count);
@@ -481,7 +482,7 @@ public abstract class Counter<K> {
 
   /**
    * Returns the number of elements in this counter.
-   * 
+   *
    * @return the number of elements in this counter
    */
   public int size() {
@@ -491,7 +492,7 @@ public abstract class Counter<K> {
   /**
    * Subtracts the counts in the given Counter from the counts in this Counter.
    * To copy the values from another Counter rather than subtracting them, use
-   * 
+   *
    * @param counter
    */
   public void substractAll(Counter<K> counter) {
@@ -511,7 +512,7 @@ public abstract class Counter<K> {
 
   /**
    * Implement a toString() method suitable for debugging.
-   * 
+   *
    * @return a debugging toString
    */
   @Override
@@ -537,7 +538,7 @@ public abstract class Counter<K> {
    * Returns true if the given object is not null, has the precise type of this
    * counter, and contains the same number of occurrences of all the same
    * elements.
-   * 
+   *
    * @param obj the object to test for equality
    * @return true if that object equals this counter
    */
@@ -568,7 +569,7 @@ public abstract class Counter<K> {
    * per element hash code is defined as
    * <code>(e==null ? 0 : e.hashCode()) ^ noOccurances)</code>. This hash code
    * is compatible with the Set interface.
-   * 
+   *
    * @return the hash code of the underlying map
    */
   @Override
