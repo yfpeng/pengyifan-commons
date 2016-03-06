@@ -29,7 +29,7 @@ public class IndexGraph<V extends IndexObject, E extends IndexObject>
     }
   }
 
-  private AbstractBaseGraph<V, E> graph;
+  private final AbstractBaseGraph<V, E> graph;
   private int maxIndex;
 
   public IndexGraph(Class<E> edgeClass) {

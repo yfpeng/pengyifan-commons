@@ -8,9 +8,9 @@ import java.text.NumberFormat;
 import java.util.List;
 
 public class PrecisionRecallStats<E> {
-  private List<E> tps;
-  private List<E> fps;
-  private List<E> fns;
+  private final List<E> tps;
+  private final List<E> fps;
+  private final List<E> fns;
 
   public PrecisionRecallStats(List<E> tps, List<E> fps, List<E> fns) {
     this.tps = Lists.newArrayList(tps);
