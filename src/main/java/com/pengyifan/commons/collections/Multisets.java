@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
  */
 public abstract class Multisets {
   /**
-   * Returns the element in this multiset with the largest count. If there
-   * are several max counts, random value is returned.
+   * Returns the element in this multiset with the largest count. If there are several max counts,
+   * random value is returned.
    *
    * @param multiset multiset
    * @return the element in this multiset with the largest count
@@ -35,8 +35,8 @@ public abstract class Multisets {
   }
 
   /**
-   * Returns the elements in this multiset with the largest count. Returns
-   * empty set if this multiset is empty.
+   * Returns the elements in this multiset with the largest count. Returns empty set if this
+   * multiset is empty.
    *
    * @param multiset multiset
    * @return the set of elements in this multiset with the largest count
@@ -51,8 +51,8 @@ public abstract class Multisets {
   }
 
   /**
-   * Finds and returns the key in this multiset with the smallest count. If
-   * there are several min counts, random value is returned.
+   * Finds and returns the key in this multiset with the smallest count. If there are several min
+   * counts, random value is returned.
    *
    * @param multiset multiset
    * @return the element in this multiset with the smallest count
@@ -88,12 +88,16 @@ public abstract class Multisets {
    * Returns the mean of all the counts (total count/distinct element size).
    */
   public static <E> double averageCount(Multiset<E> multiset) {
-    return ((double) multiset.size()) / multiset.elementSet().size();
+    if (multiset.isEmpty()) {
+      return 0;
+    } else {
+      return ((double) multiset.size()) / multiset.elementSet().size();
+    }
   }
 
   /**
-   * Returns the set of elements whose counts are at or above the given count.
-   * This set may have 0 elements but will not be null.
+   * Returns the set of elements whose counts are at or above the given count. This set may have 0
+   * elements but will not be null.
    *
    * @param multiset multiset
    * @param count    count
@@ -106,8 +110,8 @@ public abstract class Multisets {
   }
 
   /**
-   * Returns the set of elements that have exactly the given count. This set may
-   * have 0 elements but will not be null.
+   * Returns the set of elements that have exactly the given count. This set may have 0 elements but
+   * will not be null.
    *
    * @param multiset multiset
    * @param count    count
@@ -120,8 +124,8 @@ public abstract class Multisets {
   }
 
   /**
-   * Returns the set of elements whose counts are at or below the given count.
-   * This set may have 0 elements but will not be null.
+   * Returns the set of elements whose counts are at or below the given count. This set may have 0
+   * elements but will not be null.
    *
    * @param multiset multiset
    * @param count    count

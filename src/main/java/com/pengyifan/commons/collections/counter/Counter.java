@@ -76,7 +76,6 @@ public abstract class Counter<K> {
    *
    * @return the key in this Counter with the largest count
    */
-  @Deprecated
   public K argmax() {
     int max = Integer.MIN_VALUE;
     K argmax = null;
