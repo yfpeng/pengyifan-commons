@@ -244,7 +244,7 @@ public class FibonacciHeap<E> {
 
     // Initialize array by making each entry NIL.
     int arraySize = ((int) Math.floor(Math.log(n) * oneOverLogPhi)) + 1;
-    Entry<E> array[] = ErasureUtils.mkTArray(min.getClass(), arraySize);
+    Entry<E>[] array = ErasureUtils.mkTArray(min.getClass(), arraySize);
 
     if (min != null) {
       for (Entry<E> w : min.nodelist()) {

@@ -58,7 +58,7 @@ public class LibSVMPrintStream implements Closeable {
     ps.println(sb);
   }
 
-  public void printRow(int label, int row[]) {
+  public void printRow(int label, int[] row) {
     StringBuilder sb = new StringBuilder()
         .append(label);// label
     // kernel
@@ -86,7 +86,7 @@ public class LibSVMPrintStream implements Closeable {
    * @param row svm instance
    * @param rowNumber starts at 1
    */
-  public void printPrecomputedRow(int label, double row[], int rowNumber) {
+  public void printPrecomputedRow(int label, double[] row, int rowNumber) {
     StringBuilder sb = new StringBuilder()
         .append(label)// label
         .append(" 0:" + (rowNumber));// ID
@@ -97,7 +97,7 @@ public class LibSVMPrintStream implements Closeable {
     ps.println(sb);
   }
 
-  public void printPrecomputedRow(int label, int row[], int rowNumber) {
+  public void printPrecomputedRow(int label, int[] row, int rowNumber) {
     StringBuilder sb = new StringBuilder()
         .append(label)// label
         .append(" 0:" + rowNumber);// ID
