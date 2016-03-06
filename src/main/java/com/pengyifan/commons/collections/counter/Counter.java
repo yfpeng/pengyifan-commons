@@ -517,19 +517,19 @@ public abstract class Counter<K> {
   @Override
   public String toString() {
     StringBuffer buf = new StringBuffer();
-    buf.append("[");
+    buf.append('[');
     Iterator<K> i = uniqueSet().iterator();
     while (i.hasNext()) {
       K current = i.next();
       int count = getCount(current);
       buf.append(count);
-      buf.append(":");
+      buf.append(':');
       buf.append(current);
       if (i.hasNext()) {
-        buf.append(",");
+        buf.append(',');
       }
     }
-    buf.append("]");
+    buf.append(']');
     return buf.toString();
   }
 

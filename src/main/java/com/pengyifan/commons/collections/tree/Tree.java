@@ -736,7 +736,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
           if (p == tn) {
             ;
           } else if (p.hasNextSiblingNode()) {
-            sb.append(StringUtils.BAR).append(" ");
+            sb.append(StringUtils.BAR).append(' ');
           } else {
             sb.append("  ");
           }
@@ -747,7 +747,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
         } else {
           sb.append(StringUtils.END);
         }
-        sb.append(" ").append(tn.getObject()).append("\n");
+        sb.append(' ').append(tn.getObject()).append('\n');
 
       }
       return sb.toString();

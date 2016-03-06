@@ -514,7 +514,7 @@ public class RegExpPattern {
       strNFATable.append("\t\t").append(c);
     }
     // add epsilon
-    strNFATable.append("\t\tepsilon").append("\n");
+    strNFATable.append("\t\tepsilon").append('\n');
 
     // Now go through each state and record the transitions
     for (RegExpState pState : nfaTable) {
@@ -527,7 +527,7 @@ public class RegExpPattern {
       // Add all epsilon transitions
       strNFATable.append("\t\t")
           .append(getStateString(pState.getTransition(epsilon)))
-          .append("\n");
+          .append('\n');
     }
     // Save table to the file
     FileUtils.writeStringToFile(file.toFile(), strNFATable.toString());
@@ -547,7 +547,7 @@ public class RegExpPattern {
     // First line are input characters
     strDFATable.append("\t\t")
         .append(Joiner.on("\t\t").join(inputSet))
-        .append("\n");
+        .append('\n');
 
     // Now go through each state and record the transitions
     for (RegExpState state : dfaTable) {
@@ -557,7 +557,7 @@ public class RegExpPattern {
       for (char c : inputSet) {
         strDFATable.append("\t\t").append(getStateString(state.getTransition(c)));
       }
-      strDFATable.append("\n");
+      strDFATable.append('\n');
     }
 
     // Save table to the file
@@ -584,18 +584,18 @@ public class RegExpPattern {
     table.stream()
         .filter(RegExpState::isAcceptingState)
         .forEach(
-            s -> strDFAGraph.append("\t")
+            s -> strDFAGraph.append('\t')
                 .append(s.getStateID())
                 .append("\t[shape=doublecircle];\n")
         );
 
-    strDFAGraph.append("\n");
+    strDFAGraph.append('\n');
 
     // Record transitions
     for (RegExpState s1 : table) {
       for (RegExpState s2 : s1.getTransition(epsilon)) {
         // Record transition
-        strDFAGraph.append("\t")
+        strDFAGraph.append('\t')
             .append(s1.getStateID()).append(" -> ").append(s2.getStateID())
             .append("\t[label=\"epsilon\"];\n");
       }
@@ -603,14 +603,14 @@ public class RegExpPattern {
       for (char c : inputSet) {
         for (RegExpState s2 : s1.getTransition(c)) {
           // Record transition
-          strDFAGraph.append("\t")
+          strDFAGraph.append('\t')
               .append(s1.getStateID()).append(" -> ").append(s2.getStateID())
               .append("\t[label=\"").append(c).append("\"];\n");
         }
       }
     }
 
-    strDFAGraph.append("}");
+    strDFAGraph.append('}');
     return strDFAGraph.toString();
   }
 
