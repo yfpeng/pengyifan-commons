@@ -2,6 +2,9 @@ package com.pengyifan.commons.collections.counter;
 
 import java.util.HashMap;
 
+/**
+ * @deprecated Use {@link com.google.common.collect.HashMultiset} instead.
+ */
 public class HashCounter<K> extends Counter<K> {
 
   /**

@@ -12,10 +12,8 @@ import org.junit.Test;
 
 public class ListUtilsTest {
 
-  private List<Integer> inputList = Arrays.asList(90, 50, 20, 80, 70, 30,
-      10, 60, 40);
-  private List<Integer> expectedList = Arrays.asList(20, 30, 60 );
-  
+  private List<Integer> inputList = Arrays.asList(90, 50, 20, 80, 70, 30, 10, 60, 40);
+  private List<Integer> expectedList = Arrays.asList(20, 30, 60);
   private List<Integer> emptyList = Arrays.asList();
 
   @Before

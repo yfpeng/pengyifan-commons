@@ -31,8 +31,9 @@ import java.util.Set;
  * 
  * @author Yifan Peng
  * @version 10/12/2013
- * 
+ * @deprecated Use {@link com.google.common.collect.Multiset} instead
  */
+@Deprecated
 public abstract class Counter<K> {
 
   protected static class MutableInteger {

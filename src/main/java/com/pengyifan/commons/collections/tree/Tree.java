@@ -99,11 +99,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    * @throws IllegalArgumentException if the child is an ancestor of this node
    */
   public void add(T child) {
-    if (child != null && child.getParent() == this) {
-      add(getChildCount() - 1, child);
-    } else {
-      add(getChildCount(), child);
-    }
+    add(getChildCount(), child);
   }
 
   /**
@@ -518,23 +514,23 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
   }
 
   /**
-   * Returns true if <code>anotherNode</code> is an ancestor of this node -- if it is this node,
+   * Returns true if the node is an ancestor of this node -- if it is this node,
    * this node's parent, or an ancestor of this node's parent. (Note that a node is considered an
-   * ancestor of itself.) If <code>anotherNode</code> is null, this method returns false. This
+   * ancestor of itself.) If the node is null, this method returns false. This
    * operation is at worst O(h) where h is the distance from the root to this node.
    *
-   * @param anotherNode node to test as an ancestor of this node
+   * @param node node to test as an ancestor of this node
    * @return true if this node is a descendant of <code>anotherNode</code>
    */
-  public boolean isNodeAncestor(T anotherNode) {
-    if (anotherNode == null) {
+  public boolean isNodeAncestor(T node) {
+    if (node == null) {
       return false;
     }
 
     T ancestor = getThis();
 
     do {
-      if (ancestor == anotherNode) {
+      if (ancestor == node) {
         return true;
       }
     } while ((ancestor = ancestor.getParent()) != null);

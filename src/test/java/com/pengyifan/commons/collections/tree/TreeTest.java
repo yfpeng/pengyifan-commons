@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -47,10 +48,11 @@ public class TreeTest {
     assertEquals(g, a.getChild(0));
   }
 
-  @Test
+  @Test(expected = UnsupportedOperationException.class)
   public void testBreadthFirstIterator() {
     assertThat(Lists.newArrayList(a.breadthFirstIterator()),
         is(Lists.newArrayList(a, b, d, e, c, f)));
+    a.breadthFirstIterator().remove();
   }
 
   @Test
@@ -75,10 +77,11 @@ public class TreeTest {
     assertThat(dst.preorderList(), is(Lists.newArrayList(a, b, c, f, d, e)));
   }
 
-  @Test
+  @Test(expected = UnsupportedOperationException.class)
   public void testDepthFirstIterator() {
     assertThat(Lists.newArrayList(a.depthFirstIterator()),
         is(Lists.newArrayList(c, f, b, d, e, a)));
+    a.depthFirstIterator().remove();
   }
 
   @Test
@@ -150,6 +153,7 @@ public class TreeTest {
   public void testGetNextSibling() {
     assertEquals(f, c.getNextSibling());
     assertNull(f.getNextSibling());
+    assertNull(a.getNextSibling());
   }
 
   @Test
@@ -194,6 +198,7 @@ public class TreeTest {
 
   @Test
   public void testIsNodeAncestor() {
+    assertFalse(b.isNodeAncestor(null));
     assertFalse(b.isNodeAncestor(c));
     assertTrue(c.isNodeAncestor(a));
   }
@@ -202,11 +207,15 @@ public class TreeTest {
   public void testIsNodeChild() {
     assertTrue(b.isNodeChild(c));
     assertFalse(c.isNodeChild(a));
+    assertFalse(c.isNodeChild(null));
   }
 
   @Test
   public void testIsNodeSibling() {
+    assertFalse(c.isNodeSibling(null));
     assertFalse(c.isNodeSibling(e));
+
+    assertTrue(c.isNodeSibling(c));
     assertTrue(b.isNodeSibling(e));
   }
 
@@ -222,16 +231,18 @@ public class TreeTest {
         is(Lists.newArrayList(a, b, c, f, d, e)));
   }
 
-  @Test
+  @Test(expected = UnsupportedOperationException.class)
   public void testLeavesIterator() {
     assertThat(Lists.newArrayList(a.leavesIterator()),
         is(Lists.newArrayList(c, f, d, e)));
+    a.leavesIterator().remove();
   }
 
-  @Test
+  @Test(expected = UnsupportedOperationException.class)
   public void testPostorderIterator() {
     assertThat(Lists.newArrayList(a.postorderIterator()),
         is(Lists.newArrayList(c, f, b, d, e, a)));
+    a.preorderIterator().remove();
   }
 
   @Test
@@ -239,10 +250,11 @@ public class TreeTest {
     assertThat(a.postorderList(), is(Lists.newArrayList(c, f, b, d, e, a)));
   }
 
-  @Test
+  @Test(expected = UnsupportedOperationException.class)
   public void testPreorderIterator() {
     assertThat(Lists.newArrayList(a.preorderIterator()),
         is(Lists.newArrayList(a, b, c, f, d, e)));
+    a.preorderIterator().remove();
   }
 
   @Test
@@ -303,6 +315,17 @@ public class TreeTest {
   @Test
   public void testToString() {
     assertEquals("B", b.toString());
+  }
+
+  @Test
+  public void testToStringFormatter() {
+    String expected = "└ A\n" +
+        "  ├ B\n" +
+        "  │ ├ C\n" +
+        "  │ └ F\n" +
+        "  ├ D\n" +
+        "  └ E\n";
+    assertEquals(expected, a.toString(new Tree.PrettyPrint<>()));
   }
 
   private class StringTree extends Tree<String, StringTree> {

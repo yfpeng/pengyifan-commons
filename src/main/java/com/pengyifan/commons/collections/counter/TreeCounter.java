@@ -3,6 +3,9 @@ package com.pengyifan.commons.collections.counter;
 import java.util.Comparator;
 import java.util.TreeMap;
 
+/**
+ * @deprecated Use {@link com.google.common.collect.TreeMultiset} instead.
+ */
 public class TreeCounter<K> extends Counter<K> {
 
   /**
