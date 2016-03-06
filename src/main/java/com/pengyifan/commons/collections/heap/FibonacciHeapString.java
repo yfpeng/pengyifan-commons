@@ -8,19 +8,19 @@ public final class FibonacciHeapString {
     throw new InstantiationException("This class is not for instantiation");
   }
 
-  public static StringBuilder toString(FibonacciHeap heap, StringBuilder sb) {
+  public static <E> StringBuilder toString(FibonacciHeap<E> heap, StringBuilder sb) {
     if (heap.minimum() == null) {
       return sb;
     }
     return toStringPreOrder(heap.minimum(), new StringBuilder());
   }
 
-  private static StringBuilder toStringPreOrder(FibonacciHeap.Entry node,
+  private static <E> StringBuilder toStringPreOrder(FibonacciHeap.Entry<E> node,
       StringBuilder sb) {
     if (node != null) {
-      for (FibonacciHeap.Entry cur : node.nodelist()) {
-        String s = new String();
-        for (FibonacciHeap.Entry p = cur.parent; p != null; p = p.parent) {
+      for (FibonacciHeap.Entry<E> cur : node.nodelist()) {
+        String s = "";
+        for (FibonacciHeap.Entry<E> p = cur.parent; p != null; p = p.parent) {
           s = StringUtils.BAR + " " + s;
         }
         if (cur.right != node) {
@@ -28,7 +28,7 @@ public final class FibonacciHeapString {
         } else {
           s += StringUtils.END + " ";
         }
-        sb.append(s + cur + "\n");
+        sb.append(s).append(cur).append("\n");
         toStringPreOrder(cur.child, sb);
       }
     }

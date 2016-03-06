@@ -12,19 +12,19 @@ public class FibonacciHeapTest {
 
   public static void main(String args[]) {
 
-    FibonacciHeap heap = new FibonacciHeap();
+    FibonacciHeap<Integer> heap = new FibonacciHeap<>();
     
     int array[] = {23,7,21,3,18,39,52,38,41,17,30,24,26};
 
     for(int i: array) {
-      Entry x = new Entry(i, 0);
+      Entry<Integer> x = new Entry<>(i, 0);
       heap.insert(x);
     }
     
-    Entry x46 = new Entry(46, 0);
+    Entry<Integer> x46 = new Entry<>(46, 0);
     heap.insert(x46);
     
-    Entry x35 = new Entry(35, 0);
+    Entry<Integer> x35 = new Entry<>(35, 0);
     heap.insert(x35);
 
     System.out.println(FibonacciHeapString.toString(heap, new StringBuilder()));
