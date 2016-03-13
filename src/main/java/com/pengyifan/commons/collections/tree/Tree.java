@@ -510,7 +510,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
    * @return true if this node has no children
    */
   public boolean isLeaf() {
-    return (getChildCount() == 0);
+    return getChildCount() == 0;
   }
 
   /**
@@ -552,7 +552,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
     } else if (getChildCount() == 0) {
       val = false;
     } else {
-      val = (child.getParent() == this);
+      val = child.getParent() == this;
     }
 
     return val;
@@ -572,7 +572,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
     } else if (t == this) {
       val = true;
     } else {
-      val = (parent != null && parent == t.getParent());
+      val = parent != null && parent == t.getParent();
       checkArgument(!val || parent.isNodeChild(t), "The siblings have different parents");
     }
     return val;
@@ -874,7 +874,7 @@ public class Tree<E, T extends Tree<E, T>> implements Iterable<T> {
 
     @Override
     public boolean hasNext() {
-      return (!stack.empty() && stack.peek().hasNext());
+      return !stack.empty() && stack.peek().hasNext();
     }
 
     @Override

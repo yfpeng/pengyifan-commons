@@ -69,7 +69,7 @@ public class LibSVMTrainerClient {
       System.err.print("NaN or Infinity in input\n");
       System.exit(1);
     }
-    return (d);
+    return d;
   }
 
   private void parseCommandLine(String[] argv) {

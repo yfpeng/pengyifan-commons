@@ -163,7 +163,7 @@ class RegExpState {
     }
     RegExpState rhs = (RegExpState) obj;
     if (nfaStates.isEmpty())
-      return (stateID == rhs.stateID);
+      return stateID == rhs.stateID;
     else return Objects.equals(nfaStates, rhs.nfaStates);
   }
 
