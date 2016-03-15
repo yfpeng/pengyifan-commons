@@ -73,7 +73,7 @@ public class LibSVMTrainerClient {
   }
 
   private void parseCommandLine(String[] argv) {
-    svm_print_interface print_func = null; // default printing to stdout
+    svm_print_interface printFunc = null; // default printing to stdout
     int i;
     param = new svm_parameter();
     // default values
@@ -140,7 +140,7 @@ public class LibSVMTrainerClient {
         param.probability = Integer.parseInt(argv[i]);
         break;
       case 'q':
-        print_func = new svm_print_interface() {
+        printFunc = new svm_print_interface() {
 
           public void print(String s) {
           }
@@ -180,7 +180,7 @@ public class LibSVMTrainerClient {
       }
     }
 
-    svm.svm_set_print_string_function(print_func);
+    svm.svm_set_print_string_function(printFunc);
 
     // determine filenames
 
