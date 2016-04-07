@@ -19,6 +19,9 @@ import org.xml.sax.SAXException;
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 
+/**
+ * @deprecated Not really useful.
+ */
 public class XmlFormatter {
 
   public static XmlFormatter newFormatter() {
