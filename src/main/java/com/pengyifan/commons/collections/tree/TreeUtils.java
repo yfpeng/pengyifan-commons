@@ -38,7 +38,7 @@ public class TreeUtils {
    * <i>t</i>.
    */
   public static <E, T extends Tree<E, T>> int leftEdge(T t, T root) {
-    int i[] = new int[] { 0 };
+    int[] i = new int[]{0};
     if (leftEdge(t, root, i)) {
       return i[0];
     } else {
@@ -46,7 +46,7 @@ public class TreeUtils {
     }
   }
 
-  static <E, T extends Tree<E, T>> boolean leftEdge(T t, T t1, int i[]) {
+  static <E, T extends Tree<E, T>> boolean leftEdge(T t, T t1, int[] i) {
     if (t == t1) {
       return true;
     } else if (t1.isLeaf()) {
@@ -69,7 +69,7 @@ public class TreeUtils {
    * <i>t</i> plus all the material contained in <i>t</i>.
    */
   public static <E, T extends Tree<E, T>> int rightEdge(T t, T root) {
-    int i[] = new int[] { root.getLeaves().size() };
+    int[] i = new int[]{root.getLeaves().size()};
     if (rightEdge(t, root, i)) {
       return i[0];
     } else {
@@ -78,7 +78,7 @@ public class TreeUtils {
     }
   }
 
-  static <E, T extends Tree<E, T>> boolean rightEdge(T t, T t1, int i[]) {
+  static <E, T extends Tree<E, T>> boolean rightEdge(T t, T t1, int[] i) {
     if (t == t1) {
       return true;
     } else if (t1.isLeaf()) {

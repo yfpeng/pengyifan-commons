@@ -9,9 +9,9 @@ import org.apache.commons.math3.linear.AnyMatrix;
 
 public class SparseRealMatrix implements AnyMatrix {
 
-  private int rowDimension;
-  private int columnDimension;
-  private HashMap<Integer, SparseRealVector> map;
+  private final int rowDimension;
+  private final int columnDimension;
+  private final HashMap<Integer, SparseRealVector> map;
 
   public SparseRealMatrix(int rowDimension, int columnDimension) {
     this.rowDimension = rowDimension;

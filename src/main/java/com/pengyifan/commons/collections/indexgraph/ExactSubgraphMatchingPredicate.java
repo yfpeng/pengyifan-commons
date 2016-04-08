@@ -55,11 +55,11 @@ public class ExactSubgraphMatchingPredicate<V, E extends IndexObject> {
    * startnode of subgraph for matching (from which subgraph node to start the
    * matching process)
    */
-  private Predicate<V> subgraphStartNode;
+  private final Predicate<V> subgraphStartNode;
   /**
    * a set of startnodes of graph for matching
    */
-  private List<V> graphStartNodes;
+  private final List<V> graphStartNodes;
 
   /**
    * Constructor to initialize the subgraph and graph and specify the start

@@ -49,26 +49,26 @@ public class RegExpPattern {
    * transitions where the key is the input character and values are the references to states to
    * which it transfers.
    */
-  private FsaTable nfaTable;
+  private final FsaTable nfaTable;
   //! DFA table is stores in same format as NFA table
   private FsaTable dfaTable;
   //! Operand Stack
   /*! If we use the Thompson's Algorithm then we realize
     that each operand is a NFA automata on its own!
 	*/
-  private Stack<FsaTable> operandStack;
+  private final Stack<FsaTable> operandStack;
   //! Operator Stack
   /*! Operators are simple characters like "*" & "|" */
-  private Stack<Character> operatorStack;
+  private final Stack<Character> operatorStack;
   //! Keeps track of state IDs
   private int nextStateID;
   //! Set of input characters
-  private Set<Character> inputSet;
+  private final Set<Character> inputSet;
 
   /**
    * The original regular-expression pattern string.
    */
-  private String pattern;
+  private final String pattern;
 
   /**
    * This private constructor is used to create all Patterns. The pattern string is all that is
@@ -129,12 +129,12 @@ public class RegExpPattern {
     s0.addTransition(ch, s1);
 
     // Create a NFA from these 2 states
-    FsaTable NFATable = new FsaTable();
-    NFATable.add(s0);
-    NFATable.add(s1);
+    FsaTable nFATable = new FsaTable();
+    nFATable.add(s0);
+    nFATable.add(s1);
 
     // push it onto the operand stack
-    operandStack.push(NFATable);
+    operandStack.push(nFATable);
 
     // Add this character to the input character Set
     inputSet.add(ch);
@@ -164,10 +164,10 @@ public class RegExpPattern {
    */
   private boolean concat() {
     // pop 2 elements
-    FsaTable B = pop();
-    FsaTable A = pop();
+    FsaTable b = pop();
+    FsaTable a = pop();
 
-    if (B.isEmpty() || A.isEmpty()) {
+    if (b.isEmpty() || a.isEmpty()) {
       return false;
     }
     // Now evaluate AB
@@ -175,11 +175,11 @@ public class RegExpPattern {
     // and add an epsilon transition to the
     // first state of B. Store the result into
     // new NFA_TABLE and push it onto the stack
-    A.getLast().addTransition(epsilon, B.getFirst());
-    A.addAll(B);
+    a.getLast().addTransition(epsilon, b.getFirst());
+    a.addAll(b);
 
     // push the result onto the stack
-    operandStack.push(A);
+    operandStack.push(a);
 
     // System.err.println("CONCAT");
 
@@ -193,9 +193,9 @@ public class RegExpPattern {
    * @return true if successful
    */
   private boolean star() {
-    FsaTable A = pop();
+    FsaTable a = pop();
 
-    if (A.isEmpty()) {
+    if (a.isEmpty()) {
       return false;
     }
     // Now evaluate A*
@@ -211,20 +211,20 @@ public class RegExpPattern {
     pStartState.addTransition(epsilon, pEndState);
 
     // add epsilon transition from start state to the first state of A
-    pStartState.addTransition(epsilon, A.getFirst());
+    pStartState.addTransition(epsilon, a.getFirst());
 
     // add epsilon transition from A last state to end state
-    A.getLast().addTransition(epsilon, pEndState);
+    a.getLast().addTransition(epsilon, pEndState);
 
     // From A last to A first state
-    A.getLast().addTransition(epsilon, A.getFirst());
+    a.getLast().addTransition(epsilon, a.getFirst());
 
     // construct new DFA and store it onto the stack
-    A.add(pEndState);
-    A.addFirst(pStartState);
+    a.add(pEndState);
+    a.addFirst(pStartState);
 
     // push the result onto the stack
-    operandStack.push(A);
+    operandStack.push(a);
 
     System.out.printf("STAR\n");
 
@@ -239,10 +239,10 @@ public class RegExpPattern {
    */
   private boolean union() {
     // pop 2 elements
-    FsaTable B = pop();
-    FsaTable A = pop();
+    FsaTable b = pop();
+    FsaTable a = pop();
 
-    if (B.isEmpty() || A.isEmpty()) {
+    if (b.isEmpty() || a.isEmpty()) {
       return false;
     }
     // Now evaluate A|B
@@ -253,18 +253,18 @@ public class RegExpPattern {
     // states of A and B to the new end state
     RegExpState pStartState = new RegExpState(++nextStateID);
     RegExpState pEndState = new RegExpState(++nextStateID);
-    pStartState.addTransition(epsilon, A.getFirst());
-    pStartState.addTransition(epsilon, B.getFirst());
-    A.getLast().addTransition(epsilon, pEndState);
-    B.getLast().addTransition(epsilon, pEndState);
+    pStartState.addTransition(epsilon, a.getFirst());
+    pStartState.addTransition(epsilon, b.getFirst());
+    a.getLast().addTransition(epsilon, pEndState);
+    b.getLast().addTransition(epsilon, pEndState);
 
     // Create new NFA from A
-    B.add(pEndState);
-    A.addFirst(pStartState);
-    A.addAll(B);
+    b.add(pEndState);
+    a.addFirst(pStartState);
+    a.addAll(b);
 
     // push the result onto the stack
-    operandStack.push(A);
+    operandStack.push(a);
 
     // System.err.printf("UNION\n");
 
@@ -317,17 +317,17 @@ public class RegExpPattern {
   /**
    * Calculates the Epsilon Closure
    *
-   * @param T input state set
+   * @param t input state set
    * @return epsilon closure of all states given with the parameter.
    */
-  private Set<RegExpState> epsilonClosure(Set<RegExpState> T) {
+  private Set<RegExpState> epsilonClosure(Set<RegExpState> t) {
     // Initialize result with T because each state
     // has epsilon closure to itself
-    Set<RegExpState> Res = Sets.newHashSet(T);
+    Set<RegExpState> res = Sets.newHashSet(t);
 
     // push all states onto the stack
     Stack<RegExpState> unprocessedStack = new Stack<>();
-    for (RegExpState state : T) {
+    for (RegExpState state : t) {
       unprocessedStack.push(state);
     }
     // While the unprocessed stack is not empty
@@ -339,30 +339,30 @@ public class RegExpPattern {
       // For each state u with an edge from t to u labeled epsilon
       for (RegExpState u : t.getTransition(epsilon)) {
         // if u not in e-closure(T)
-        if (!Res.contains(u)) {
-          Res.add(u);
+        if (!res.contains(u)) {
+          res.add(u);
           unprocessedStack.push(u);
         }
       }
     }
-    return Res;
+    return res;
   }
 
   /**
    * Calculates all transitions on specific input char.
    *
    * @param ch input char
-   * @param T  input state set
+   * @param t  input state set
    * @return all states reachable from this Set of states on an input character.
    */
-  private Set<RegExpState> move(char ch, Set<RegExpState> T) {
+  private Set<RegExpState> move(char ch, Set<RegExpState> t) {
       /* This is very simple since I designed the NFA table
      structure in a way that we just need to loop through
 	   each state in T and receive the transition on chInput.
 	   Then we will put all the results into the Set, which
 	   will eliminate duplicates automatically for us.
 	*/
-    return T.stream()
+    return t.stream()
         .map(s -> s.getTransition(ch))
         .flatMap(List::stream)
         .collect(Collectors.toSet());
@@ -387,28 +387,28 @@ public class RegExpPattern {
 
     // Starting state of DFA is epsilon closure of
     // starting state of NFA state (Set of states)
-    Set<RegExpState> NFAStartStateSet = Sets.newHashSet(nfaTable.getFirst());
-    Set<RegExpState> DFAStartStateSet = epsilonClosure(NFAStartStateSet);
+    Set<RegExpState> nFAStartStateSet = Sets.newHashSet(nfaTable.getFirst());
+    Set<RegExpState> dFAStartStateSet = epsilonClosure(nFAStartStateSet);
 
     // Create new DFA State (start state) from the NFA states
-    RegExpState DFAStartState = new RegExpState(DFAStartStateSet, ++nextStateID);
+    RegExpState dFAStartState = new RegExpState(dFAStartStateSet, ++nextStateID);
 
     // Add the start state to the DFA
-    dfaTable.add(DFAStartState);
+    dfaTable.add(dFAStartState);
 
     // Add the starting state to Set of unprocessed DFA states
-    unmarkedStates.add(DFAStartState);
+    unmarkedStates.add(dFAStartState);
     while (!unmarkedStates.isEmpty()) {
       // process an unprocessed state
       RegExpState processingDFAState = unmarkedStates.removeLast();
 
       // for each input signal a
       for (char c : inputSet) {
-        Set<RegExpState> EpsilonClosureRes = epsilonClosure(
+        Set<RegExpState> epsilonClosureRes = epsilonClosure(
             move(c, processingDFAState.getNfaStates())
         );
 
-        if (EpsilonClosureRes.isEmpty()) {
+        if (epsilonClosureRes.isEmpty()) {
           continue;
         }
 
@@ -417,16 +417,16 @@ public class RegExpPattern {
         // from this Set of NFA states) or in pseudocode:
         // is U in D-States already (U = EpsilonClosureSet)
         Optional<RegExpState> opt = dfaTable.stream()
-            .filter(s -> s.getNfaStates().equals(EpsilonClosureRes))
+            .filter(s -> s.getNfaStates().equals(epsilonClosureRes))
             .findFirst();
         if (opt.isPresent()) {
           processingDFAState.addTransition(c, opt.get());
         } else {
-          RegExpState U = new RegExpState(EpsilonClosureRes, ++nextStateID);
-          unmarkedStates.add(U);
-          dfaTable.add(U);
+          RegExpState u = new RegExpState(epsilonClosureRes, ++nextStateID);
+          unmarkedStates.add(u);
+          dfaTable.add(u);
           // Add transition from processingDFAState to new state on the current character
-          processingDFAState.addTransition(c, U);
+          processingDFAState.addTransition(c, u);
         }
       }
     }
@@ -440,16 +440,16 @@ public class RegExpPattern {
    */
   private void reduceDfa() {
     // Get the Set of all dead end states in DFA
-    Set<RegExpState> DeadEndSet = dfaTable.stream()
+    Set<RegExpState> deadEndSet = dfaTable.stream()
         .filter(RegExpState::isDeadEnd)
         .collect(Collectors.toSet());
 
     // If there are no dead ends then there is nothing to reduce
-    if (DeadEndSet.isEmpty()) {
+    if (deadEndSet.isEmpty()) {
       return;
     }
     // Remove all transitions to these states
-    for (RegExpState state : DeadEndSet) {
+    for (RegExpState state : deadEndSet) {
       // Remove all transitions to this state
       dfaTable.forEach(s -> s.removeTransition(state));
       // Remove this state from the DFA Table
@@ -514,7 +514,7 @@ public class RegExpPattern {
       strNFATable.append("\t\t").append(c);
     }
     // add epsilon
-    strNFATable.append("\t\tepsilon").append("\n");
+    strNFATable.append("\t\tepsilon").append('\n');
 
     // Now go through each state and record the transitions
     for (RegExpState pState : nfaTable) {
@@ -527,7 +527,7 @@ public class RegExpPattern {
       // Add all epsilon transitions
       strNFATable.append("\t\t")
           .append(getStateString(pState.getTransition(epsilon)))
-          .append("\n");
+          .append('\n');
     }
     // Save table to the file
     FileUtils.writeStringToFile(file.toFile(), strNFATable.toString());
@@ -547,7 +547,7 @@ public class RegExpPattern {
     // First line are input characters
     strDFATable.append("\t\t")
         .append(Joiner.on("\t\t").join(inputSet))
-        .append("\n");
+        .append('\n');
 
     // Now go through each state and record the transitions
     for (RegExpState state : dfaTable) {
@@ -557,7 +557,7 @@ public class RegExpPattern {
       for (char c : inputSet) {
         strDFATable.append("\t\t").append(getStateString(state.getTransition(c)));
       }
-      strDFATable.append("\n");
+      strDFATable.append('\n');
     }
 
     // Save table to the file
@@ -584,18 +584,18 @@ public class RegExpPattern {
     table.stream()
         .filter(RegExpState::isAcceptingState)
         .forEach(
-            s -> strDFAGraph.append("\t")
+            s -> strDFAGraph.append('\t')
                 .append(s.getStateID())
                 .append("\t[shape=doublecircle];\n")
         );
 
-    strDFAGraph.append("\n");
+    strDFAGraph.append('\n');
 
     // Record transitions
     for (RegExpState s1 : table) {
       for (RegExpState s2 : s1.getTransition(epsilon)) {
         // Record transition
-        strDFAGraph.append("\t")
+        strDFAGraph.append('\t')
             .append(s1.getStateID()).append(" -> ").append(s2.getStateID())
             .append("\t[label=\"epsilon\"];\n");
       }
@@ -603,14 +603,14 @@ public class RegExpPattern {
       for (char c : inputSet) {
         for (RegExpState s2 : s1.getTransition(c)) {
           // Record transition
-          strDFAGraph.append("\t")
+          strDFAGraph.append('\t')
               .append(s1.getStateID()).append(" -> ").append(s2.getStateID())
               .append("\t[label=\"").append(c).append("\"];\n");
         }
       }
     }
 
-    strDFAGraph.append("}");
+    strDFAGraph.append('}');
     return strDFAGraph.toString();
   }
 

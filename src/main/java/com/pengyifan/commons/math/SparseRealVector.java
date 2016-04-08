@@ -92,7 +92,7 @@ public class SparseRealVector {
         v.dimension);
     return map.keySet().parallelStream().map(index -> {
       double vvalue = v.getEntry(index);
-      return (Precision.equals(vvalue, DEFAULT_VALUE, PRECISION))
+      return Precision.equals(vvalue, DEFAULT_VALUE, PRECISION)
           ?
           0 :
           getEntry(index) * v.getEntry(index);

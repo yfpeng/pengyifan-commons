@@ -39,12 +39,12 @@ public final class ListUtils {
     /**
      * length of longest increasing subsequence in s1,...,sn that ends in si
      */
-    int l[] = new int[list.size()];
+    int[] l = new int[list.size()];
     /**
      * by following the p[j] values we can reconstruct the whole sequence in
      * linear time.
      */
-    int p[] = new int[list.size()];
+    int[] p = new int[list.size()];
     for (int j = 0; j < list.size(); j++) {
       E sj = list.get(j);
       l[j] = 1;

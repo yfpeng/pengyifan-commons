@@ -25,7 +25,7 @@ public class RegExpMatcher {
   /**
    * The original string being matched.
    */
-  private CharSequence text;
+  private final CharSequence text;
   /**
    * Contains all found patterns
    */
@@ -135,10 +135,10 @@ public class RegExpMatcher {
       while (itr.hasNext()) {
         PatternState pPatternState = itr.next();
         // must be at most one because this is DFA
-        LinkedList<RegExpState> Transition = pPatternState.getState().getTransition(c);
-        if (!Transition.isEmpty()) {
-          pPatternState.setState(Transition.getFirst());
-          if (Transition.getFirst().isAcceptingState()) {
+        LinkedList<RegExpState> transition = pPatternState.getState().getTransition(c);
+        if (!transition.isEmpty()) {
+          pPatternState.setState(transition.getFirst());
+          if (transition.getFirst().isAcceptingState()) {
             startList.add(pPatternState.getStartIndex());
             groupList.add(text.subSequence(pPatternState.getStartIndex(), i + 1));
           }
@@ -151,13 +151,13 @@ public class RegExpMatcher {
       // Check it against state 1 of the DFA
       RegExpState pState = dfaTable.getFirst();
       // must be at most one because this is DFA
-      LinkedList<RegExpState> Transition = pState.getTransition(c);
-      if (!Transition.isEmpty()) {
-        PatternState pPatternState = new PatternState(i, Transition.getFirst());
+      LinkedList<RegExpState> transition = pState.getTransition(c);
+      if (!transition.isEmpty()) {
+        PatternState pPatternState = new PatternState(i, transition.getFirst());
         patternStateList.add(pPatternState);
 
         // Check is this accepting state
-        if (Transition.getFirst().isAcceptingState()) {
+        if (transition.getFirst().isAcceptingState()) {
           startList.add(i);
           groupList.add(String.valueOf(c));
         }
