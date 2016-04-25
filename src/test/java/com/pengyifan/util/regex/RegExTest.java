@@ -72,7 +72,7 @@ public class RegExTest {
     String str = "xxabxcbxx";
 
     RegExpPattern pattern = RegExpPattern.compile(patternStr);
-    // pattern.writeDfaGraph(Paths.get("dfa.gv"));
+    // patterns.writeDfaGraph(Paths.get("dfa.gv"));
 
     RegExpMatcher matcher = pattern.matcher(str);
     assertTrue(matcher.find());

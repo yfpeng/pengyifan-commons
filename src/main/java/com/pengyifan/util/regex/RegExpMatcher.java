@@ -31,7 +31,7 @@ public class RegExpMatcher {
    */
   private LinkedList<CharSequence> groupList;
   /**
-   * Contains all position where these pattern start in the text
+   * Contains all position where these patterns start in the text
    */
   private LinkedList<Integer> startList;
 
@@ -42,9 +42,9 @@ public class RegExpMatcher {
   }
 
   /**
-   * Returns the pattern that is interpreted by this matcher.
+   * Returns the patterns that is interpreted by this matcher.
    *
-   * @return The pattern for which this matcher was created
+   * @return The patterns for which this matcher was created
    */
   public RegExpPattern pattern() {
     return pattern;
@@ -93,7 +93,7 @@ public class RegExpMatcher {
   }
 
   /**
-   * Attempts to find the next subsequence of the input sequence that matches the pattern. This
+   * Attempts to find the next subsequence of the input sequence that matches the patterns. This
    * method starts at the beginning of this matcher's region, or, if a previous invocation of the
    * method was successful and the matcher has not since been reset, at the first character not
    * matched by the previous matcher. If the matcher succeeds then more information can be obtained
@@ -101,7 +101,7 @@ public class RegExpMatcher {
    * the start, end, and group methods.
    *
    * @return true if, and only if, a subsequence of the input sequence matches this matcher's
-   * pattern
+   * patterns
    */
   public boolean find() {
     if (patternIndex == -2) {
@@ -143,7 +143,7 @@ public class RegExpMatcher {
             groupList.add(text.subSequence(pPatternState.getStartIndex(), i + 1));
           }
         } else {
-          // Delete this pattern state
+          // Delete this patterns state
           itr.remove();
         }
       }

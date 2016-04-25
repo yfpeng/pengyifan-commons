@@ -21,10 +21,10 @@ import java.util.stream.Collectors;
  * A compiled representation of a regular expression.
  * <p>
  * A regular expression, specified as a string, must first be compiled into an instance of this
- * class. The resulting pattern can then be used to create a {@link com.pengyifan.util.regex.RegExpMatcher}
+ * class. The resulting patterns can then be used to create a {@link com.pengyifan.util.regex.RegExpMatcher}
  * object that can match arbitrary {@link java.lang.CharSequence} against the regular expression.
  * All of the state involved in performing a match resides in the matcher, so many matchers can
- * share the same pattern. A typical invocation sequence is thus
+ * share the same patterns. A typical invocation sequence is thus
  * <pre>
  * RegExpPattern p = RegExpPattern.compile("a*b");
  * RegExpMatcher m = p.matcher("aaaaab");
@@ -66,15 +66,15 @@ public class RegExpPattern {
   private final Set<Character> inputSet;
 
   /**
-   * The original regular-expression pattern string.
+   * The original regular-expression patterns string.
    */
   private final String pattern;
 
   /**
-   * This private constructor is used to create all Patterns. The pattern string is all that is
+   * This private constructor is used to create all Patterns. The patterns string is all that is
    * needed to completely describe a Pattern.
    *
-   * @param pattern pattern
+   * @param pattern patterns
    */
   private RegExpPattern(String pattern) {
     nextStateID = 0;
@@ -86,15 +86,15 @@ public class RegExpPattern {
     this.pattern = pattern;
 
     if (!compile()) {
-      throw new PatternSyntaxException("Illegal pattern", pattern, 0);
+      throw new PatternSyntaxException("Illegal patterns", pattern, 0);
     }
   }
 
   /**
-   * Compiles the given regular expression into a pattern.
+   * Compiles the given regular expression into a patterns.
    *
    * @param regex The expression to be compiled
-   * @return The compiled pattern object
+   * @return The compiled patterns object
    * @throws PatternSyntaxException If the expression's syntax is invalid
    */
   public static RegExpPattern compile(String regex) {
@@ -102,10 +102,10 @@ public class RegExpPattern {
   }
 
   /**
-   * Creates a matcher that will match the given input against this pattern.
+   * Creates a matcher that will match the given input against this patterns.
    *
    * @param input The character sequence to be matched
-   * @return A new matcher for this pattern
+   * @return A new matcher for this patterns
    */
   public RegExpMatcher matcher(CharSequence input) {
     return new RegExpMatcher(this, input);
@@ -333,11 +333,11 @@ public class RegExpPattern {
     // While the unprocessed stack is not empty
     while (!unprocessedStack.isEmpty()) {
       // pop t, the top element from unprocessed stack
-      RegExpState t = unprocessedStack.pop();
+      RegExpState t1 = unprocessedStack.pop();
 
       // Get all epsilon transition for this state
       // For each state u with an edge from t to u labeled epsilon
-      for (RegExpState u : t.getTransition(epsilon)) {
+      for (RegExpState u : t1.getTransition(epsilon)) {
         // if u not in e-closure(T)
         if (!res.contains(u)) {
           res.add(u);

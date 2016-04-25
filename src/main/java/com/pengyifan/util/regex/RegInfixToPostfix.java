@@ -62,7 +62,7 @@ class RegInfixToPostfix {
    * concatenation is not denoted by ny sign so I will detect concatenation and add a character
    * CONTACT_CHAR between operands.
    *
-   * @return normalized pattern
+   * @return normalized patterns
    */
   private String normalize(String pattern) {
     StringBuilder strRes = new StringBuilder();
