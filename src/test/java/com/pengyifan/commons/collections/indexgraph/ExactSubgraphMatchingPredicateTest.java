@@ -1,5 +1,6 @@
 package com.pengyifan.commons.collections.indexgraph;
 
+import edu.stanford.nlp.ling.CoreLabel;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.EdgeFactory;
 import org.jgrapht.graph.DefaultDirectedGraph;
@@ -28,14 +29,14 @@ public class ExactSubgraphMatchingPredicateTest {
     graph.addEdge(b, a, new Edge(4, "NSUBJ"));
     graph.addEdge(b, c, new Edge(5, "DOBJ"));
 
-    Predicate<Vertex> predA = v -> v.label.word().equals("a");
-    Predicate<Vertex> predB = v -> v.label.word().equals("b");
+    Predicate<Vertex> predA = v -> v.word().equals("a");
+    Predicate<Vertex> predB = v -> v.word().equals("b");
     DirectedGraph<Predicate<Vertex>, Predicate<Edge>> subgraph =
         new DefaultDirectedGraph<>(
             new Factory());
     subgraph.addVertex(predA);
     subgraph.addVertex(predB);
-    subgraph.addEdge(predB, predA, e -> e.label.word().equals("NSUBJ"));
+    subgraph.addEdge(predB, predA, e -> e.word().equals("NSUBJ"));
 
     ExactSubgraphMatchingPredicate<Vertex, Edge> esm =
         new ExactSubgraphMatchingPredicate<>(subgraph, graph);
@@ -61,14 +62,14 @@ public class ExactSubgraphMatchingPredicateTest {
     graph.addEdge(b, a, new Edge(4, "NSUBJ"));
     graph.addEdge(b, c, new Edge(5, "NSUBJ"));
 
-    Predicate<Vertex> predA = v -> v.label.word().equals("a") || v.label.word().equals("c");
-    Predicate<Vertex> predB = v -> v.label.word().equals("b");
+    Predicate<Vertex> predA = v -> v.word().equals("a") || v.word().equals("c");
+    Predicate<Vertex> predB = v -> v.word().equals("b");
     DirectedGraph<Predicate<Vertex>, Predicate<Edge>> subgraph =
         new DefaultDirectedGraph<>(
             new Factory());
     subgraph.addVertex(predB);
     subgraph.addVertex(predA);
-    subgraph.addEdge(predB, predA, e -> e.label.word().equals("NSUBJ"));
+    subgraph.addEdge(predB, predA, e -> e.word().equals("NSUBJ"));
 
     ExactSubgraphMatchingPredicate<Vertex, Edge> esm =
         new ExactSubgraphMatchingPredicate<>(subgraph, graph);
@@ -103,11 +104,11 @@ public class ExactSubgraphMatchingPredicateTest {
     DirectedGraph<Predicate<Vertex>, Predicate<Edge>> subgraph =
         new DefaultDirectedGraph<>(
             new Factory());
-    Predicate<Vertex> predA = v -> v.label.word().equals("a");
-    Predicate<Vertex> predB = v -> v.label.word().equals("b");
+    Predicate<Vertex> predA = v -> v.word().equals("a");
+    Predicate<Vertex> predB = v -> v.word().equals("b");
     subgraph.addVertex(predA);
     subgraph.addVertex(predB);
-    subgraph.addEdge(predB, predA, e -> e.label.word().equals("DEP"));
+    subgraph.addEdge(predB, predA, e -> e.word().equals("DEP"));
     ExactSubgraphMatchingPredicate<Vertex, Edge> esm =
         new ExactSubgraphMatchingPredicate<>(subgraph, graph);
     List<Map<Predicate<Vertex>, Vertex>> matches = esm.getSubgraphMatchingMatches();
@@ -126,13 +127,13 @@ public class ExactSubgraphMatchingPredicateTest {
     graph.addEdge(b, a, new Edge(4, "NSUBJ"));
     graph.addEdge(b, c, new Edge(5, "DOBJ"));
 
-    Predicate<Vertex> predA = v -> v.label.word().equals("a");
-    Predicate<Vertex> predB = v -> v.label.word().equals("b");
+    Predicate<Vertex> predA = v -> v.word().equals("a");
+    Predicate<Vertex> predB = v -> v.word().equals("b");
     DirectedGraph<Predicate<Vertex>, Predicate<Edge>> subgraph =
         new DefaultDirectedGraph<>(new Factory());
     subgraph.addVertex(predA);
     subgraph.addVertex(predB);
-    subgraph.addEdge(predB, predA, e -> e.label.word().equals("NSUBJ"));
+    subgraph.addEdge(predB, predA, e -> e.word().equals("NSUBJ"));
 
     ExactSubgraphMatchingPredicate<Vertex, Edge> esm =
         new ExactSubgraphMatchingPredicate<>(subgraph, graph);
@@ -152,21 +153,21 @@ public class ExactSubgraphMatchingPredicateTest {
     graph.addEdge(b, c, new Edge(5, "DOBJ"));
 
     DirectedGraph<Predicate<Vertex>, Predicate<Edge>> subgraph = new DefaultDirectedGraph<>(new Factory());
-    Predicate<Vertex> predA = v -> v.label.word().equals("a");
-    Predicate<Vertex> predB = v -> v.label.word().equals("b");
+    Predicate<Vertex> predA = v -> v.word().equals("a");
+    Predicate<Vertex> predB = v -> v.word().equals("b");
     subgraph.addVertex(predA);
     subgraph.addVertex(predB);
-    subgraph.addEdge(predB, predA, e -> e.label.word().equals("DEP"));
+    subgraph.addEdge(predB, predA, e -> e.word().equals("DEP"));
     ExactSubgraphMatchingPredicate<Vertex, Edge> esm =
         new ExactSubgraphMatchingPredicate<>(subgraph, graph);
     assertFalse(esm.isSubgraphIsomorphism());
   }
 
-  private class Edge extends IndexObject {
+  private class Edge extends CoreLabel {
 
     public Edge(int index, String word) {
-      super(index);
-      label.setWord(word);
+      setIndex(index);
+      setWord(word);
     }
 
     @Override
@@ -178,25 +179,21 @@ public class ExactSubgraphMatchingPredicateTest {
         return false;
       }
       Edge rhs = (Edge) obj;
-      return Objects.equals(label.word(), rhs.label.word())
-          && Objects.equals(label.index(), rhs.label.index());
+      return Objects.equals(word(), rhs.word())
+          && Objects.equals(index(), rhs.index());
     }
 
     @Override
     public String toString() {
-      return label.word();
+      return word();
     }
   }
 
-  private class Vertex extends IndexObject {
+  private class Vertex extends CoreLabel {
 
     public Vertex(int index, String word) {
-      super(index);
-      label.setWord(word);
-    }
-
-    public String word() {
-      return label.word();
+      setIndex(index);
+      setWord(word);
     }
 
     @Override
@@ -208,13 +205,13 @@ public class ExactSubgraphMatchingPredicateTest {
         return false;
       }
       Vertex rhs = (Vertex) obj;
-      return Objects.equals(label.word(), rhs.label.word())
-          && Objects.equals(label.index(), rhs.label.index());
+      return Objects.equals(word(), rhs.word())
+          && Objects.equals(index(), rhs.index());
     }
 
     @Override
     public String toString() {
-      return label.word();
+      return word();
     }
   }
 

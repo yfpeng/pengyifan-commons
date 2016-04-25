@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import com.pengyifan.commons.collections.ImmutableCollectors;
+import edu.stanford.nlp.ling.HasIndex;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.EdgeFactory;
 import org.jgrapht.graph.AbstractBaseGraph;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 
-public class IndexGraph<V extends IndexObject, E extends IndexObject>
+public class IndexGraph<V extends HasIndex, E extends HasIndex>
     implements DirectedGraph<V, E> {
 
   private static class DirectedMultiLoopGraph<V, E> extends
@@ -40,19 +41,19 @@ public class IndexGraph<V extends IndexObject, E extends IndexObject>
   public boolean addEdge(V source, V target, E e) {
     checkArgument(!source.equals(target),
         "self-loops not allowed: Edge[index=%s,src=%s,dst=%s]\n%s",
-        e.getIndex(), source.getIndex(), target.getIndex(), this);
+        e.index(), source.index(), target.index(), this);
     boolean isSuccess = graph.addEdge(source, target, e);
     checkArgument(
         isSuccess,
         "multiple edges between any two vertices are not permitted: "
             + "Edge[index=%s,src=%s,dst=%s]\n%s\n%s\n%s\n",
-        e.getIndex(),
-        source.getIndex(),
-        target.getIndex(),
+        e.index(),
+        source.index(),
+        target.index(),
         e,
         source,
         target);
-    updateIndex(e.getIndex());
+    updateIndex(e.index());
     return true;
   }
 
@@ -61,17 +62,17 @@ public class IndexGraph<V extends IndexObject, E extends IndexObject>
     checkArgument(
         isSuccess,
         "cannot add self loop: Edge[index=%s,src=%s]",
-        e.getIndex(),
-        v.getIndex());
-    updateIndex(e.getIndex());
+        e.index(),
+        v.index());
+    updateIndex(e.index());
   }
 
   public boolean addVertex(V v) {
     boolean isSuccess = graph.addVertex(v);
     checkState(isSuccess,
         "the vertex is present: Vertex[index=%s]",
-        v.getIndex());
-    updateIndex(v.getIndex());
+        v.index());
+    updateIndex(v.index());
     return true;
   }
 
@@ -82,7 +83,7 @@ public class IndexGraph<V extends IndexObject, E extends IndexObject>
   public void checkHashCode() {
     for (E e : graph.edgeSet()) {
       V s1 = graph.getEdgeSource(e);
-      V s2 = getVertex(s1.getIndex());
+      V s2 = getVertex(s1.index());
       checkArgument(
           s1 == s2,
           "edge source has different ends[%s]\nhashCode=%s,%s\nhashCode=%s,%s",
@@ -92,7 +93,7 @@ public class IndexGraph<V extends IndexObject, E extends IndexObject>
           System.identityHashCode(s2),
           s2);
       V t1 = graph.getEdgeTarget(e);
-      V t2 = getVertex(t1.getIndex());
+      V t2 = getVertex(t1.index());
       checkArgument(t1 == t2, "edge source has different ends[%s]\n%s\n%s", e,
           t1, t2);
     }
@@ -100,7 +101,7 @@ public class IndexGraph<V extends IndexObject, E extends IndexObject>
 
   public boolean containsVertex(int index) {
     return graph.vertexSet().stream()
-        .filter(v -> v.getIndex() == index)
+        .filter(v -> v.index() == index)
         .findFirst()
         .isPresent();
   }
@@ -122,7 +123,7 @@ public class IndexGraph<V extends IndexObject, E extends IndexObject>
   public E getEdge(int index) {
     return Iterables.getOnlyElement(graph.edgeSet()
         .stream()
-        .filter(e -> e.getIndex() == index)
+        .filter(e -> e.index() == index)
         .collect(Collectors.toList()));
   }
 
@@ -141,7 +142,7 @@ public class IndexGraph<V extends IndexObject, E extends IndexObject>
   public V getVertex(int index) {
     return Iterables.getOnlyElement(graph.vertexSet()
         .stream()
-        .filter(v -> v.getIndex() == index)
+        .filter(v -> v.index() == index)
         .collect(Collectors.toList()));
   }
 
@@ -159,12 +160,12 @@ public class IndexGraph<V extends IndexObject, E extends IndexObject>
     // vertex
     graph.vertexSet()
         .stream()
-        .sorted((v1, v2) -> Integer.compare(v1.getIndex(), v2.getIndex()))
+        .sorted((v1, v2) -> Integer.compare(v1.index(), v2.index()))
         .forEach(v -> sj.add(v.toString()));
     // edge
     graph.edgeSet()
         .stream()
-        .sorted((e1, e2) -> Integer.compare(e1.getIndex(), e2.getIndex()))
+        .sorted((e1, e2) -> Integer.compare(e1.index(), e2.index()))
         .forEach(e -> sj.add(toString(e)));
     return sj.toString();
   }
@@ -172,21 +173,21 @@ public class IndexGraph<V extends IndexObject, E extends IndexObject>
   private String toString(E e) {
     return String.format("%s,[src=%d,dst=%d]",
         e,
-        graph.getEdgeSource(e).getIndex(),
-        graph.getEdgeTarget(e).getIndex());
+        graph.getEdgeSource(e).index(),
+        graph.getEdgeTarget(e).index());
   }
 
   public void validateIndex() {
     Set<Integer> indices = Sets.newHashSet();
     for (V v : graph.vertexSet()) {
-      checkArgument(!indices.contains(v.getIndex()),
+      checkArgument(!indices.contains(v.index()),
           "contains duplicate index: %s", v);
-      indices.add(v.getIndex());
+      indices.add(v.index());
     }
     for (E e : graph.edgeSet()) {
-      checkArgument(!indices.contains(e.getIndex()),
+      checkArgument(!indices.contains(e.index()),
           "contains duplicate index: %s", e);
-      indices.add(e.getIndex());
+      indices.add(e.index());
     }
   }
 
@@ -248,14 +249,14 @@ public class IndexGraph<V extends IndexObject, E extends IndexObject>
   @Override
   public boolean containsEdge(E e) {
     return graph.edgeSet().stream()
-        .filter(edge -> e.getIndex() == edge.getIndex())
+        .filter(edge -> e.index() == edge.index())
         .findFirst()
         .isPresent();
   }
 
   @Override
   public boolean containsVertex(V v) {
-    return containsVertex(v.getIndex());
+    return containsVertex(v.index());
   }
 
   @Override

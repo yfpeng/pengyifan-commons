@@ -2,6 +2,7 @@ package com.pengyifan.commons.collections.indexgraph;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import edu.stanford.nlp.ling.HasIndex;
 import org.javatuples.Pair;
 import org.jgrapht.DirectedGraph;
 
@@ -41,7 +42,7 @@ import java.util.stream.Collectors;
  *
  * @author "Yifan Peng"
  */
-public class ExactSubgraphMatchingPredicate<V, E extends IndexObject> {
+public class ExactSubgraphMatchingPredicate<V, E extends HasIndex> {
 
   /**
    * subgraph to be matched (normally smaller graph)

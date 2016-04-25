@@ -3,6 +3,7 @@ package com.pengyifan.commons.collections.indexgraph;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import edu.stanford.nlp.ling.HasIndex;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -40,7 +41,7 @@ import static com.google.common.base.Preconditions.checkArgument;
  *
  * @author "Yifan Peng"
  */
-public class ExactSubgraphMatching<V extends IndexObject, E extends IndexObject> {
+public class ExactSubgraphMatching<V extends HasIndex, E extends HasIndex> {
 
   /**
    * subgraph to be matched (normally smaller graph)

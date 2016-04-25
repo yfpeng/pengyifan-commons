@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import edu.stanford.nlp.ling.CoreLabel;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -75,11 +76,11 @@ public class ExactSubgraphMatchingTest {
     assertEquals(b, actualB);
   }
 
-  private class Edge extends IndexObject {
+  private class Edge extends CoreLabel {
 
     public Edge(int index, String word) {
-      super(index);
-      label.setWord(word);
+      setIndex(index);
+      setWord(word);
     }
 
     @Override
@@ -91,15 +92,15 @@ public class ExactSubgraphMatchingTest {
         return false;
       }
       Edge rhs = (Edge) obj;
-      return Objects.equals(label.word(), rhs.label.word());
+      return Objects.equals(word(), rhs.word());
     }
   }
 
-  private class Vertex extends IndexObject {
+  private class Vertex extends CoreLabel {
 
     public Vertex(int index, String word) {
-      super(index);
-      label.setWord(word);
+      setIndex(index);
+      setWord(word);
     }
 
     @Override
@@ -111,7 +112,13 @@ public class ExactSubgraphMatchingTest {
         return false;
       }
       Vertex rhs = (Vertex) obj;
-      return Objects.equals(label.word(), rhs.label.word());
+      return Objects.equals(word(), rhs.word())
+          && Objects.equals(index(), rhs.index());
+    }
+
+    @Override
+    public String toString() {
+      return word();
     }
   }
 }

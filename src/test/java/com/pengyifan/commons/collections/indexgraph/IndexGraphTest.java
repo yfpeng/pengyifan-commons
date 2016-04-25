@@ -1,5 +1,7 @@
 package com.pengyifan.commons.collections.indexgraph;
 
+import edu.stanford.nlp.ling.CoreLabel;
+import edu.stanford.nlp.ling.HasIndex;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -27,7 +29,7 @@ public class IndexGraphTest {
     IndexGraph<IndexObject, IndexObject> graph =
         new IndexGraph<IndexObject, IndexObject>(IndexObject.class);
     graph.addVertex(VA);
-    assertEquals(1, graph.getVertex(1).getIndex());
+    assertEquals(1, graph.getVertex(1).index());
   }
 
   @Test
@@ -74,5 +76,44 @@ public class IndexGraphTest {
     graph.addVertex(VB);
     exception.expect(IllegalArgumentException.class);
     graph.addEdge(VA, VA, EC);
+  }
+
+  private static class IndexObject implements HasIndex {
+
+    int index;
+
+    IndexObject(int index) {
+      this.index = index;
+    }
+
+    @Override
+    public String docID() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setDocID(String docID) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public int sentIndex() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setSentIndex(int sentIndex) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public int index() {
+      return index();
+    }
+
+    @Override
+    public void setIndex(int index) {
+      throw new UnsupportedOperationException();
+    }
   }
 }
