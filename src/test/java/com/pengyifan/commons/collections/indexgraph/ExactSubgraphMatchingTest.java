@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import com.pengyifan.commons.collections.graph.ExactSubgraphMatching;
+import com.pengyifan.commons.collections.graph.IndexGraph;
 import edu.stanford.nlp.ling.CoreLabel;
 import java.util.List;
 import java.util.Map;

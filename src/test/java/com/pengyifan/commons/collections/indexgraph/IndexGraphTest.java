@@ -1,6 +1,6 @@
 package com.pengyifan.commons.collections.indexgraph;
 
-import edu.stanford.nlp.ling.CoreLabel;
+import com.pengyifan.commons.collections.graph.IndexGraph;
 import edu.stanford.nlp.ling.HasIndex;
 import org.junit.Rule;
 import org.junit.Test;

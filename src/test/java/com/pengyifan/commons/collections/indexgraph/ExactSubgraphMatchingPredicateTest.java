@@ -1,5 +1,7 @@
 package com.pengyifan.commons.collections.indexgraph;
 
+import com.pengyifan.commons.collections.graph.ExactSubgraphMatchingPredicate;
+import com.pengyifan.commons.collections.graph.IndexGraph;
 import edu.stanford.nlp.ling.CoreLabel;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.EdgeFactory;
