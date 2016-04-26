@@ -1,4 +1,4 @@
-package com.pengyifan.commons.collections.indexgraph;
+package com.pengyifan.commons.collections.graph;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

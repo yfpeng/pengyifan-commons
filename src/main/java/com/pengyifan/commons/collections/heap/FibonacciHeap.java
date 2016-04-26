@@ -1,5 +1,6 @@
 package com.pengyifan.commons.collections.heap;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import edu.stanford.nlp.util.ErasureUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -364,6 +365,15 @@ public class FibonacciHeap<E> {
     } else {
       return list1;
     }
+  }
+
+  @Override
+  public String toString() {
+    return toString(new FibonacciHeapPrettyFormatter<>());
+  }
+
+  public String toString(Function<FibonacciHeap<E>, String> formatter) {
+    return formatter.apply(this);
   }
 
   /**

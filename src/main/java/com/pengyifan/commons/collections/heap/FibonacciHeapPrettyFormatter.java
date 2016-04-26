@@ -1,21 +1,24 @@
 package com.pengyifan.commons.collections.heap;
 
+import com.google.common.base.Function;
 import com.pengyifan.commons.lang.StringUtils;
 
-public final class FibonacciHeapString {
+import javax.annotation.Nullable;
 
-  private FibonacciHeapString() throws InstantiationException {
-    throw new InstantiationException("This class is not for instantiation");
-  }
+public final class FibonacciHeapPrettyFormatter<E> implements Function<FibonacciHeap<E>, String>{
 
-  public static <E> StringBuilder toString(FibonacciHeap<E> heap, StringBuilder sb) {
+  @Nullable
+  @Override
+  public String apply(@Nullable FibonacciHeap heap) {
     if (heap.minimum() == null) {
-      return sb;
+      return "";
     }
-    return toStringPreOrder(heap.minimum(), new StringBuilder());
+    StringBuilder sb = new StringBuilder();
+    toStringPreOrder(heap.minimum(), sb);
+    return sb.toString();
   }
 
-  private static <E> StringBuilder toStringPreOrder(FibonacciHeap.Entry<E> node,
+  private <E> StringBuilder toStringPreOrder(FibonacciHeap.Entry<E> node,
       StringBuilder sb) {
     if (node != null) {
       for (FibonacciHeap.Entry<E> cur : node.nodelist()) {
