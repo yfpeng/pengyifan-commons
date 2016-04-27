@@ -184,7 +184,7 @@ public class DirectedLoopGraph<V, E> extends AbstractBaseGraph<V, E>
 
   @Override
   public E getEdge(V sourceVertex, V targetVertex) {
-    return Iterables.getOnlyElement(getAllEdges(sourceVertex, targetVertex));
+    return Iterables.getOnlyElement(getAllEdges(sourceVertex, targetVertex), null);
   }
 
   @Override
