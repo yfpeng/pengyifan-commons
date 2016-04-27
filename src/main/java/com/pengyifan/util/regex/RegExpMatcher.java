@@ -16,7 +16,7 @@ public class RegExpMatcher {
   /**
    * The Pattern object that created this Matcher.
    */
-  RegExpPattern pattern;
+  private RegExpPattern pattern;
 
   /**
    * Contains the current patterns accessed

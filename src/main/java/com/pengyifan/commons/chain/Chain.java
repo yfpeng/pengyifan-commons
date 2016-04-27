@@ -6,9 +6,9 @@ import com.google.common.annotations.VisibleForTesting;
 
 public class Chain {
   @VisibleForTesting
-  Handler headHandler;
+  protected Handler headHandler;
   @VisibleForTesting
-  Handler tailHandler;
+  protected Handler tailHandler;
 
   /**
    * Appends the handler to the end of this list.
