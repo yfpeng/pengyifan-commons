@@ -106,6 +106,7 @@ public class IndexGraph<V extends HasIndex, E extends HasIndex>
         .sorted((v1, v2) -> Integer.compare(v1.index(), v2.index()))
         .forEach(v -> sj.add(v.toString()));
     // edge
+    sj.add("");
     sj.add("Edges:");
     edgeSet().stream()
         .sorted((e1, e2) -> Integer.compare(e1.index(), e2.index()))
