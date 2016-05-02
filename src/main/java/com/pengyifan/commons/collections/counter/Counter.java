@@ -219,7 +219,7 @@ public abstract class Counter<K> {
       public Iterator<Entry<K, Integer>> iterator() {
         return new Iterator<Entry<K, Integer>>() {
 
-          final Iterator<Entry<K, MutableInteger>> inner = map.entrySet()
+          private final Iterator<Entry<K, MutableInteger>> inner = map.entrySet()
               .iterator();
 
           @Override
@@ -231,7 +231,7 @@ public abstract class Counter<K> {
           public Entry<K, Integer> next() {
             return new Map.Entry<K, Integer>() {
 
-              final Entry<K, MutableInteger> e = inner.next();
+              private final Entry<K, MutableInteger> e = inner.next();
 
               @Override
               public K getKey() {

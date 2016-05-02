@@ -390,43 +390,43 @@ public class FibonacciHeap<E> {
     /**
      * Any one of its children
      */
-    Entry<E> child;
+    protected Entry<E> child;
 
     /**
      * Left sibling
      */
-    Entry<E> left;
+    private Entry<E> left;
 
     /**
      * Its parent
      */
-    Entry<E> parent;
+    protected Entry<E> parent;
 
     /**
      * Right sibling
      */
-    Entry<E> right;
+    protected Entry<E> right;
 
     /**
      * Whether this node has lost a child since the last time this node was
      * made the child of another node.
      */
-    boolean mark;
+    private boolean mark;
 
     /**
      * Key for this node
      */
-    int key;
+    protected int key;
 
     /**
      * Value for this node
      */
-    E obj;
+    private E obj;
 
     /**
      * The number of children in the child list
      */
-    int degree;
+    private int degree;
 
     /**
      * Returns the key corresponding to this entry.
