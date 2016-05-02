@@ -83,7 +83,7 @@ public class IndexGraph<V extends HasIndex, E extends HasIndex>
       V s1 = getEdgeSource(e);
       V s2 = getVertex(s1.index());
       checkArgument(
-          s1 == s2,
+          s1.equals(s2),
           "edge source has different ends[%s]\nhashCode=%s,%s\nhashCode=%s,%s",
           e,
           System.identityHashCode(s1),
@@ -92,7 +92,7 @@ public class IndexGraph<V extends HasIndex, E extends HasIndex>
           s2);
       V t1 = getEdgeTarget(e);
       V t2 = getVertex(t1.index());
-      checkArgument(t1 == t2, "edge source has different ends[%s]\n%s\n%s", e,
+      checkArgument(t1.equals(t2), "edge source has different ends[%s]\n%s\n%s", e,
           t1, t2);
     }
   }
