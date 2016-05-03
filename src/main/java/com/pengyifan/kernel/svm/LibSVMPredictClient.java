@@ -11,6 +11,9 @@ import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 import org.kohsuke.args4j.ParserProperties;
 
+/**
+ * @deprecated Not really useful.
+ */
 @Deprecated
 public class LibSVMPredictClient {
 

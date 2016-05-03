@@ -6,6 +6,7 @@ import java.util.TreeMap;
 /**
  * @deprecated Use {@link com.google.common.collect.TreeMultiset} instead.
  */
+@Deprecated
 public class TreeCounter<K> extends Counter<K> {
 
   /**
