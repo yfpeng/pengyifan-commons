@@ -2,7 +2,7 @@ package com.pengyifan.commons.lang;
 
 import java.io.UnsupportedEncodingException;
 
-public class StringUtils {
+public final class StringUtils {
 
   // │
   public static final String BAR    = bar(1);

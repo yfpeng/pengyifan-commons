@@ -119,8 +119,8 @@ public class LibSVMTrainer {
   private svm_problem readProblem()
       throws IOException {
 
-    Vector<Double> vy = new Vector<Double>();
-    Vector<svm_node[]> vx = new Vector<svm_node[]>();
+    Vector<Double> vy = new Vector<>();
+    Vector<svm_node[]> vx = new Vector<>();
     int maxIndex = 0;
 
     BufferedReader reader = new BufferedReader(new FileReader(inputFile));

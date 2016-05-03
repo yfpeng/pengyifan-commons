@@ -2,7 +2,7 @@ package com.pengyifan.commons.lang;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-public class IndentStringFormatter {
+public final class IndentStringFormatter {
 
   private int indent;
   private int width;
