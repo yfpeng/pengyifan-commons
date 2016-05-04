@@ -13,7 +13,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import com.google.common.collect.Lists;
 
-public class BasenameUtils {
+public final class BasenameUtils {
 
   private BasenameUtils() {
   }

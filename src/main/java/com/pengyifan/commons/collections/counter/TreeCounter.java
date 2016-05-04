@@ -13,7 +13,7 @@ public class TreeCounter<K> extends Counter<K> {
    * Constructs a new (empty) Counter.
    */
   public TreeCounter() {
-    map = new TreeMap<K, MutableInteger>();
+    map = new TreeMap<>();
     totalCount = 0;
   }
 
@@ -21,7 +21,7 @@ public class TreeCounter<K> extends Counter<K> {
    * Constructs a new (empty) Counter.
    */
   public TreeCounter(Comparator<? super K> comparator) {
-    map = new TreeMap<K, MutableInteger>(comparator);
+    map = new TreeMap<>(comparator);
     totalCount = 0;
   }
 
@@ -47,6 +47,6 @@ public class TreeCounter<K> extends Counter<K> {
 
   @Override
   public Object clone() {
-    return new TreeCounter<K>(this);
+    return new TreeCounter<>(this);
   }
 }

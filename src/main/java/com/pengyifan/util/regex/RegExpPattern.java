@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
  * <li>Greedy quantifiers: X* (X, zero or more times)</li>
  * </ul>
  */
-public class RegExpPattern {
+public final class RegExpPattern {
 
   private final static char epsilon = 0;
   private final static RegInfixToPostfix converter = new RegInfixToPostfix();

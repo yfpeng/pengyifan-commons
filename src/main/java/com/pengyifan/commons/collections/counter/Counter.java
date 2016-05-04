@@ -97,7 +97,7 @@ public abstract class Counter<K> {
    */
   public Set<K> argmaxSet() {
     int max = Integer.MIN_VALUE;
-    Set<K> argmaxSet = new HashSet<K>();
+    Set<K> argmaxSet = new HashSet<>();
     for (K key : keySet()) {
       int count = getCount(key);
       if (argmaxSet.isEmpty()) {
@@ -142,7 +142,7 @@ public abstract class Counter<K> {
    */
   public Set<K> argminSet() {
     int min = Integer.MAX_VALUE;
-    Set<K> argminSet = new HashSet<K>();
+    Set<K> argminSet = new HashSet<>();
     for (K key : keySet()) {
       int count = getCount(key);
       if (argminSet.isEmpty()) {
@@ -340,7 +340,7 @@ public abstract class Counter<K> {
    * This set may have 0 elements but will not be null.
    */
   public Set<K> keysAbove(int countThreshold) {
-    Set<K> keys = new HashSet<K>();
+    Set<K> keys = new HashSet<>();
     for (K key : keySet()) {
       if (getCount(key) >= countThreshold) {
         keys.add(key);
@@ -354,7 +354,7 @@ public abstract class Counter<K> {
    * have 0 elements but will not be null.
    */
   public Set<K> keysAt(int count) {
-    Set<K> keys = new HashSet<K>();
+    Set<K> keys = new HashSet<>();
     for (K key : keySet()) {
       if (getCount(key) == count) {
         keys.add(key);
@@ -368,7 +368,7 @@ public abstract class Counter<K> {
    * This set may have 0 elements but will not be null.
    */
   public Set<K> keysBelow(int countThreshold) {
-    Set<K> keys = new HashSet<K>();
+    Set<K> keys = new HashSet<>();
     for (K key : keySet()) {
       if (getCount(key) <= countThreshold) {
         keys.add(key);

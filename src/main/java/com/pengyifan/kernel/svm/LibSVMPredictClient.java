@@ -25,7 +25,7 @@ public class LibSVMPredictClient {
   private boolean quiteMode = false;
 
   @Argument
-  private List<String> arguments = new ArrayList<String>();
+  private List<String> arguments = new ArrayList<>();
 
   private static final String USAGE =
       "usage: svm_predict [options] test_file model_file output_file";

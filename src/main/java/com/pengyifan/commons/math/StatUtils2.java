@@ -4,7 +4,7 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-public class StatUtils2 {
+public final class StatUtils2 {
 
   private StatUtils2() throws InstantiationException {
     throw new InstantiationException("This class is not for instantiation");
