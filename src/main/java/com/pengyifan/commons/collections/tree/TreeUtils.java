@@ -2,7 +2,7 @@ package com.pengyifan.commons.collections.tree;
 
 import java.util.List;
 
-public class TreeUtils {
+public final class TreeUtils {
 
   private TreeUtils() {
 

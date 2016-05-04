@@ -23,7 +23,7 @@ import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
  * @deprecated Not really useful.
  */
 @Deprecated
-public class XmlFormatter {
+public final class XmlFormatter {
 
   public static XmlFormatter newFormatter() {
     return new XmlFormatter(65, true, 2);

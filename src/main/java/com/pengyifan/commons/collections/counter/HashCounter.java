@@ -12,7 +12,7 @@ public class HashCounter<K> extends Counter<K> {
    * Constructs a new (empty) Counter.
    */
   public HashCounter() {
-    map = new HashMap<K, MutableInteger>();
+    map = new HashMap<>();
     totalCount = 0;
   }
 
@@ -28,6 +28,6 @@ public class HashCounter<K> extends Counter<K> {
 
   @Override
   public Object clone() {
-    return new HashCounter<K>(this);
+    return new HashCounter<>(this);
   }
 }
