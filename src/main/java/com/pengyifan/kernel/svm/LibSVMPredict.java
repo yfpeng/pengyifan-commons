@@ -16,6 +16,9 @@ import libsvm.svm_parameter;
 
 import org.apache.commons.lang3.Validate;
 
+/**
+ * @deprecated Not really useful.
+ */
 @Deprecated
 public class LibSVMPredict {
 

@@ -9,6 +9,7 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
  * @deprecated Use {@code AbstractBatchProcessor} and {@code BasenameUtils}
  *             instead
  */
+@Deprecated
 public class BatchTextProcessor extends BatchProcessor {
 
   public final static FileFilter TEXT_FILTER = FileFilterUtils

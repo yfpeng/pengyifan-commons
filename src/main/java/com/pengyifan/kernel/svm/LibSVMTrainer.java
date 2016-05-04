@@ -15,6 +15,9 @@ import libsvm.svm_problem;
 
 import org.apache.commons.lang3.Validate;
 
+/**
+ * @deprecated Not really useful.
+ */
 @Deprecated
 public class LibSVMTrainer {
 

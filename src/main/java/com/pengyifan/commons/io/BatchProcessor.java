@@ -16,6 +16,7 @@ import org.apache.commons.lang3.Validate;
  * @author Yifan Peng
  * @deprecated Use {@code AbstractBatchProcessor} instead
  */
+@Deprecated
 public abstract class BatchProcessor {
 
   private final File path;
