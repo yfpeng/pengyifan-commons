@@ -9,6 +9,13 @@ public final class IndentStringFormatter {
   private boolean splitAtWhiteSpaces;
   private boolean isHangIndent;
 
+  private IndentStringFormatter() {
+    indent = 2;
+    width = 80;
+    splitAtWhiteSpaces = true;
+    isHangIndent = false;
+  }
+
   /**
    * Returns a new format.
    * <p>
@@ -16,13 +23,6 @@ public final class IndentStringFormatter {
    */
   public static IndentStringFormatter newFormat() {
     return new IndentStringFormatter();
-  }
-
-  private IndentStringFormatter() {
-    indent = 2;
-    width = 80;
-    splitAtWhiteSpaces = true;
-    isHangIndent = false;
   }
 
   /**

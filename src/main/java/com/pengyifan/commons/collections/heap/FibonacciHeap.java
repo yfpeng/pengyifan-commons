@@ -428,6 +428,11 @@ public class FibonacciHeap<E> {
      */
     private int degree;
 
+    public Entry(int key, E obj) {
+      this.key = key;
+      this.obj = obj;
+    }
+
     /**
      * Returns the key corresponding to this entry.
      * 
@@ -444,11 +449,6 @@ public class FibonacciHeap<E> {
      */
     public final E getObject() {
       return obj;
-    }
-
-    public Entry(int key, E obj) {
-      this.key = key;
-      this.obj = obj;
     }
 
     /**

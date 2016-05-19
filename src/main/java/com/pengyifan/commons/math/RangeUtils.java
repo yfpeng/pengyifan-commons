@@ -7,7 +7,11 @@ import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.Validate;
 
 public final class RangeUtils {
-  
+
+  // [xxx..xxx]
+  public static final Pattern RANGE_PATTERN = Pattern
+          .compile("\\[(.+)([.]{2})(.+)\\]");
+
   private RangeUtils() throws InstantiationException {
     throw new InstantiationException("This class is not for instantiation");    
   }
@@ -49,10 +53,6 @@ public final class RangeUtils {
         range.getMinimum(),
         range.getMaximum());
   }
-  
-  // [xxx..xxx]
-  public static final Pattern RANGE_PATTERN = Pattern
-      .compile("\\[(.+)([.]{2})(.+)\\]");
 
   public static Range<Integer> parseRangeInt(String str) {
     Matcher m = RANGE_PATTERN.matcher(str);

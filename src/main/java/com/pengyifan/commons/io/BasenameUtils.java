@@ -27,6 +27,7 @@ public final class BasenameUtils {
       for(Path entry: stream) {
         list.add(FilenameUtils.getBaseName(entry.getFileName().toString()));
       }
+      stream.close();
     } else if (filter.accept(path)) {
       list.add(FilenameUtils.getBaseName(path.getFileName().toString()));
     }
@@ -47,6 +48,7 @@ public final class BasenameUtils {
       for(Path entry: stream) {
         list.add(FilenameUtils.getBaseName(entry.getFileName().toString()));
       }
+      stream.close();
     } else if (glob.equals("*")) {
       list.add(FilenameUtils.getBaseName(path.getFileName().toString()));
     } else {

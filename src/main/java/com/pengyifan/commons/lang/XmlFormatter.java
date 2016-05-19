@@ -25,10 +25,6 @@ import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 @Deprecated
 public final class XmlFormatter {
 
-  public static XmlFormatter newFormatter() {
-    return new XmlFormatter(65, true, 2);
-  }
-
   private final int lineWidth;
   private final boolean isIndenting;
 
@@ -38,6 +34,10 @@ public final class XmlFormatter {
     this.lineWidth = lineWidth;
     this.isIndenting = isIndenting;
     this.indent = indent;
+  }
+
+  public static XmlFormatter newFormatter() {
+    return new XmlFormatter(65, true, 2);
   }
 
   public String format(String unformattedXml) {
