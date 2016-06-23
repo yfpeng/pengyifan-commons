@@ -2,8 +2,10 @@ package com.pengyifan.kernel.svm;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.logging.Logger;
@@ -126,7 +128,8 @@ public class LibSVMTrainer {
     Vector<svm_node[]> vx = new Vector<>();
     int maxIndex = 0;
 
-    BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+    FileInputStream fileInputStream = new FileInputStream(inputFile);
+    BufferedReader reader = new BufferedReader(new InputStreamReader(fileInputStream, StandardCharsets.UTF_8));
     String line;
     while ((line = reader.readLine()) != null) {
       StringTokenizer st = new StringTokenizer(line, " \t\n\r\f:");
