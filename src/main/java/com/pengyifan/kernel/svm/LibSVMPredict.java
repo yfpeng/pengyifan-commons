@@ -2,10 +2,12 @@ package com.pengyifan.kernel.svm;
 
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.nio.charset.StandardCharsets;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
@@ -108,7 +110,8 @@ public class LibSVMPredict {
     double error = 0;
     double sumv = 0, sumy = 0, sumvv = 0, sumyy = 0, sumvy = 0;
 
-    LineNumberReader reader = new LineNumberReader(new FileReader(inputFile));
+    FileInputStream fileInputStream = new FileInputStream(inputFile);
+    LineNumberReader reader = new LineNumberReader(new InputStreamReader(fileInputStream, StandardCharsets.UTF_8));
     String line;
     while ((line = reader.readLine()) != null) {
       StringTokenizer st = new StringTokenizer(line, " \t\n\r\f:");
